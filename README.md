@@ -10,7 +10,8 @@ This repository documents my one-year research preparation project on EEG signal
 - Record progress in a research-oriented format	
 	
 ## Structure	
-- docs/: notes, logs, milestones	
+- docs/: project-overview, timeline, milestones
+- weekly-notes/: weekly session notes
 - src/: code	
 - results/: figures and outputs	
 - reports/: summaries and reports

@@ -1,0 +1,39 @@
+# Session 01
+
+## 1. Objective
+- 프로젝트 전체 구조 이해
+- EEG-BCI-로봇제어 연결 흐름 개요 파악
+- 뇌의 기본 구조 및 인지 구조 1차 학습
+
+## 2. What I studied
+- 뇌의 대분류 구조: 대뇌, 소뇌, 뇌간
+- 운동/감각/인지 관련 주요 영역
+- EEG가 측정하는 대상의 기본 개념
+- BCI 파이프라인 개요: signal acquisition → preprocessing → feature extraction → decision → control
+
+## 3. Key takeaways
+- EEG는 비침습적 측정이지만 신호가 약하고 노이즈에 취약하다.
+- BCI는 단순히 뇌파를 읽는 것이 아니라, 특정 feature를 추출해 제어 가능한 신호로 바꾸는 과정이다.
+- 로봇 제어 성능은 뇌 신호 해석 정확도뿐 아니라 실시간 처리 지연과 threshold 설계에도 크게 좌우된다.
+
+## 4. My understanding
+- 이번 프로젝트의 최소 구조는 다음과 같다:
+  1) EEG 수집
+  2) 특정 대역 power 계산
+  3) threshold 초과 여부 판단
+  4) Python에서 제어 명령 생성
+  5) Arduino/servo 동작
+
+## 5. Questions / Unclear points
+- EEG는 왜 scalp 바깥에서도 측정 가능한가?
+- alpha/beta 변화가 실제 집중 상태와 항상 직접적으로 연결되는가?
+- 단일 threshold 기반 제어가 얼마나 안정적인가?
+
+## 6. Next actions
+- 뇌 구조 학습 계속
+- 집중 상태와 관련된 뇌파 개념 정리
+- BCI pipeline 그림 초안 작성
+
+## 7. Outputs
+- 개념도 1장
+- 블로그 주제 후보 2개

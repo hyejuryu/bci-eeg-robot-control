@@ -58,5 +58,5 @@ BCI에서 해석 가능한 신호 수준과 한계를 구분한다.
 → population signal pattern을 이용하는 것
 
 - 따라서 목표는:
--- feature extraction 가능한 신호 정의
--- 안정적인 state difference 확보
+  feature extraction 가능한 신호 정의
+  안정적인 state difference 확보

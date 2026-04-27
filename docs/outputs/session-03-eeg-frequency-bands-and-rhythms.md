@@ -7,7 +7,7 @@ EEG의 주요 주파수 대역과 rhythm 개념을 정리하고, 각 대역을 B
 이 문서는 EEG 신호의 전체 관찰 구조를 다루기보다, frequency band와 rhythm을 중심으로 정리한다.  
 집중 상태 feature 선정은 별도 문서에서 다룬다.
 
-## 1. Frequency Band vs Rhythm
+## 1. Frequency Band vs. Rhythm
 
 EEG에서 frequency band와 rhythm은 같은 개념이 아니다.
 

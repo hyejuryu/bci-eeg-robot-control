@@ -79,7 +79,7 @@ Focus state는 rest 또는 baseline condition과 비교했을 때, alpha suppres
 | Gamma activity observed | high-frequency activity가 관찰되었다 | 고차 인지나 peak performance가 증명되었다 |
 | Threshold crossed | feature value가 기준값을 넘었다 | 뇌의 의도 자체를 직접 읽었다 |
 
-## Link to Next Analysis Block
+## Link to Next Session
 
 다음 단계에서는 직접 피험자 실험이 아니라 공개 EEG 데이터를 활용해 raw signal과 feature 후보를 확인한다.
 

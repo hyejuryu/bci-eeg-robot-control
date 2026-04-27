@@ -1,4 +1,5 @@
 # Focus-State Feature List and Selection Criteria
+Related study note: [Session 03](../../weekly-notes/session-03-260425.md)
 
 ## Purpose
 

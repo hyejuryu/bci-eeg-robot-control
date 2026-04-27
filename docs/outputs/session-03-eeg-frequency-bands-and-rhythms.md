@@ -1,4 +1,5 @@
 # EEG Frequency Bands and Rhythms
+Related study note: [Session 03](../../weekly-notes/session-03-260425.md)
 
 ## Purpose
 

@@ -1,3 +1,4 @@
+# EEG Components ERP and Feature Bridge
 Related study note: [Session 02](../../weekly-notes/session-02-260418.md)
 
 ## Purpose

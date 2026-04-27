@@ -1,3 +1,5 @@
+Related study note: [Session 02](../../weekly-notes/session-02-260418.md)
+
 ## Purpose
 EEG 신호를 구성하는 요소를 정리하고,
 이를 BCI feature 및 실험 설계로 연결한다.

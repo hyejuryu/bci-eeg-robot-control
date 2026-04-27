@@ -1,5 +1,5 @@
 # Core Brain Function Structure
-Related study note: [Session 01](../../weekly-notes/session-01-260411.md)
+Related study note: [Session 01](../../weekly-notes/session-01-260328.md)
 
 ## session-01-core-brain-function-structure
 

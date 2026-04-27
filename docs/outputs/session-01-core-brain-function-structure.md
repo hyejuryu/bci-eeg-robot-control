@@ -1,3 +1,6 @@
+# Core Brain Function Structure
+Related study note: [Session 01](../../weekly-notes/session-01-260411.md)
+
 ## session-01-core-brain-function-structure
 
 | Domain | Main related region(s) | Why it matters here |

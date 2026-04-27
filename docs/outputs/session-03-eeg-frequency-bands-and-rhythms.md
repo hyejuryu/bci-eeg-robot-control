@@ -4,8 +4,7 @@
 
 EEG 신호의 주요 주파수 대역과 rhythm 개념을 정리하고, 각 대역을 BCI feature로 해석할 때의 기준과 한계를 구분한다.
 
-이번 문서의 핵심은 단순히 delta, theta, alpha, beta, gamma의 의미를 정리하는 것이 아니라, 다음을 구분하는 것이다.
-
+- EEG 신호 파악의 주의점
 - frequency band와 rhythm의 차이
 - 정상 EEG pattern과 artifact의 차이
 - 생리학적 설명과 실제 feature 해석의 차이
@@ -58,39 +57,6 @@ BCI 관점에서 alpha rhythm이 중요한 이유는 다음과 같다.
 
 따라서 초기 EEG 분석에서는 alpha reactivity를 먼저 확인하는 것이 합리적이다.
 
-### 4. Low beta는 focus-state 후보 feature가 될 수 있지만, 단일 주파수로 쓰기에는 불안정하다
-
-Beta activity는 일반적으로 각성, 외부 지향적 주의, 문제 해결, 과제 수행과 관련되어 설명된다.  
-그중 low beta activity는 focus-state BCI에서 후보 feature로 검토할 수 있다.
-
-다만 특정 순간의 17 Hz amplitude만을 직접 threshold로 쓰는 것은 불안정할 수 있다.  
-개인차, 장비 특성, sampling rate, preprocessing 방식, 근전도 artifact에 따라 특정 주파수의 진폭은 쉽게 달라질 수 있기 때문이다.
-
-따라서 현재 단계에서는 단일 17 Hz peak보다 다음과 같이 band-level feature로 정의하는 것이 더 적절하다.
-
-- 14–20 Hz low beta band power
-- 또는 16–20 Hz low beta band power
-- baseline 대비 low beta power 변화
-- alpha suppression과 함께 나타나는 low beta 변화
-- beta/alpha ratio
-
-Low beta는 focus 후보 feature로 남기되, 단일 주파수가 아니라 band power로 다루는 것이 적절하다.
-
-### 5. Gamma/40 Hz activity는 장기 후보로 남기되, 초기 feature에서는 보류한다
-
-Gamma rhythm, 특히 40 Hz 부근 activity는 고차 인지, 감각 정보 통합, binding, peak performance와 관련되어 설명된다.
-
-그러나 현재 프로젝트의 초기 단계에서 gamma를 직접 threshold feature로 사용하는 것은 적절하지 않다.
-
-그 이유는 다음과 같다.
-
-- 두피 EEG에서 30 Hz 이상 activity는 신호대잡음비가 낮을 수 있다.
-- 근전도 artifact와 혼동되기 쉽다.
-- 턱, 이마, 목 근육 긴장이 high beta/gamma 대역에 영향을 줄 수 있다.
-- 장비 노이즈와 움직임 artifact가 섞일 수 있다.
-- 현재 단계에서는 noise/artifact 구분 능력이 먼저 필요하다.
-
-따라서 Gamma/40 Hz는 장기적으로 검토할 수 있는 연구 후보로 남기되, 초기 feature 선정에서는 alpha와 low beta보다 낮은 우선순위로 둔다.
 
 ## Frequency Bands in BCI Perspective
 

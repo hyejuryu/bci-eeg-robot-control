@@ -114,17 +114,7 @@ Gamma는 30 Hz 이상 대역의 빠른 activity로, 고차 인지, 감각 정보
 
 Rhythm을 해석할 때는 주파수 범위만 보지 않고, 위치와 반응성을 함께 확인해야 한다.
 
-## 5. Interpretation Boundary
-
-| Observation | Acceptable interpretation | Over-interpretation to avoid |
-| --- | --- | --- |
-| Alpha power decreased | 해당 조건에서 alpha band power가 감소했다 | 피험자가 반드시 집중했다 |
-| Posterior alpha rhythm observed | alpha rhythm의 기본 조건 일부가 확인되었다 | 전체 인지 상태가 안정적이라고 단정 |
-| Beta power increased | task condition에서 beta activity가 증가했다 | 문제 해결 능력이 향상되었다 |
-| Gamma activity observed | high-frequency activity가 관찰되었다 | 고차 인지나 peak performance가 증명되었다 |
-| Rhythm-like pattern observed | 반복적 EEG pattern이 나타났다 | 주파수만으로 기능적 rhythm이라고 단정 |
-
-## 6. Link to Feature Selection
+## 5. Link to Feature Selection
 
 이 문서의 정리는 다음 단계의 feature selection으로 이어진다.
 

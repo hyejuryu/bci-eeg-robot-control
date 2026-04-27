@@ -27,20 +27,6 @@ Focus state는 rest 또는 baseline condition과 비교했을 때, alpha suppres
 | SMR power | 안정된 감각운동 상태에서 증가, 움직임 또는 운동상상 시 감소 가능 | C3, Cz, C4 등 sensorimotor area | 향후 motor imagery 또는 robot control과 연결 가능 | posterior alpha, beta activity와 구분 필요 | Low-Medium |
 | Gamma / 40 Hz activity | 고차 인지, binding, peak performance 후보 | task-specific, 해석 신중 | 장기 연구 후보로 남길 수 있음 | 근전도, 움직임, 장비 노이즈와 혼동 위험 큼 | Later |
 
-## Initial Feature Priority
-
-현재 단계에서의 feature 우선순위는 다음과 같다.
-
-| Priority | Feature | Decision |
-| --- | --- | --- |
-| 1 | Alpha reactivity | 가장 먼저 확인한다 |
-| 2 | Alpha suppression | rest/task 또는 baseline/task 차이를 보는 핵심 후보로 둔다 |
-| 3 | Low beta power | focus 또는 problem-solving 후보 feature로 둔다 |
-| 4 | Beta / Alpha ratio | threshold 기반 score 후보로 둔다 |
-| 5 | Theta power, Theta / Beta ratio | 보조 feature로 둔다 |
-| 6 | SMR power | 향후 motor imagery / robot control 단계에서 재검토한다 |
-| 7 | Gamma / 40 Hz | 장기 후보로 보류한다 |
-
 ## Feature Selection Criteria
 
 초기 feature 후보는 다음 기준에 따라 평가한다.
@@ -68,7 +54,7 @@ Focus state는 rest 또는 baseline condition과 비교했을 때, alpha suppres
 | Beta / Alpha ratio | low_beta_power / alpha_power | focus score 및 threshold 후보 |
 | Theta / Beta ratio | theta_power / beta_power | attention-related 보조 지표 |
 
-## Current Decision
+## Initial Decision
 
 현재 단계에서 feature 선정 결론은 다음과 같다.
 

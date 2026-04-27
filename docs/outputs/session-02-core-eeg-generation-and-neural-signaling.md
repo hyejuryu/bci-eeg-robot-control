@@ -1,3 +1,6 @@
+# Core EEG Generation and Neural Signaling
+Related study note: [Session 02](../../weekly-notes/session-02-260418.md)
+
 ## Purpose
 EEG 신호가 어떤 신경생리학적 과정에서 발생하는지 이해하고,
 BCI에서 해석 가능한 신호 수준과 한계를 구분한다.

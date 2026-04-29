@@ -1,3 +1,14 @@
+# EEG Does Not Read the Brain: Why Features Matter in BCI
+
+- Published on: Medium
+- Medium link: https://medium.com/...
+- Date: 2026-04-29
+- Related sessions:
+  - Session 01
+  - Session 02
+  - Session 03
+- Type: Technical reflection
+
 ---
 
 EEG Does Not Read the Brain: Why Features Matter in BCI

@@ -1,5 +1,5 @@
 # bci-eeg-robot-control
-# BCI-based EEG SIgnal Analysis and Robot Conrol
+# BCI-based EEG SIgnal Analysis and Robot Control
 
 This repository documents my one-year research preparation project on EEG signal analysis, BCI, and simple robotic control.	
 	

@@ -1,14 +1,101 @@
+# =========================
+# OS files
+# =========================
+
+.DS_Store
+Thumbs.db
+
+
+# =========================
+# Python cache files
+# =========================
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+
+# =========================
+# Virtual environments
+# =========================
+
+.venv/
+venv/
+env/
+ENV/
+
+
+# =========================
+# Environment and secrets
+# =========================
+
+.env
+*.env
+
+
+# =========================
+# Jupyter
+# =========================
+
+.ipynb_checkpoints/
+
+
+# =========================
+# Data directories
+# =========================
+
 data/raw/
 data/interim/
 data/processed/
+
+
+# =========================
+# EEG and biosignal data files
+# =========================
 
 *.edf
 *.bdf
 *.fif
 *.set
 *.vhdr
+*.vmrk
 *.eeg
 *.mat
-*.csv
+*.xdf
 *.npy
 *.npz
+
+
+# =========================
+# CSV data files inside data directory
+# =========================
+
+data/**/*.csv
+
+
+# =========================
+# MNE or downloaded dataset folders
+# =========================
+
+mne_data/
+MNE-sample-data/
+
+
+# =========================
+# Logs and temporary files
+# =========================
+
+*.log
+*.tmp
+*.temp
+
+
+# =========================
+# IDE / editor files
+# =========================
+
+.vscode/
+.idea/

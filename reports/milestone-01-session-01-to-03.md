@@ -419,8 +419,10 @@ This principle will guide the next phase of the project.
 - [Session 01](../weekly-notes/session-01-260328.md)
 - [Session 02](../weekly-notes/session-02-260418.md)
 - [Session 03](../weekly-notes/session-03-260425.md)
-- [English Medium Post](https://medium.com/@hyejuryuwork/eeg-does-not-read-the-brain-why-features-matter-in-bci-da6fc647426b)
-- [Korean Blog Archive](../docs/blog/ko/001-eeg는-뇌를-읽는-기술이-아니다.md)
+- [English Medium Post 01: EEG Does Not Read the Brain: Why Features Matter in BCI](https://medium.com/@hyejuryuwork/eeg-does-not-read-the-brain-why-features-matter-in-bci-da6fc647426b)
+- [English Medium Post 02: Not Every 8–13 Hz Signal Is an Alpha Rhythm](https://medium.com/@hyejuryuwork/not-every-8-13-hz-signal-is-an-alpha-rhythm-9a909f7383cb)
+- [Korean Blog Archive 01 : 001-eeg는-뇌를-읽는-기술이-아니다.md](../docs/blog/ko/001-eeg는-뇌를-읽는-기술이-아니다.md)
+- [Korean Blog Archive 02 : 002-8-13-hz가-보인다고-모두-alpha-rhythm은-아니다.md](../docs/blog/ko/002-8-13-hz가-보인다고-모두-alpha-rhythm은-아니다.md)
 
 ## 13. References
 

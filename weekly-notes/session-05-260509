@@ -1,0 +1,169 @@
+# Session 05
+
+## 1. Objectives
+
+- EEG 분석을 위한 Python 기반 작업 환경을 구축하고 재현 가능하게 기록한다.
+- Conda 환경에서 MNE, NumPy, SciPy, Pandas, Matplotlib, JupyterLab이 정상적으로 작동하는지 확인한다.
+- 실제 EEG 데이터를 분석하기 전에 synthetic EEG-like signal을 이용해 최소 신호처리 파이프라인을 테스트한다.
+- Time-domain signal을 frequency-domain representation으로 변환하고, alpha/beta band power를 계산하는 흐름을 이해한다.
+- 환경 점검 결과, 분석 코드, figure, numerical summary를 GitHub에 기록 가능한 산출물로 정리한다.
+
+## 2. What I studied
+
+- Conda environment와 Python package 관리의 기본 역할
+- `environment.yml`, `requirements.txt`, environment check script의 차이
+- Python script 실행 방식과 GitHub repository 내 작업 경로 관리
+- NumPy를 이용한 synthetic signal 생성
+- Sampling frequency, duration, time axis의 의미
+- 10 Hz alpha-like component, 20 Hz beta-like component, random noise의 합성
+- SciPy `welch` 함수를 이용한 Power Spectral Density estimation
+- Alpha band와 beta band 정의 및 band power 계산
+- Matplotlib을 이용한 time-domain graph와 frequency-domain PSD graph 저장
+- Git의 기본 workflow: `git status`, `git add`, `git commit`, `git pull --rebase`, `git push`
+
+## 3. Key takeaways
+
+### 1. EEG 분석을 시작하기 전에 재현 가능한 분석 환경을 먼저 만들어야 한다
+
+이번 회차의 첫 번째 목표는 실제 EEG 데이터를 분석하는 것이 아니라, EEG 분석이 가능한 Python 작업 환경을 구성하는 것이었다.
+
+`bci-eeg` Conda environment를 활성화하고, Python, NumPy, SciPy, Pandas, Matplotlib, MNE의 설치 및 import 가능 여부를 확인했다.
+
+이번 회차에서 `environment.yml`은 Conda 환경 재현용 파일로, `requirements.txt`는 핵심 Python package 목록으로, `00_check_environment.py`는 실제 작동 여부를 확인하는 check script로 구분했다.
+
+이 구분은 단순한 설치 기록이 아니라, 향후 분석 결과의 재현성을 확보하기 위한 기본 구조다.
+
+### 2. Synthetic signal은 실제 EEG 해석이 아니라 분석 파이프라인 검증용이다
+
+이번 회차에서는 실제 EEG 데이터가 아니라, 10 Hz와 20 Hz 성분이 들어간 synthetic EEG-like signal을 만들었다.
+
+Synthetic signal의 구성은 다음과 같다.
+
+- 10 Hz alpha-like sine wave
+- 20 Hz beta-like sine wave
+- Random noise
+
+이 synthetic signal은 실제 뇌파가 아니다. 목적은 신경생리학적 해석이 아니라, 이미 알고 있는 주파수 성분을 가진 가짜 신호를 만들었을 때 분석 코드가 그 성분을 제대로 찾아낼 수 있는지 확인하는 것이다.
+
+따라서 이번 결과는 “alpha rhythm을 관찰했다”거나 “beta activity를 측정했다”는 의미가 아니다. 더 정확히는 synthetic signal을 이용해 time-series signal → PSD estimation → band power calculation → figure export 흐름이 작동하는지 확인한 것이다.
+
+### 3. Sampling frequency는 데이터 구조를 결정하는 핵심 정보다
+
+이번 synthetic signal에서는 `sfreq = 160`을 사용했다.
+
+160 Hz는 1초에 160개의 sample을 기록한다는 뜻이다. 따라서 10초 길이의 signal은 총 1600개의 sample을 가진다.
+
+160 samples/second × 10 seconds = 1600 samples
+
+이번에는 synthetic signal을 직접 만들었기 때문에 sampling frequency를 코드에서 설정했지만, 실제 EEG 데이터에서는 장비 또는 파일에 기록된 sampling rate를 확인해서 사용해야 한다.
+
+예를 들어 OpenBCI Cyton 8-channel board의 실제 수집 데이터를 분석할 때는 해당 장비와 수집 설정의 sampling rate를 확인한 뒤 코드에 반영해야 한다.
+
+### 4. Time-domain graph와 frequency-domain PSD graph는 서로 다른 질문에 답한다
+
+이번 회차에서는 두 가지 figure를 생성했다.
+
+첫 번째는 time-domain graph다. 이 그래프는 x축을 시간, y축을 signal amplitude로 두고, 신호가 시간에 따라 어떻게 흔들리는지 보여준다.
+
+두 번째는 frequency-domain PSD graph다. 이 그래프는 x축을 frequency, y축을 PSD로 두고, 어떤 주파수에 power가 많이 분포하는지 보여준다.
+
+Time-domain graph에서는 synthetic signal이 복잡하고 noisy한 파형처럼 보인다. 하지만 PSD graph에서는 10 Hz 근처의 큰 peak와 20 Hz 근처의 작은 peak가 확인된다.
+
+이는 이번 실습의 핵심 결과다. 시간상으로 복잡해 보이는 signal도 frequency-domain에서 보면 어떤 주파수 성분이 포함되어 있는지 더 명확하게 확인할 수 있다.
+
+### 5. Welch PSD는 Fourier transform을 기반으로 더 안정적인 power spectrum을 추정하는 방법이다
+
+이번 회차에서 사용한 Welch method는 signal을 여러 구간으로 나누고, 각 구간의 periodogram을 계산한 뒤, 이를 평균하여 PSD를 추정하는 방식이다.
+
+이번 코드에서는 `nperseg = sfreq * 2`를 사용했기 때문에, 160 Hz 기준으로 2초짜리 구간을 단위로 PSD를 추정했다.
+
+Welch method는 signal 자체에서 noise를 직접 제거하는 기법이라기보다, 여러 구간의 spectrum을 평균하여 PSD 추정값이 noise에 덜 흔들리도록 만드는 방법으로 이해하는 것이 적절하다.
+
+따라서 이번 회차에서 중요한 점은 Fourier transform 자체를 깊게 구현하는 것이 아니라, EEG 분석에서 자주 사용하는 PSD estimation workflow를 실제 코드로 한 번 실행해보는 것이었다.
+
+## 4. My understanding
+
+### 1. 분석 환경도 연구 기록의 일부다
+
+이번 회차를 통해 코드 실행 환경 자체가 연구 기록의 일부라는 점을 이해했다.
+
+같은 분석 코드라도 Python 버전, library 버전, package 설치 방식에 따라 실행 결과나 오류가 달라질 수 있다. 따라서 분석을 시작하기 전에 환경을 확인하고, 그 결과를 저장하는 것은 단순한 준비 작업이 아니라 재현성을 위한 기본 절차다.
+
+이번 회차에서는 `00_check_environment.py`를 통해 실제로 어떤 버전의 Python과 library가 작동했는지 확인하고, 그 결과를 `docs/weekly-notes-outputs/session-05-environment-check.txt`에 저장했다.
+
+### 2. Signal은 시간에 따라 변하는 측정값으로 이해할 수 있다
+
+이번 synthetic signal 실습을 통해 signal을 시간에 따라 변하는 측정값으로 이해할 수 있었다.
+
+EEG signal은 시간에 따라 기록된 전압 변화다. 이번 synthetic signal은 실제 EEG는 아니지만, EEG 분석에서 다루게 될 time-series signal의 기본 구조를 이해하는 데 도움이 되었다.
+
+이번 코드에서 `t`는 시간축이고, `signal`은 각 시간점에서의 값이다. 즉, signal은 먼저 시간축 위의 숫자 배열로 존재하고, Matplotlib을 통해 그 값을 그래프로 시각화한다.
+
+### 3. Time-domain에서 보이지 않는 구조가 frequency-domain에서 드러날 수 있다
+
+Synthetic signal은 time-domain graph에서 복잡한 파형처럼 보였다. 그러나 PSD graph에서는 10 Hz와 20 Hz 근처의 peak가 확인되었다.
+
+이 점은 EEG 분석에서 중요하다. Raw signal을 시간 그래프로 보는 것만으로는 어떤 주파수 성분이 강한지 알기 어렵다. 따라서 frequency-domain analysis는 raw signal을 해석 가능한 feature로 바꾸기 위한 중요한 단계다.
+
+### 4. Band power는 특정 주파수 구간의 PSD 면적이다
+
+이번 회차에서는 alpha band를 `8 <= f < 13 Hz`, beta band를 `13 <= f <= 30 Hz`로 정의했다.
+
+Band power는 해당 주파수 구간 아래의 PSD 면적을 계산한 값이다. 즉, alpha power는 alpha band에 포함된 power의 총량이고, beta power는 beta band에 포함된 power의 총량이다.
+
+이번 synthetic signal에서는 10 Hz component의 amplitude를 20 Hz component보다 크게 설정했기 때문에, alpha power가 beta power보다 크게 계산되었다. 이는 분석 코드가 의도한 신호 구조를 잘 반영했다는 의미다.
+
+### 5. 이번 실습은 EEG 해석이 아니라 smoke test다
+
+이번 회차에서 가장 중요하게 구분해야 할 점은 synthetic signal 분석과 실제 EEG 해석을 혼동하지 않는 것이다.
+
+이번 결과는 alpha rhythm이나 beta activity를 생리학적으로 관찰한 것이 아니다. 의도적으로 만든 가짜 signal에서 알고 있는 주파수 성분을 PSD 분석으로 확인한 것이다.
+
+따라서 이번 회차의 성과는 EEG 해석이 아니라, EEG 분석에 필요한 최소 파이프라인이 작동한다는 점을 확인한 것이다.
+
+### 6. 시행착오는 재현성 기록의 일부로 남길 수 있다
+
+이번 회차에서는 단순한 코드 실행뿐 아니라, 어떤 파일을 어떤 목적으로 남길 것인지도 함께 정리했다.
+
+초기에는 `requirements.txt`에 전체 package freeze 결과를 저장했지만, Conda 환경에서는 build path와 의존 package가 과도하게 많이 포함되어 읽기 어려웠다. 따라서 `requirements.txt`는 핵심 package 목록으로 정리하고, 실제 실행 버전은 environment check log에 남기는 방식이 더 적절하다고 판단했다.
+
+또한 `environment.yml`에 포함된 local `prefix` 경로는 다른 컴퓨터에서 재현성을 떨어뜨릴 수 있으므로 제거했다.
+
+이러한 수정 과정은 단순한 실패라기보다, 재현 가능한 연구 기록을 만들기 위한 판단 과정으로 볼 수 있다.
+
+## 5. Questions / Unclear points
+
+- 실제 EEG 데이터에서는 sampling frequency, channel names, annotations, amplitude scale을 어떻게 확인해야 하는가?
+- 공개 EEGBCI 데이터셋에서 eyes open / eyes closed 조건은 파일과 annotation 수준에서 어떻게 구분되는가?
+- 실제 EEG에서 alpha band power를 계산할 때 모든 채널을 볼 것인가, 후두부 채널을 우선할 것인가?
+- Alpha power와 beta power를 absolute power로 볼지, relative power 또는 baseline-normalized value로 볼지 결정해야 한다.
+- Welch PSD에서 window length와 overlap은 실제 EEG 분석 결과에 얼마나 영향을 미치는가?
+- Time-domain raw signal에서 artifact를 먼저 확인한 뒤 PSD를 계산해야 하는데, 어떤 artifact를 우선적으로 점검해야 하는가?
+- Synthetic signal에서는 10 Hz와 20 Hz peak가 명확했지만, 실제 EEG에서는 주파수 peak가 불명확할 수 있다. 이 경우 feature를 어떻게 정의해야 하는가?
+
+## 6. Next actions
+
+- MNE의 EEGBCI public dataset을 불러오는 방법을 확인한다.
+- Subject 1, run 1과 run 2를 사용해 baseline eyes open / eyes closed 데이터를 확보한다.
+- Raw object의 channel names, sampling frequency, annotations, data shape을 확인한다.
+- Eyes open / eyes closed 조건에서 raw signal 구조를 비교한다.
+- Alpha band power를 계산하기 전에, 데이터의 channel 위치와 artifact 가능성을 먼저 점검한다.
+- Session 05에서 만든 synthetic PSD workflow를 실제 EEG 데이터 분석 코드의 출발점으로 확장한다.
+
+## 7. Outputs
+
+- `environment.yml`
+- `requirements.txt`
+- `scripts/00_check_environment.py`
+- `scripts/01_synthetic_signal_psd.py`
+- `docs/weekly-notes-outputs/session-05-environment-check.txt`
+- `figures/session-05/synthetic_signal_time_series.png`
+- `figures/session-05/synthetic_signal_psd.png`
+- `results/session-05/synthetic_signal_psd_summary.txt`
+
+## 8. References
+
+- MNE-Python documentation
+- SciPy documentation: `scipy.signal.welch`
+- NumPy documentation
+- Matplotlib documentation

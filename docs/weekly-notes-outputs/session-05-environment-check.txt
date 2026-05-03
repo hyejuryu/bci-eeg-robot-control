@@ -1,0 +1,9 @@
+Python: 3.11.15 | packaged by conda-forge | (main, Mar  5 2026, 16:36:00) [MSC v.1944 64 bit (AMD64)]
+Platform: Windows-10-10.0.26200-SP0
+NumPy: 2.4.3
+SciPy: 1.17.1
+Pandas: 3.0.2
+Matplotlib: 3.10.9
+MNE: 1.12.1
+
+Environment check complete.

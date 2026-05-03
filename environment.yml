@@ -1,1 +1,12 @@
-## 
+name: bci-eeg
+channels:
+  - conda-forge
+dependencies:
+  - mne
+  - scipy
+  - numpy
+  - python=3.11
+  - jupyterlab
+  - ipykernel
+  - matplotlib
+  - pandas

@@ -1,0 +1,16 @@
+Synthetic EEG-like Signal PSD Summary
+
+Sampling frequency: 160 Hz
+Signal duration: 10 seconds
+Number of samples: 1600
+
+Alpha band: 8 <= f < 13 Hz
+Beta band: 13 <= f <= 30 Hz
+
+Alpha power: 0.5344
+Beta power: 0.1438
+Beta / Alpha ratio: 0.2690
+
+Note:
+This is not real EEG data.
+This synthetic signal was used only to test the analysis pipeline.

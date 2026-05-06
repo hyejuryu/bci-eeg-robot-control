@@ -1,0 +1,223 @@
+# Session 06
+
+## 1. Objectives
+
+- MNE-Python을 이용해 EEGBCI public dataset의 EDF 파일을 직접 불러온다.
+- Subject 1의 baseline eyes open / eyes closed run을 확인한다.
+- Raw EEG 데이터의 기본 구조를 확인한다:
+  - sampling frequency
+  - number of channels
+  - number of samples
+  - recording duration
+  - channel names
+  - annotations
+  - data shape
+- EEG raw signal이 Python 내부에서 어떤 형태로 저장되는지 이해한다.
+- 실제 EEG waveform을 처음 시각화하고, raw signal의 형태를 관찰한다.
+- Raw waveform만으로 EEG rhythm을 해석하면 안 된다는 점을 확인한다.
+
+---
+
+## 2. What I studied
+
+- MNE `eegbci.load_data()`를 이용한 EEGBCI dataset loading
+- EDF file loading with `mne.io.read_raw_edf()`
+- MNE Raw object의 기본 구조
+- `raw.info`, `raw.ch_names`, `raw.n_times`, `raw.times`, `raw.annotations`
+- EEG data shape: channels × samples
+- Sampling frequency와 sample index의 관계
+- Time-domain EEG waveform visualization using Matplotlib
+- EEG signal visualization을 위한:
+  - channel selection
+  - time window selection
+  - volts → microvolts conversion
+  - vertical offset plotting
+- JSON export를 이용한 metadata summary 저장
+- Python function argument:
+  - positional argument
+  - keyword argument
+- MNE version compatibility issue:
+  - `eegbci.load_data(subject=..., runs=...)`
+  - vs.
+  - `eegbci.load_data(subject, runs)`
+
+---
+
+## 3. Key takeaways
+
+### 1. EEG raw data는 연속적인 “뇌파 그림”이 아니라 sample 기반 time-series array다
+
+이번 회차에서 가장 중요하게 이해한 점은 EEG가 컴퓨터 내부에서는 연속 곡선 형태로 저장되는 것이 아니라, 시간 순서에 따라 기록된 sample array라는 점이다.
+
+이번 EEGBCI dataset의 sampling frequency는 160 Hz였다.
+
+이는:
+
+```text
+1 second = 160 samples
+```
+
+를 의미한다.
+
+따라서 약 61초 길이의 recording은 총 9760개의 sample로 저장되어 있었다.
+
+EEG waveform은 실제로는 discrete sample point들의 집합이며, plotting 과정에서 이 점들을 선으로 연결해 시각화한 것이다.
+
+이번 회차를 통해 EEG signal을 “뇌파 그림”이 아니라, channels × samples 구조를 가진 time-series numerical array로 이해하기 시작했다.
+
+---
+
+### 2. Sampling frequency는 time axis를 해석하는 기준이다
+
+이번 회차에서는:
+
+```python
+start_sample = int(start_sec * sfreq)
+stop_sample = int(stop_sec * sfreq)
+```
+
+코드를 통해 time window를 sample index로 변환하는 과정을 직접 확인했다.
+
+예를 들어 160 Hz 환경에서 10초 구간을 선택하면:
+
+```text
+10 seconds × 160 samples/second = 1600 samples
+```
+
+가 된다.
+
+즉 EEG analysis에서 “몇 초를 본다”는 것은 내부적으로는 특정 sample range를 선택하는 작업이라는 점을 이해했다.
+
+---
+
+### 3. Raw EEG waveform은 noisy하지만 완전히 random하지는 않다
+
+이번 회차에서는 처음으로 실제 EEG waveform을 직접 시각화했다.
+
+Raw EEG는 예상보다 noisy했고, 깨끗한 sine wave처럼 보이지 않았다.
+
+그러나 완전히 random noise처럼 보이지도 않았다.
+
+채널마다 waveform morphology가 달랐고, 시간에 따라 fluctuation이 계속 변했으며, 간헐적으로 큰 amplitude fluctuation도 나타났다.
+
+이 점은 EEG가 매우 noisy한 biological signal이라는 점을 보여준다.
+
+동시에 EEG signal이 단순 random noise와도 다르다는 점을 시각적으로 확인할 수 있었다.
+
+---
+
+### 4. Raw waveform만으로 alpha activity를 판단하면 안 된다
+
+이번 회차에서 eyes open / eyes closed waveform을 직접 비교했지만, raw waveform만으로 alpha activity를 해석할 수는 없다는 점을 다시 확인했다.
+
+현재 단계에서 가능한 해석은:
+
+- waveform morphology가 약간 다르게 보일 수 있다
+- signal fluctuation pattern이 다르게 보일 수 있다
+
+정도다.
+
+하지만:
+
+```text
+“alpha가 증가했다”
+“beta가 감소했다”
+```
+
+같은 해석은 아직 frequency-domain analysis를 하지 않았기 때문에 적절하지 않다.
+
+이번 회차는 time-domain signal visualization 단계이며, 실제 alpha/beta interpretation은 이후 PSD 및 band power analysis 이후에 해야 한다.
+
+---
+
+### 5. EEG 분석은 signal interpretation 이전에 data structure understanding이 먼저다
+
+이번 회차에서는 plotting 자체보다, EEG raw data가 어떤 구조로 저장되고 처리되는지를 이해하는 과정이 더 중요했다.
+
+예를 들어:
+
+- 왜 특정 time window를 sample index로 변환하는가
+- 왜 EEG channel만 선택하는가
+- 왜 일부 channel subset만 plotting하는가
+- 왜 offset을 추가하는가
+- 왜 volts를 microvolts로 변환하는가
+
+같은 문제를 실제 코드 수준에서 하나씩 확인했다.
+
+이를 통해 EEG analysis는 단순히 plotting이나 machine learning 문제가 아니라, signal structure 자체를 이해하는 과정이라는 점을 느꼈다.
+
+---
+
+## 4. My understanding
+
+이번 회차 이전에는 EEG dataset을 “분석 대상 파일” 정도로 생각하는 경향이 있었다.
+
+하지만 실제 EDF file을 열고, raw object를 inspection하고, waveform을 직접 plotting해보면서 EEG analysis의 시작점이 상당히 구체적인 data structure라는 점을 이해하게 되었다.
+
+특히 이번 회차에서 중요했던 점은:
+
+```text
+time
+↔ sampling frequency
+↔ sample index
+↔ waveform visualization
+```
+
+사이의 관계를 실제 코드 수준에서 연결해본 것이다.
+
+이번 회차를 통해 EEG waveform은 연속 곡선처럼 보이지만, 실제로는 시간 순서대로 저장된 discrete sample array라는 점도 이해하게 되었다.
+
+예를 들어 이번 EEGBCI dataset에서는 sampling frequency가 160 Hz였기 때문에:
+
+```text
+1 second = 160 samples
+```
+
+를 의미했다.
+
+따라서 10초 구간을 시각화한다는 것은 내부적으로는 약 1600개의 sample을 선택해 plotting하는 과정이라는 점을 이해하게 되었다.
+
+또한 raw waveform을 직접 보면서 EEG가 생각보다 noisy하고 irregular한 biological signal이라는 점을 실감했다.
+
+동시에 raw waveform만으로 특정 rhythm을 해석하기 어렵다는 점도 이해하게 되었다.
+
+이번 회차를 통해 EEG를 단순 “brain signal”이 아니라:
+
+```text
+structured numerical time-series data
+```
+
+로 보기 시작했다.
+
+---
+
+## 5. Questions / unclear points
+
+- EDF file 내부에는 어떤 metadata가 기본적으로 포함되는가?
+- EEG channel location 정보는 EDF file 내부에 항상 포함되는가, 아니면 별도 montage가 필요한가?
+- 실제 OpenBCI raw data는 EDF 형태로 저장되는가, 아니면 다른 format을 사용하는가?
+- Raw waveform에서 artifact를 시각적으로 구분하는 기준은 무엇인가?
+- Eyes open / eyes closed 차이는 PSD analysis 이전에도 일부 waveform pattern difference로 나타날 수 있는가?
+- Sampling frequency가 높아지면 frequency-domain analysis 결과는 어떻게 달라지는가?
+
+---
+
+## 6. Next actions
+
+- Band-pass filtering 개념을 학습한다.
+- FFT와 PSD estimation workflow를 실제 EEG 데이터에 적용한다.
+- Posterior channel을 선택하여 eyes open / eyes closed PSD를 비교한다.
+- Alpha band와 beta band power를 계산한다.
+- Welch PSD와 Session 05 synthetic signal workflow를 실제 EEG analysis pipeline으로 확장한다.
+- OpenBCI raw data format과 BrainFlow data structure를 조사한다.
+
+---
+
+## 7. Outputs
+
+- `scripts/03_load_eegbci_inspect_raw.py`
+- `results/session-06/subject-001_run-01_baseline_eyes_open_raw_summary.json`
+- `results/session-06/subject-001_run-02_baseline_eyes_closed_raw_summary.json`
+- `figures/session-06/subject-001_run-01_baseline_eyes_open_first_10s.png`
+- `figures/session-06/subject-001_run-02_baseline_eyes_closed_first_10s.png`
+

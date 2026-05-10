@@ -84,7 +84,7 @@ That makes it useful as a smoke test.
 
 If I create a signal with a strong 10 Hz component and a smaller 20 Hz component, then the PSD should show a larger peak around 10 Hz and a smaller peak around 20 Hz. If the code cannot detect that, then it should not be trusted on real EEG data yet.
 
-[Insert Figure 1 here: `figures/session-05/synthetic_signal_psd.png`]
+[`figures/session-05/synthetic_signal_psd.png`](../figures/session-05/synthetic_signal_psd.png)
 
 The synthetic signal helped me understand a basic but important point:
 
@@ -138,7 +138,7 @@ Instead of imagining EEG as a mysterious waveform, I started to see it as struct
 channels × samples
 ```
 
-[Insert Figure 2 here: `figures/session-06/subject-001_run-01_baseline_eyes_open_first_10s.png`]
+[`figures/session-06/subject-001_run-01_baseline_eyes_open_first_10s.png`](../figures/session-06/subject-001_run-01_baseline_eyes_open_first_10s.png)
 
 The raw waveform was noisy.
 
@@ -229,7 +229,7 @@ eyes closed → stronger posterior alpha peak around 10 Hz
 eyes open   → much lower posterior alpha power
 ```
 
-[Insert Figure 3 here: `figures/session-07/subject-001_eyes_open_vs_eyes_closed_posterior_mean_psd.png`]
+[`figures/session-07/subject-001_eyes_open_vs_eyes_closed_posterior_mean_psd.png`](../figures/session-07/subject-001_eyes_open_vs_eyes_closed_posterior_mean_psd.png)
 
 In this Subject 1 analysis, posterior alpha power was much higher in the eyes-closed condition than in the eyes-open condition.
 
@@ -237,7 +237,7 @@ The alpha power in the eyes-closed condition was approximately 11.5 times higher
 
 Beta power also increased in the eyes-closed condition, but the increase was smaller. Because alpha power increased much more strongly, the beta/alpha ratio became lower in the eyes-closed condition.
 
-[Optional Figure 4 here: `figures/session-07/subject-001_alpha_beta_power_comparison.png`]
+[`figures/session-07/subject-001_alpha_beta_power_comparison.png`](../figures/session-07/subject-001_alpha_beta_power_comparison.png)
 
 This was encouraging because it showed that the pipeline could detect a basic and expected condition-dependent spectral difference.
 
@@ -445,9 +445,9 @@ This post is based on my Session 05–07 study notes from an EEG-BCI robot contr
 
 Additional references:
 
-- MNE-Python documentation
-- MNE EEGBCI dataset documentation
-- SciPy documentation: `scipy.signal.welch`
-- PhysioNet EEG Motor Movement/Imagery Dataset
-- NumPy documentation
-- Matplotlib documentation
+- [MNE-Python documentation](https://mne.tools/stable/index.html)
+- [MNE EEGBCI dataset documentation](https://mne.tools/stable/generated/mne.datasets.eegbci.load_data.html)
+- [SciPy documentation: `scipy.signal.welch`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.welch.html)
+- [PhysioNet EEG Motor Movement/Imagery Dataset](https://physionet.org/content/eegmmidb/1.0.0/)
+- [NumPy documentation](https://numpy.org/doc/stable/)
+- [Matplotlib documentation](https://matplotlib.org/stable/)

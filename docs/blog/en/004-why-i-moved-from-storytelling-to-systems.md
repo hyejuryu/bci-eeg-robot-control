@@ -69,7 +69,8 @@ So I did not want to abandon meaning.
 
 I wanted to connect meaning to mechanism.
 
-![Career path from storytelling to systems](../assets/004-career-path-from-storytelling-to-systems.png)
+![Career path from storytelling to systems](../docs/blog/assests/004-career-path-from-storytelling-to-systems.png.png)
+
 
 ## Why Computational Neuroscience Became the Next Step
 

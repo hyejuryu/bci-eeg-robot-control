@@ -25,4 +25,5 @@ Unlike weekly notes, which document each session chronologically, reports summar
 - `reports/`: synthesized project reports
 - `results/`: analysis outputs and quantitative results
 - `figures/`: exported figures and visualizations
-- `scripts/`: analysis and utility scripts
+- `scripts/`: executable analysis workflows
+- `src/`: reusable project modules, currently prepared for future refactoring

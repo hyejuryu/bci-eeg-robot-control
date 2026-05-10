@@ -2,9 +2,10 @@
 
 This directory contains reusable source code for the project.
 
-At the early stage of the project, most code may remain in `scripts/` or `notebooks/`.
+At the current stage, `src/` is prepared as a future package structure.  
+Most executable code still remains in `scripts/`.
 
-As repeated logic emerges, it should be moved into `src/`.
+As repeated logic emerges, it should be moved into `src/bci_robot/`.
 
 ## Purpose
 

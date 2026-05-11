@@ -295,12 +295,12 @@ This order reduces the risk of building an impressive but scientifically meaning
 
 ### Documents
 
-- [`docs/outputs/session-01-core-brain-function-structure.md`](../docs/outputs/session-01-core-brain-function-structure.md)
-- [`docs/outputs/session-02-core-eeg-generation-and-neural-signaling.md`](../docs/outputs/session-02-core-eeg-generation-and-neural-signaling.md)
-- [`docs/outputs/session-02-eeg-components-erp-and-feature-bridge.md`](../docs/outputs/session-02-eeg-components-erp-and-feature-bridge.md)
-- [`docs/outputs/session-03-eeg-core-structure.md`](../docs/outputs/session-03-eeg-core-structure.md)
-- [`docs/outputs/session-03-eeg-frequency-bands-and-rhythms.md`](../docs/outputs/session-03-eeg-frequency-bands-and-rhythms.md)
-- [`docs/outputs/session-03-focus-state-feature-list-and-selection-criteria.md`](../docs/outputs/session-03-focus-state-feature-list-and-selection-criteria.md)
+- [`docs/weekly-notes-outputs/session-01-core-brain-function-structure.md`](../docs/weekly-notes-outputs/session-01-core-brain-function-structure.md)
+- [`docs/weekly-notes-outputs/session-02-core-eeg-generation-and-neural-signaling.md`](../docs/weekly-notes-outputs/session-02-core-eeg-generation-and-neural-signaling.md)
+- [`docs/weekly-notes-outputs/session-02-eeg-components-erp-and-feature-bridge.md`](../docs/weekly-notes-outputs/session-02-eeg-components-erp-and-feature-bridge.md)
+- [`docs/weekly-notes-outputs/session-03-eeg-core-structure.md`](../docs/weekly-notes-outputs/session-03-eeg-core-structure.md)
+- [`docs/weekly-notes-outputs/session-03-eeg-frequency-bands-and-rhythms.md`](../docs/weekly-notes-outputs/session-03-eeg-frequency-bands-and-rhythms.md)
+- [`docs/weekly-notes-outputs/session-03-focus-state-feature-list-and-selection-criteria.md`](../docs/weekly-notes-outputs/session-03-focus-state-feature-list-and-selection-criteria.md)
 
 ### Figures
 

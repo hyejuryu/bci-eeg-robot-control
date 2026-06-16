@@ -39,6 +39,7 @@ electrode
 → OpenBCI GUI
 → recorded file
 → Python analysis
+```
 
 ## 5. My current understanding
 

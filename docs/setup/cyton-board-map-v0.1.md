@@ -24,7 +24,7 @@ The goal is to understand how electrodes, Cyton input pins, reference, BIAS, USB
 |---|---|
 | Active EEG input | Comb or flat electrodes connected to N1P–N8P |
 | Reference | One earclip connected to SRB2 |
-| BIAS | Opposite earclip connected to bottom BIAS |
+| BIAS |  Opposite earclip connected to Cyton BIAS pin. Exact physical pin position will be verified before connection. |
 | Computer connection | USB dongle |
 | Power | Lithium polymer battery |
 

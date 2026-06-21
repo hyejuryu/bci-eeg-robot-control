@@ -1,5 +1,10 @@
 # EEG Recording Safety and Environment Checklist v0.1
 
+## Document metadata
+
+- Created in: Session 09
+- Used from: Session 10 onward
+
 ## 1. Purpose
 
 This document defines the basic safety and environment checklist for future OpenBCI Cyton EEG recording sessions.

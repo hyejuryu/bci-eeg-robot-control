@@ -104,6 +104,8 @@ These labels are only for troubleshooting and do not indicate official electrode
 | 13      | Ch1 baseline repeated with flat electrode A and black cable   | Ch1 again showed Not Railed behavior                                                                                               | The Ch1 + black cable + flat electrode A condition was reproducible               | Confirmed          |
 | 14      | Flat electrode A tested with white cable on Ch1/N1P           | Ch1 changed to Not Railed, with the GUI showing approximately 67%                                                                  | White cable was likely functional when paired with the working flat electrode     | Confirmed          |
 | 15      | Flat electrode B tested with black cable on Ch1/N1P           | Ch1 remained Near Railed                                                                                                           | Flat electrode B or its snap/contact condition became the main suspect            | Suspect identified |
+| 16      |  Ch2/N2P tested with white cable and flat electrode A | Ch2 changed to Not Railed under forehead contact | Ch2/N2P input and white cable were likely functional when paired with the working flat electrode | Confirmed |
+| 17 | Ch1/N1P posterior retry using black cable and original comb electrode | Ch1 remained Near Railed around 85%, with high amplitude around 197 uVrms | Posterior comb placement did not produce usable acquisition; high amplitude was treated as contact/artifact-dominated rather than EEG | Not resolved |
 
 ## 6. Current interpretation
 
@@ -116,9 +118,10 @@ The following parts are likely functional:
 * USB dongle / COM3 connection
 * accelerometer stream
 * Ch1 / N1P input path
+* Ch2 / N2P input path
 * black snap cable
-* white snap cable, when paired with flat electrode A
-* SRB / BIAS setup, at least under the Ch1 flat forehead condition
+* white snap cable
+* SRB / BIAS setup, at least under forehead flat-electrode contact conditions
 * flat electrode A
 
 The following issue is currently suspected:
@@ -131,13 +134,19 @@ flat electrode B snap/contact condition
 
 This is because flat electrode B remained Near Railed with both the white and black snap cables on Ch1/N1P, while flat electrode A produced Not Railed results with both cables on Ch1/N1P.
 
+Flat electrode A also produced a Not Railed result when used with Ch2/N2P and the white snap cable. This reduced the likelihood that Ch2/N2P or the white snap cable was the main cause of the earlier Ch2 Near Railed result.
+
 The following remains unresolved:
 
-* Ch2 / N2P has not yet been tested with the known-working flat electrode A.
-* Stable posterior dry-comb acquisition has not yet been achieved.
-* The intended posterior Ch1/Ch2 montage has not yet produced stable non-railed scalp-contact waveforms.
+* stable posterior dry-comb acquisition
+* stable non-flat, non-railed waveform from posterior-left headband placement
+* stable non-flat, non-railed waveform from posterior-right headband placement
+* usable scalp-contact acquisition from the intended posterior Ch1/Ch2 montage
 
-`Railed` or `Near Railed` states were treated as non-usable acquisition states, not as strong EEG. Feature-level analysis remains out of scope until stable, non-flat, non-railed scalp-contact waveform is achieved.
+`Railed` or `Near Railed` states were treated as non-usable acquisition states, not as strong EEG. Feature-level analysis remains out of scope until a stable, non-flat, non-railed scalp-contact waveform is achieved.
+
+Further posterior troubleshooting should avoid using flat electrode B unless it is re-checked or replaced.
+
 
 ## 7. Next troubleshooting plan
 

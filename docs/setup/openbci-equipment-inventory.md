@@ -1,5 +1,14 @@
 # OpenBCI Equipment Inventory
 
+## Document metadata
+
+- Created in: Session 09
+- Used from: Session 10 onward
+- Version: v0.1
+- Status: active inventory
+- Scope: OpenBCI Cyton, EEG headband, electrodes, cables, power, and computer equipment used for the initial acquisition setup
+- Update rule: update only when equipment is added, removed, replaced, or reclassified
+
 ## 1. Board and communication
 - OpenBCI Cyton 8-channel biosensing board
 - USB dongle

@@ -5,10 +5,6 @@
 - Session: 10
 - Date range: 2026-06-20–2026-06-
 - Scope: Signal-level and scalp-contact troubleshooting after Cyton-to-GUI live stream confirmation
-- Status: in progress
-- Version: v0.1
-- Coverage: Attempts 01–09
-- Update rule: append new troubleshooting attempts and update current/final status without deleting earlier observations
 - Related connection log: `docs/setup/openbci-gui-install-and-connection-log-v0.1.md`
 
 ## 1. Purpose

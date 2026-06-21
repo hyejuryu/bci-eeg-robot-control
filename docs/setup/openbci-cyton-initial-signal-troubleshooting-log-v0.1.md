@@ -104,8 +104,8 @@ These labels are only for troubleshooting and do not indicate official electrode
 | 13      | Ch1 baseline repeated with flat electrode A and black cable   | Ch1 again showed Not Railed behavior                                                                                               | The Ch1 + black cable + flat electrode A condition was reproducible               | Confirmed          |
 | 14      | Flat electrode A tested with white cable on Ch1/N1P           | Ch1 changed to Not Railed, with the GUI showing approximately 67%                                                                  | White cable was likely functional when paired with the working flat electrode     | Confirmed          |
 | 15      | Flat electrode B tested with black cable on Ch1/N1P           | Ch1 remained Near Railed                                                                                                           | Flat electrode B or its snap/contact condition became the main suspect            | Suspect identified |
-| 16      |  Ch2/N2P tested with white cable and flat electrode A | Ch2 changed to Not Railed under forehead contact | Ch2/N2P input and white cable were likely functional when paired with the working flat electrode | Confirmed |
-| 17 | Ch1/N1P posterior retry using black cable and original comb electrode | Ch1 remained Near Railed around 85%, with high amplitude around 197 uVrms | Posterior comb placement did not produce usable acquisition; high amplitude was treated as contact/artifact-dominated rather than EEG | Not resolved |
+| 16      |  Ch2/N2P tested with white cable and flat electrode A         | Ch2 changed to Not Railed under forehead contact | Ch2/N2P input and white cable were likely functional when paired with the working flat electrode | Confirmed |
+| 17      |  Ch1/N1P posterior retry using black cable and original comb electrode | Ch1 remained Near Railed around 85%, with high amplitude around 197 uVrms | Posterior comb placement did not produce usable acquisition; high amplitude was treated as contact/artifact-dominated rather than EEG | Not resolved |
 
 ## 6. Current interpretation
 

@@ -2,9 +2,11 @@
 
 ## 1. Purpose
 
-This document records the OpenBCI GUI installation and Cyton connection setup used in Session 10.
+This document records the OpenBCI GUI installation, Cyton connection setup, and connection-level outcomes for Session 10.
 
-The purpose is to document the software/hardware connection environment before further EEG acquisition troubleshooting.
+The purpose is to document the software/hardware connection environment used for the initial OpenBCI acquisition sanity check.
+
+Detailed signal-level and scalp-contact troubleshooting is documented separately in `docs/setup/openbci-cyton-initial-signal-troubleshooting-log-v0.1.md`.
 
 ## 2. System environment
 
@@ -13,6 +15,10 @@ The purpose is to document the software/hardware connection environment before f
 * GUI build date shown: 2023/09/28
 * Install source: OpenBCI Downloads page
 * Execution result: success
+* Administrator access warning: shown
+  * Message: “This application is not being run with Administrator access. This could limit the ability to connect to devices or read/write files.”
+  * Treated as failure: no
+  * Reason: COM3 manual connection and live streaming succeeded
 
 ## 3. Hardware used
 
@@ -48,6 +54,7 @@ The purpose is to document the software/hardware connection environment before f
 * Start Data Stream: success
 * Time Series widget: live traces visible
 * Accelerometer values: visible
+* Board-only stream test: live traces visible without body-connected electrodes
 
 Confirmed connection path:
 
@@ -67,12 +74,23 @@ Cyton board
 * SRB2: On
 * SRB1: Off
 
-The settings were observed and recorded. No major setting changes were made during Day 1.
+The settings were observed and recorded as the initial hardware state. Subsequent unused-channel handling during signal troubleshooting is documented separately.
 
-## 8. Scope boundary
+## 8. Initial body-connected montage used in the first attempt
+
+The initial body-connected montage followed the Session 09 approximate posterior montage.
+
+- Ch1 / N1P: black snap cable, posterior-left headband position, comb electrode
+- Ch2 / N2P: white snap cable, posterior-right headband position, comb electrode
+- SRB / SRB2 reference function: left earclip
+- BIAS: right earclip
+
+The active electrode positions were recorded as approximate posterior-left and posterior-right headband positions, not exact 10–20 O1/O2 positions.
+
+## 9. Scope boundary
 
 The live stream confirmed the board-to-GUI connection path.
 
-The board-only traces were treated as floating-input activity and environmental/electrical noise, not physiological EEG, because no stable body-connected electrode/reference montage was present during that check.
+The board-only traces were treated as floating-input activity and environmental/electrical noise, not physiological EEG, because no body-connected electrode/reference montage was present during that check.
 
 Detailed scalp-contact and channel troubleshooting is documented separately in `docs/setup/openbci-cyton-initial-signal-troubleshooting-log-v0.1.md`.

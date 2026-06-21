@@ -1,0 +1,304 @@
+# Session 10
+
+## 1. Objectives
+
+* Install and run OpenBCI GUI on Windows 11.
+* Connect OpenBCI Cyton to OpenBCI GUI through the USB dongle.
+* Confirm that the Cyton live data source is available in the GUI.
+* Start a manual serial connection through the detected COM port.
+* Confirm that the board-to-GUI streaming path works.
+* Check basic Hardware Settings for the initial EEG setup.
+* Test the initial two-channel posterior headband montage:
+
+  * Ch1 / N1P: posterior-left headband position
+  * Ch2 / N2P: posterior-right headband position
+  * SRB / SRB2 function: one earclip reference
+  * BIAS: opposite earclip
+* Determine whether Ch1 and Ch2 can show stable, non-railed, real-time scalp-contact waveforms.
+* Avoid EEG feature interpretation until stable acquisition is confirmed.
+
+## 2. Research question
+
+Can OpenBCI GUI establish a stable Cyton data stream and display usable real-time waveforms from the initial headband-based EEG montage?
+
+This session is not intended to interpret alpha, beta, attention, focus, or robot-control features.
+
+The immediate purpose is to separate the following layers:
+
+```text
+GUI installation
+→ Cyton / USB dongle connection
+→ live data streaming
+→ channel path functionality
+→ electrode-skin contact stability
+→ later EEG feature extraction
+```
+
+## 3. What I studied
+
+* OpenBCI GUI installation and launch on Windows 11
+* OpenBCI GUI version checked:
+
+  * v6.0.0-beta.1
+  * build date shown in GUI: 2023/09/28
+* OpenBCI GUI administrator access warning
+* Cyton live data source selection
+* USB dongle connection
+* Cyton board switch position:
+
+  * board switch: PC
+  * dongle switch: GPIO6 side
+* Manual serial connection:
+
+  * COM port: COM3
+  * channel count: 8 channels
+* Start Session and Start Data Stream procedure
+* Board-only stream behavior without electrodes
+* Accelerometer data visibility in the GUI
+* OpenBCI EEG Headband Kit setup:
+
+  * 2 comb electrodes
+  * 2 snap cables
+  * 2 earclip electrodes
+* Initial channel mapping:
+
+  * black cable → Ch1 / N1P / posterior-left headband position
+  * white cable → Ch2 / N2P / posterior-right headband position
+  * left earclip → board pin labeled SRB, used as SRB2 reference function
+  * right earclip → BIAS
+* GUI Hardware Settings:
+
+  * Ch1–Ch8 PGA Gain: x24
+  * Input Type: Normal
+  * Bias Include: Yes
+  * SRB2: On
+  * SRB1: Off
+* Behavior of unused channels
+* Railed channel state in the Time Series widget
+* Touch response test for Ch1 and Ch2
+* Difference between board streaming confirmation and usable EEG acquisition
+
+Session 10 Day 1 confirmed GUI launch, COM3 manual connection, live streaming, accelerometer visibility, and Ch1/Ch2 touch response. Stable posterior dry-comb acquisition was not yet achieved, and further troubleshooting was separated into a setup log.
+## 4. Key takeaways
+
+### 1. Cyton-to-GUI streaming path was confirmed
+
+OpenBCI GUI was installed and launched successfully on Windows 11.
+
+The GUI detected the CYTON live data source, and manual serial connection through COM3 succeeded.
+
+The board-only stream test showed live signals in the Time Series widget, and accelerometer values were visible.
+
+This confirms the following acquisition path:
+
+```text
+Cyton board
+→ USB dongle
+→ COM3 serial connection
+→ OpenBCI GUI
+→ live data stream
+```
+
+The moving traces observed during the board-only stream test were treated as floating-input activity and environmental/electrical noise, not physiological EEG, because no body-connected electrode/reference montage was present.
+
+
+### 2. The initial headband montage was assembled and mapped
+
+The initial two-channel montage from Session 09 was physically assembled using the OpenBCI EEG Headband Kit.
+
+The mapping used in this session was:
+
+```text
+Ch1 / N1P
+= black snap cable
+= posterior-left headband position
+= comb electrode
+
+Ch2 / N2P
+= white snap cable
+= posterior-right headband position
+= comb electrode
+
+SRB / SRB2 reference function
+= left earclip
+
+BIAS
+= right earclip
+```
+
+The active electrode positions were recorded as approximate posterior-left and posterior-right headband positions, not exact 10–20 O1/O2 positions.
+
+### 3. Ch1 and Ch2 channel paths responded to touch tests
+
+During normal posterior headband placement, Ch1 and Ch2 remained railed and did not show stable scalp-contact waveforms.
+
+However, direct touch tests on the Ch1 and Ch2 comb electrodes produced channel responses in the GUI.
+
+This suggests that the following elements were likely functional:
+
+```text
+Ch1 / N1P path
+Ch2 / N2P path
+snap cables
+comb electrodes
+Cyton-to-GUI stream
+```
+
+Therefore, the main bottleneck was narrowed down to electrode-skin contact stability rather than GUI installation, COM port connection, or a completely broken channel path.
+
+### 4. Stable posterior dry-comb EEG acquisition was not yet achieved
+
+The intended posterior headband placement did not yet produce stable, non-flat, non-railed waveforms from Ch1 or Ch2.
+
+The observed issue was consistent with unstable dry comb electrode contact through hair.
+
+Therefore, Session 10 Day 1 should be treated as a partial success:
+
+```text
+Confirmed:
+- OpenBCI GUI launch
+- Cyton live data source
+- COM3 manual connection
+- live data streaming
+- accelerometer visibility
+- Ch1/Ch2 touch response
+
+Not yet achieved:
+- stable posterior scalp-contact waveform
+- usable EEG acquisition from the intended montage
+```
+
+No EEG feature interpretation was performed.
+
+## 5. My understanding
+
+### 1. This session marked the transition from file-based analysis to physical acquisition
+
+In previous sessions, EEG data was already available as public dataset files.
+
+In Session 10, the acquisition chain had to be physically assembled and checked:
+
+```text
+body
+→ electrode
+→ snap cable
+→ Cyton input / SRB / BIAS
+→ Cyton board
+→ USB dongle
+→ OpenBCI GUI
+→ live data stream
+```
+
+This made the physical setup part of the research process, not just a preparation step.
+
+### 2. Montage documentation is necessary for reproducibility
+
+The approximate posterior montage became more concrete during the physical setup.
+
+The setup required specific operational choices:
+
+```text
+which headband position
+which electrode type
+which snap cable
+which Cyton channel
+which earclip reference
+which BIAS connection
+```
+
+This clarified why channel mapping and montage documentation must be recorded before EEG feature interpretation.
+
+### 3. Hardware troubleshooting requires layer-by-layer isolation and buffer time
+
+Session 10 Day 1 confirmed that the Cyton-to-GUI streaming path worked.
+
+The Ch1/Ch2 touch tests also suggested that the channel paths were responsive.
+
+However, stable posterior dry-comb scalp contact was not yet achieved.
+
+Because multiple elements are involved in EEG acquisition, troubleshooting should proceed by isolating one layer at a time:
+
+```text
+GUI connection
+→ board streaming
+→ channel path
+→ reference / BIAS
+→ electrode contact
+→ stable scalp-contact waveform
+```
+
+Future OpenBCI sessions should include buffer time for contact instability, cable movement, channel settings, connector issues, screenshots, and metadata documentation.
+
+The current boundary is:
+
+```text
+Feature-level analysis remains out of scope until at least one intended active channel shows a stable, non-flat, non-railed scalp-contact waveform.
+```
+
+
+
+## 6. Questions / unclear points
+
+* Can Ch1 show a stable, non-railed waveform if the active electrode is moved from posterior hair-covered placement to a forehead skin-contact position?
+* Is a flat snap electrode more appropriate than a comb electrode for the forehead contact diagnostic test?
+* How much headband pressure is needed for stable dry comb electrode contact without causing discomfort?
+* Would impedance checking in OpenBCI GUI help quantify the contact problem?
+* Should Ch1 be stabilized first before adding Ch2?
+* Is the posterior headband position itself too unstable for dry comb contact without additional preparation?
+* How should the GUI recording file location and raw data format be documented once stable acquisition is achieved?
+
+## 7. Next actions
+
+* Safely disconnect the LiPo battery from the USB charger before any further Cyton testing.
+* Do not perform body-connected EEG testing while the battery is charging.
+* Keep Arduino, servo, and robot hardware disconnected during EEG acquisition.
+* Continue Session 10 troubleshooting with a single-channel test first.
+* Use only Ch1 / N1P with SRB earclip reference and BIAS earclip.
+* Keep Ch3–Ch8 off or ignored.
+* Temporarily keep Ch2 off or ignored until Ch1 is stable.
+* First test Ch1 at a forehead skin-contact position to separate channel-path functionality from posterior dry-comb scalp-contact instability.
+* If Ch1 shows a non-flat, non-railed waveform at the forehead, save a screenshot.
+* Then retry Ch1 at the posterior comb electrode position.
+* Add Ch2 only after Ch1 becomes stable.
+* Do not perform eyes-open / eyes-closed alpha reactivity, PSD analysis, beta/alpha ratio calculation, focus-state interpretation, or robot-control testing yet.
+
+## 8. Outputs
+
+### Weekly note
+
+- `docs/weekly-notes/session-10.md`
+
+### Setup / troubleshooting notes
+
+- `docs/setup/openbci-gui-install-and-connection-log-v0.1.md`  
+  또는 아직 따로 안 만들었으면: planned
+
+- `docs/setup/openbci-live-waveform-sanity-check-v0.1.md`  
+  또는 아직 따로 안 만들었으면: planned
+
+### Figures / screenshots
+
+- None yet  
+  또는 실제 캡처가 있으면:
+  - `figures/session-10/openbci-gui-connection-test.png`
+  - `figures/session-10/openbci-hardware-settings.png`
+
+### Data
+
+- No valid EEG recording file was produced.
+- No EEG feature dataset was produced.
+- No PSD or band-power analysis was performed.
+
+## 9. References
+
+* OpenBCI Documentation
+* OpenBCI Cyton documentation
+* OpenBCI GUI documentation
+* OpenBCI EEG setup guide
+* OpenBCI Headband Kit documentation
+* Existing setup documents from Session 09:
+
+  * `docs/setup/openbci-equipment-inventory.md`
+  * `docs/setup/cyton-board-map-v0.1.md`
+  * `docs/setup/alpha-reactivity-montage-v0.1.md`
+  * `docs/setup/eeg-recording-safety-environment-checklist.md`

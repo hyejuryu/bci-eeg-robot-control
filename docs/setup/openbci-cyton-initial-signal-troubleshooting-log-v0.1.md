@@ -12,7 +12,7 @@ This document records signal-level and scalp-contact troubleshooting during Sess
 
 The OpenBCI GUI installation and Cyton connection-level setup are documented separately in:
 
-* `docs/setup/openbci-gui-install-and-connection-log-v0.1.md`
+* `docs/setup/openbci-gui-install-and-connection-log-v0.1.md`(../docs/setup/openbci-gui-install-and-connection-log-v0.1.md)
 
 This document focuses on the first signal-level issue observed after the Cyton-to-GUI live stream was confirmed:
 

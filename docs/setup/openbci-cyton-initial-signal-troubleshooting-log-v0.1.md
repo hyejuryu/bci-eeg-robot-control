@@ -229,9 +229,19 @@ At least one posterior comb channel shows a stable, non-flat, non-railed wavefor
 
 ## 8. Evidence files
 
-To be added when screenshots or recordings are produced.
+- [`posterior-contact-nonflat-still-railed.png`](../../figures/session-10/troubleshooting/posterior-contact-nonflat-still-railed.png)
+  - Initial posterior headband placement showed visible but highly railed Ch1/Ch2 activity.
 
-No valid EEG feature dataset has been produced at this stage.
+- [`ch1-forehead-comb-near-railed.png`](../../figures/session-10/troubleshooting/ch1-forehead-comb-near-railed.png)
+  - Ch1 forehead contact using a comb electrode showed a visible waveform but remained Near Railed.
+
+- [`ch1-forehead-flat-not-railed.png`](../../figures/session-10/troubleshooting/ch1-forehead-flat-not-railed.png)
+  - Ch1 forehead contact using flat electrode A changed to Not Railed and was stable for about 30 seconds.
+
+- [`ch2-forehead-flat-near-railed.png`](../../figures/session-10/troubleshooting/ch2-forehead-flat-near-railed.png)
+  - Ch2 forehead contact using flat electrode B remained Near Railed, which later supported the electrode B suspect interpretation.
+
+No valid EEG feature dataset was produced in this troubleshooting stage.
 
 ## 9. Current troubleshooting status
 

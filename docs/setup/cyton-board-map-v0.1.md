@@ -3,7 +3,7 @@
 ## Document metadata
 
 - Created in: Session 09
-- Used in: Session 10
+- Used from: Session 10 onward
 
 ## 1. Purpose
 

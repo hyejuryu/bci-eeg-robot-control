@@ -1,5 +1,10 @@
 # Cyton Board Map v0.1
 
+## Document metadata
+
+- Created in: Session 09
+- Used in: Session 10
+
 ## 1. Purpose
 
 This document summarizes the basic connection map of the OpenBCI Cyton board before designing the first EEG montage.

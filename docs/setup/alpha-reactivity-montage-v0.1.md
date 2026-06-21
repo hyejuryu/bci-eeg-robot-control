@@ -1,5 +1,10 @@
 # Alpha Reactivity Montage v0.1
 
+## Document metadata
+
+- Created in: Session 09
+- Related sessions: Session 09–13
+
 ## 1. Purpose
 
 This document defines the first candidate electrode montage for a future OpenBCI eyes-open / eyes-closed alpha reactivity test.

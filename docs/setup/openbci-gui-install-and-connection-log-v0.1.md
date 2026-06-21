@@ -1,5 +1,11 @@
 # OpenBCI GUI installation and connection log v0.1
 
+## Document metadata
+
+- Session: 10
+- Scope: OpenBCI GUI installation, Cyton connection setup, and connection-level outcomes
+- Status: in progress
+
 ## 1. Purpose
 
 This document records the OpenBCI GUI installation, Cyton connection setup, and connection-level outcomes for Session 10.

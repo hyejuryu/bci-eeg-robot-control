@@ -37,5 +37,10 @@
 - Self-recording only
 
 ## 7. Notes
-- Prepared before OpenBCI GUI connection testing.
-- Initial target: eyes-open / eyes-closed alpha reactivity sanity check.
+
+* Prepared before OpenBCI GUI connection testing.
+* Initial target: eyes-open / eyes-closed alpha reactivity sanity check.
+* Session 10 confirmed the Cyton-to-GUI acquisition path, but the initial posterior dry-comb contact method was not validated under the current hair/contact conditions.
+* One flat snap electrode was treated as working during Session 10 troubleshooting, while another flat snap electrode was treated as suspect / unreliable. These labels were temporary troubleshooting labels and should be re-checked before long-term equipment classification.
+* Ten20 conductive paste and OpenBCI gold cup electrodes should be added to this inventory only after they physically arrive.
+

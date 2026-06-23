@@ -2,9 +2,9 @@
 
 ## Document metadata
 
-- Session: 10
-- Scope: OpenBCI GUI installation, Cyton connection setup, and connection-level outcomes
-- Status: in progress
+* Session: 10
+* Scope: OpenBCI GUI installation, Cyton connection setup, and connection-level outcomes
+* Status: closed for Session 10; connection-level setup confirmed
 
 ## 1. Purpose
 
@@ -100,3 +100,5 @@ The live stream confirmed the board-to-GUI connection path.
 The board-only traces were treated as floating-input activity and environmental/electrical noise, not physiological EEG, because no body-connected electrode/reference montage was present during that check.
 
 Detailed scalp-contact and channel troubleshooting is documented separately in `docs/setup/openbci-cyton-initial-signal-troubleshooting-log-v0.1.md`.
+
+The Session 10 conclusion is that the GUI / Cyton / COM3 / live-stream path was confirmed. The remaining unresolved issue belongs to posterior dry-comb scalp contact, not to the connection-level setup documented here.

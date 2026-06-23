@@ -4,6 +4,7 @@
 
 - Created in: Session 09
 - Related sessions: Session 09–13
+- Status: candidate montage; not yet validated for alpha reactivity recording
 
 ## 1. Purpose
 
@@ -77,16 +78,21 @@ The result should be described as coming from posterior-left, posterior-right, o
 - Cable movement artifact
 - Poor earclip contact affecting reference or BIAS stability
 
-## 9. Current decision
+## 9. Current status after Session 10
 
-For the first GUI connection test, the setup should start simple.
+The initial posterior dry-comb headband montage was tested during Session 10 as part of the first Cyton-to-GUI acquisition sanity check.
 
-Initial priority:
+The Cyton-to-GUI acquisition path was confirmed, but the posterior dry-comb setup did not produce stable, non-flat, non-railed acquisition under the current hair/contact conditions.
+
+Current interpretation:
 
 ```text
-2 active posterior channels
-+ 1 SRB2 earclip reference
-+ 1 BIAS earclip
+initial posterior dry-comb montage
+→ not validated for alpha reactivity testing
+→ posterior contact-assisted follow-up pending
 ```
 
-A third posterior channel may be added later if the first two channels are stable.
+This montage should remain a candidate plan only. It should not be used for eyes-open / eyes-closed alpha reactivity testing until stable posterior acquisition is confirmed.
+
+The document should be revised more substantially only after a posterior contact-assisted setup, such as Ten20 paste and/or OpenBCI gold cup electrodes, is actually tested or adopted.
+

@@ -108,7 +108,7 @@ These labels are only for troubleshooting and do not indicate official electrode
 | 17      | Ch1/N1P posterior retry using black cable and original comb electrode | Ch1 remained Near Railed around 85%, with high amplitude around 197 uVrms                                                          | Posterior comb placement did not produce usable acquisition; high amplitude was treated as contact/artifact-dominated rather than EEG | Not resolved       |
 | 18      | Ch1/N1P posterior retry using black cable and a second comb electrode | Ch1 again remained Near Railed around 87%                                                                                          | The issue was not resolved by changing the comb electrode; posterior dry-comb scalp contact remained unresolved                       | Not resolved       |
 | 19      | Ch1/N1P posterior retry with hair parted for direct comb contact      | Ch1 still did not become Not Railed                                                                                                | Hair-parting alone did not resolve posterior dry-comb contact instability                                                             | Not resolved       |
-
+| 20     |  Ch1 forehead baseline repeated using flat electrode A and black cable | Ch1 showed visible Not Railed waveform | Known-good acquisition baseline was reproduced | Confirmed
 ## 6. Current interpretation
 
 Session 10 troubleshooting separated the initial signal problem into three layers:

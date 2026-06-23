@@ -4,7 +4,7 @@
 
 * Session: 10
 * Scope: Signal-level and scalp-contact troubleshooting after Cyton-to-GUI live stream confirmation
-* Status: in progress
+* Status: closed for Session 10; posterior contact-assisted follow-up pending
 
 ## 1. Purpose
 
@@ -12,7 +12,7 @@ This document records signal-level and scalp-contact troubleshooting during Sess
 
 The OpenBCI GUI installation and Cyton connection-level setup are documented separately in:
 
-* [`docs/setup/openbci-gui-install-and-connection-log-v0.1.md`](../docs/setup/openbci-gui-install-and-connection-log-v0.1.md)
+* [`openbci-gui-install-and-connection-log-v0.1.md`](openbci-gui-install-and-connection-log-v0.1.md)
 
 This document focuses on the first signal-level issue observed after the Cyton-to-GUI live stream was confirmed:
 
@@ -102,13 +102,15 @@ These labels are only for troubleshooting and do not indicate official electrode
 | 11      | Ch2-only forehead test using flat electrode B and white cable         | Ch2 remained Near Railed despite increased contact pressure                                                                        | Stable Ch2 acquisition was not confirmed under this electrode/cable combination                                                       | Not resolved       |
 | 12      | Flat electrode B with white cable moved to Ch1/N1P                    | Ch1 still remained Near Railed, around 80%                                                                                         | The issue was not explained by Ch2/N2P input alone                                                                                    | Not resolved       |
 | 13      | Ch1 baseline repeated with flat electrode A and black cable           | Ch1 again showed Not Railed behavior                                                                                               | The Ch1 + black cable + flat electrode A condition was reproducible                                                                   | Confirmed          |
-| 14      | Flat electrode A tested with white cable on Ch1/N1P                   | Ch1 changed to Not Railed, with the GUI showing approximately 67%                                                                  | White cable was likely functional when paired with the working flat electrode                                                         | Confirmed          |
+| 14      | Flat electrode A tested with white cable on Ch1/N1P                   | Ch1 changed to a Not Railed / usable-looking state under forehead contact                                                    | White cable was likely functional when paired with the working flat electrode                                                         | Confirmed          |
 | 15      | Flat electrode B tested with black cable on Ch1/N1P                   | Ch1 remained Near Railed                                                                                                           | Flat electrode B or its snap/contact condition became the main suspect                                                                | Suspect identified |
 | 16      | Ch2/N2P tested with white cable and flat electrode A                  | Ch2 changed to Not Railed under forehead contact                                                                                   | Ch2/N2P input and white cable were likely functional when paired with the working flat electrode                                      | Confirmed          |
 | 17      | Ch1/N1P posterior retry using black cable and original comb electrode | Ch1 remained Near Railed around 85%, with high amplitude around 197 uVrms                                                          | Posterior comb placement did not produce usable acquisition; high amplitude was treated as contact/artifact-dominated rather than EEG | Not resolved       |
 | 18      | Ch1/N1P posterior retry using black cable and a second comb electrode | Ch1 again remained Near Railed around 87%                                                                                          | The issue was not resolved by changing the comb electrode; posterior dry-comb scalp contact remained unresolved                       | Not resolved       |
 | 19      | Ch1/N1P posterior retry with hair parted for direct comb contact      | Ch1 still did not become Not Railed                                                                                                | Hair-parting alone did not resolve posterior dry-comb contact instability                                                             | Not resolved       |
-| 20     |  Ch1 forehead baseline repeated using flat electrode A and black cable | Ch1 showed visible Not Railed waveform | Known-good acquisition baseline was reproduced | Confirmed
+| 20      | Ch1 forehead baseline repeated using flat electrode A and black cable | Ch1 showed a visible Not Railed waveform | Known-good acquisition baseline was reproduced | Confirmed |
+| 21      | Ch1 posterior dry-comb final retry after hair-parting and slight position adjustment | Ch1 remained Railed/Near Railed | Posterior dry-comb contact remained unresolved after baseline confirmation | Not resolved |
+
 ## 6. Current interpretation
 
 Session 10 troubleshooting separated the initial signal problem into three layers:
@@ -182,72 +184,117 @@ This reduced the likelihood that the issue was caused by a single defective comb
 posterior dry-comb scalp contact through hair
 ```
 
-### 5. Current boundary
+Because the known-good Ch1 forehead flat-electrode baseline was reproduced before the final posterior retry, the final posterior Railed/Near Railed result is interpreted as a contact-method limitation rather than a general acquisition-path failure.
 
-The following has been confirmed:
+The posterior dry-comb setup is now treated as unresolved under the current hair/contact conditions.
 
-* connection-level setup works
+### 5. Current boundary and Session 10 decision
+
+Session 10 confirmed that the Cyton-to-GUI acquisition path works and that Ch1/N1P and Ch2/N2P can produce Not Railed signals under easier forehead flat-electrode contact.
+
+Current confirmed boundary:
+
+* connection-level acquisition path is functional
 * Ch1 / N1P works under forehead flat-electrode contact
 * Ch2 / N2P works under forehead flat-electrode contact
-* black and white snap cables work with flat electrode A
+* black and white snap cables are likely functional when paired with flat electrode A
 * flat electrode A is the current known-good flat electrode
 
-The following remains unresolved:
+Remaining unresolved issue:
 
-* stable posterior dry-comb acquisition
-* stable non-flat, non-railed waveform from posterior-left headband placement
-* stable non-flat, non-railed waveform from posterior-right headband placement
-* usable scalp-contact acquisition from the intended posterior Ch1/Ch2 montage
+* stable posterior dry-comb acquisition under the current hair/contact conditions was not achieved
 
 `Railed` or `Near Railed` states were treated as non-usable acquisition states, not as strong EEG.
 
-Feature-level analysis remains out of scope until a stable, non-flat, non-railed scalp-contact waveform is achieved.
+Session 10 decision:
+
+* pressure-based posterior dry-comb troubleshooting under the current setup is closed for Session 10
+* posterior contact-assisted follow-up remains pending
+* Session 11 should proceed with BrainFlow acquisition pipeline work using the known-good Ch1 forehead flat-electrode montage
+* no alpha, beta, PSD, beta/alpha ratio, focus, attention, or robot-control interpretation was performed in Session 10
 
 ## 7. Next troubleshooting plan
 
-The next troubleshooting should focus on improving or changing the posterior contact method.
+Session 10 posterior dry-comb troubleshooting is closed under the current pressure/contact-only setup.
 
-Possible next steps:
+The next steps are:
 
-1. Re-check SRB earclip and BIAS earclip contact before posterior testing.
-2. Retry Ch1/N1P posterior comb contact only if cable strain can be minimized and the comb teeth can remain stable against the scalp without discomfort.
-3. If posterior dry-comb contact remains Near Railed, consider contact-improvement methods:
+1. Stop further pressure-based posterior dry-comb troubleshooting under the current setup.
 
-   * more controlled hair separation
-   * better cable strain relief
-   * slightly adjusted posterior headband position
-   * conductive gel/paste if appropriate for the electrode/contact setup
-   * replacement or additional electrodes if a hardware/contact issue is suspected
-4. Keep flat electrode B out of the main setup unless it is re-checked or replaced.
-5. Do not run eyes-open / eyes-closed alpha reactivity testing until stable posterior acquisition is confirmed.
+2. Proceed with Session 11 BrainFlow acquisition pipeline development using the known-good Ch1 forehead flat-electrode montage.
 
-Next success criterion:
+3. Use the known-good short-term montage only for acquisition-infrastructure testing:
+
+   ```text
+   Ch1 / N1P
+   black snap cable
+   flat electrode A
+   forehead contact
+   SRB earclip unchanged
+   BIAS earclip unchanged
+   Ch2–Ch8 off or ignored
+   ```
+
+4. Use Session 11 to verify:
+
+   * BrainFlow Cyton connection
+   * raw data saving
+   * timestamp handling
+   * file naming
+   * channel metadata
+   * montage metadata
+   * readback verification
+   * sample count / duration check
+   * artifact note structure
+   * session log format
+
+5. When Ten20 conductive paste is available, consider contact-assisted posterior testing as a separate follow-up condition.
+
+6. When OpenBCI gold cup electrodes are available, revise the posterior montage as a contact-assisted setup if appropriate.
+
+7. Do not run eyes-open / eyes-closed alpha reactivity testing until stable posterior acquisition is confirmed.
+
+Next posterior success criterion:
 
 ```text
-At least one posterior comb channel shows a stable, non-flat, non-railed waveform under normal headband placement.
+At least one intended posterior channel shows a stable, non-flat, non-railed waveform under a documented contact strategy.
 ```
+
+For Session 11 pipeline work, posterior acquisition is not required. A known-good forehead montage is sufficient for testing BrainFlow connection, raw data saving, timestamp handling, metadata logging, and readback verification.
+
+No alpha, beta, PSD, beta/alpha ratio, focus, attention, or robot-control interpretation should be performed during this pipeline sanity-check stage.
+
 
 ## 8. Evidence files
 
-- [`posterior-contact-nonflat-still-railed.png`](../../figures/session-10/troubleshooting/posterior-contact-nonflat-still-railed.png)
-  - Initial posterior headband placement showed visible but highly railed Ch1/Ch2 activity.
+* [`2026-06-21_s10_attempt-02_posterior_ch1-ch2_comb-dry_initial_railed-nonflat.png`](../../figures/session-10/troubleshooting/2026-06-21_s10_attempt-02_posterior_ch1-ch2_comb-dry_initial_railed-nonflat.png)
+  * Initial posterior Ch1/Ch2 dry-comb placement showed non-usable railed / non-flat activity.
 
-- [`ch1-forehead-comb-near-railed.png`](../../figures/session-10/troubleshooting/ch1-forehead-comb-near-railed.png)
-  - Ch1 forehead contact using a comb electrode showed a visible waveform but remained Near Railed.
+* [`2026-06-21_s10_attempt-09_ch1-n1p_black_comb_forehead_near-railed.png`](../../figures/session-10/troubleshooting/2026-06-21_s10_attempt-09_ch1-n1p_black_comb_forehead_near-railed.png)
+  * Ch1 forehead contact using the black snap cable and comb electrode showed a visible waveform but remained Near Railed.
 
-- [`ch1-forehead-flat-not-railed.png`](../../figures/session-10/troubleshooting/ch1-forehead-flat-not-railed.png)
-  - Ch1 forehead contact using flat electrode A changed to Not Railed and was stable for about 30 seconds.
+* [`2026-06-21_s10_attempt-10_ch1-n1p_black_flatA_forehead_not-railed.png`](../../figures/session-10/troubleshooting/2026-06-21_s10_attempt-10_ch1-n1p_black_flatA_forehead_not-railed.png)
+  * Ch1 forehead contact using the black snap cable and flat electrode A produced a stable Not Railed condition.
 
-- [`ch2-forehead-flat-near-railed.png`](../../figures/session-10/troubleshooting/ch2-forehead-flat-near-railed.png)
-  - Ch2 forehead contact using flat electrode B remained Near Railed, which later supported the electrode B suspect interpretation.
+* [`2026-06-21_s10_attempt-11_ch2-n2p_white_flatB_forehead_near-railed.png`](../../figures/session-10/troubleshooting/2026-06-21_s10_attempt-11_ch2-n2p_white_flatB_forehead_near-railed.png)
+  * Flat electrode B produced Near Railed behavior under forehead contact, supporting the local electrode/contact suspect interpretation.
+
+* [`2026-06-23_s10_attempt-20_ch1-n1p_black_flatA_forehead_baseline-repeat_not-railed.png`](../../figures/session-10/troubleshooting/2026-06-23_s10_attempt-20_ch1-n1p_black_flatA_forehead_baseline-repeat_not-railed.png)
+  * The known-good Ch1 forehead flat-electrode baseline was reproduced before the final posterior retry.
+
+* [`2026-06-23_s10_attempt-21_ch1-n1p_black_comb-dry_posterior-hair-parted_final-railed.png`](../../figures/session-10/troubleshooting/2026-06-23_s10_attempt-21_ch1-n1p_black_comb-dry_posterior-hair-parted_final-railed.png)
+  * The final posterior dry-comb retry remained Railed/Near Railed despite hair-parting and slight posterior position adjustment.
 
 No valid EEG feature dataset was produced in this troubleshooting stage.
+
 
 ## 9. Current troubleshooting status
 
 Current status:
 
 ```text
+Session 10 troubleshooting status: closed
+Posterior contact-assisted follow-up: pending
 Connection-level setup: confirmed
 Ch1 forehead flat-electrode acquisition: confirmed with flat electrode A
 Ch2 forehead flat-electrode acquisition: confirmed with flat electrode A
@@ -261,3 +308,4 @@ Hair-parted posterior comb retry: not resolved
 Stable posterior dry-comb acquisition: not yet achieved
 Main unresolved bottleneck: posterior dry-comb scalp contact through hair
 EEG feature interpretation: not performed
+```

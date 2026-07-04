@@ -44,12 +44,33 @@ ENV/
 
 
 # =========================
-# Data directories
+# Local data directories
 # =========================
+# Raw, interim, and processed data are kept locally by default.
+# Repository-visible outputs should be placed in results/.
 
-data/raw/
-data/interim/
-data/processed/
+data/raw/**
+data/interim/**
+data/processed/**
+
+# Keep folder structure and documentation files in local data directories
+!data/raw/**/
+!data/interim/**/
+!data/processed/**/
+
+!data/raw/README.md
+!data/interim/README.md
+!data/processed/README.md
+!data/raw/**/README.md
+!data/interim/**/README.md
+!data/processed/**/README.md
+
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+!data/raw/**/.gitkeep
+!data/interim/**/.gitkeep
+!data/processed/**/.gitkeep
 
 
 # =========================

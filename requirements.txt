@@ -5,3 +5,5 @@ matplotlib
 mne
 jupyterlab
 ipykernel
+setuptools<81
+brainflow==5.22.2

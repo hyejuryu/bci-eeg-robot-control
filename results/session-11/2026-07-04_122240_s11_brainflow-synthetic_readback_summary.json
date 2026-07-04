@@ -1,0 +1,61 @@
+{
+  "session_id": "session-11",
+  "test_label": "brainflow-synthetic",
+  "purpose": "BrainFlow synthetic-board acquisition pipeline verification",
+  "hardware_used": "none",
+  "board": {
+    "board_id": -1,
+    "device_name": "Synthetic",
+    "brainflow_version": "5.22.2",
+    "sampling_rate_hz": 250,
+    "num_rows": 32,
+    "eeg_channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "timestamp_channel": 30
+  },
+  "recording": {
+    "requested_duration_sec": 5,
+    "expected_sample_count": 1250,
+    "actual_sample_count": 1250,
+    "estimated_duration_sec": 5.0
+  },
+  "files": {
+    "raw_file": "results\\session-11\\2026-07-04_122240_s11_brainflow-synthetic_raw.csv",
+    "summary_file": "results\\session-11\\2026-07-04_122240_s11_brainflow-synthetic_readback_summary.json",
+    "raw_file_exists": true
+  },
+  "readback": {
+    "readback_succeeded": true,
+    "original_shape": [
+      32,
+      1250
+    ],
+    "restored_shape": [
+      32,
+      1250
+    ],
+    "shape_match": true,
+    "sample_count_plausible": true
+  },
+  "notes": [
+    "Synthetic board test only.",
+    "No real Cyton hardware was used.",
+    "No human biosignal data was collected."
+  ]
+}

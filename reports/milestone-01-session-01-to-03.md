@@ -201,7 +201,7 @@ Based on the first three sessions, the initial feature candidates are:
 | Gamma / 40 Hz activity | Deferred | Too vulnerable to muscle artifacts and noise at this stage |
 | ERP / P300 | Later candidate | Requires more structured stimulus-based experimental design |
 
-The current priority should be:
+The initial analysis priority is:
 
 ```text
 alpha reactivity
@@ -289,7 +289,7 @@ offline EEG analysis
 → servo / gripper actuation
 ```
 
-This order reduces the risk of building an impressive but scientifically meaningless demo.
+This order reduces the risk of moving to hardware control before feature stability is evaluated.
 
 ## 7. Outputs Produced
 
@@ -323,7 +323,6 @@ The following questions remain open after Milestone 01.
 
 - How far can scalp EEG features be connected to underlying neural mechanisms?
 - How should the project avoid overinterpreting EEG frequency bands?
-- What level of explanation is appropriate for a beginner-level BCI project?
 
 ### 8.2 Feature selection
 
@@ -383,11 +382,9 @@ The next block should focus on moving from conceptual understanding to actual EE
 
 ## 11. Milestone Reflection
 
-The most important outcome of Milestone 01 is a change in framing.
+The main outcome of Milestone 01 was a clearer project framing.
 
-At the beginning, BCI could easily be imagined as a system where the brain directly controls a machine.
-
-After Sessions 01–03, the project is now framed more carefully:
+EEG-based robot control should be treated as an indirect signal-processing and decision-making pipeline, not as direct mental-state reading.
 
 ```text
 brain activity
@@ -398,16 +395,7 @@ brain activity
 → physical action
 ```
 
-This framing is less dramatic, but more useful.
-
-The project should continue with this principle:
-
-```text
-Do not claim to read mental states directly.
-Instead, define experimental conditions carefully and test whether measurable EEG features change reliably.
-```
-
-This principle will guide the next phase of the project.
+For the next phase, the project should continue by defining experimental conditions carefully and testing whether measurable EEG features change reliably across those conditions.
 
 ## 12. Related Links
 
@@ -418,5 +406,5 @@ This principle will guide the next phase of the project.
 ## 13. References
 
 - 정천기 외. *사람 뇌의 구조와 기능*. 범문에듀케이션, 2015.
-- 전경희, 원희욱, 정문주, 전병현, 강형원. *뇌파와 뉴로피드백의 이해*. 아카데미아, 2023.
+- 전경희, 원희욱, 정문주, 전병현, 강형원. *뇌파와 뉴로피드백의 이해 (개정판)*. 아카데미아, 2023.
 - 대한뇌파연구회. *뇌파분석의 기법과 응용*. 대한의학, 2023.

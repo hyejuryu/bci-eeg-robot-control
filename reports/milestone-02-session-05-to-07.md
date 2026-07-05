@@ -254,7 +254,7 @@ The condition comparison was:
 
 The most important result is that eyes-closed alpha power was approximately 11.5 times higher than eyes-open alpha power in this Subject 1 analysis.
 
-This supports the use of eyes-open / eyes-closed alpha reactivity as a first sanity check before collecting OpenBCI data.
+This supports using eyes-open / eyes-closed alpha reactivity as a reference workflow before OpenBCI data collection.
 
 ### 5.7 Interpretation boundaries were clarified
 
@@ -403,7 +403,7 @@ A threshold should be designed from feature distributions, not from a single ave
 
 ### Blog Output
 
-- [English Medium Post 03: From Raw EEG to Alpha Power: Building My First EEG Analysis Pipeline](https://medium.com/@hyejuryuwork/from-raw-eeg-to-alpha-power-building-my-first-eeg-analysis-pipeline-866956438923))
+- [English Medium Post 03: From Raw EEG to Alpha Power: Building My First EEG Analysis Pipeline](https://medium.com/@hyejuryuwork/from-raw-eeg-to-alpha-power-building-my-first-eeg-analysis-pipeline-866956438923)
 - [`docs/blog/en/003-from-raw-eeg-to-alpha-power.md`](../docs/blog/en/003-from-raw-eeg-to-alpha-power.md)
 - [`docs/blog/ko/003-raw-eeg에서-alpha-power까지.md`](../docs/blog/ko/003-raw-eeg에서-alpha-power까지.md)
 
@@ -517,13 +517,9 @@ PSD and alpha power analysis
 
 ## 11. Milestone Reflection
 
-The most important outcome of Milestone 02 is that EEG became an analyzable data object rather than only a conceptual topic.
+Milestone 02 established the first executable EEG analysis workflow in the project.
 
-In Milestone 01, the project established the principle that EEG should not be treated as direct mind reading.
-
-In Milestone 02, that principle was applied in code.
-
-The project moved through the following steps:
+The project moved from conceptual EEG understanding to a working analysis path:
 
 ```text
 synthetic signal
@@ -534,9 +530,7 @@ synthetic signal
 → eyes-open vs eyes-closed comparison
 ```
 
-The main result was not that a mental state was detected.
-
-The main result was that the first working bridge was built:
+The main result was a working path from raw EEG to condition-level feature comparison:
 
 ```text
 raw EEG
@@ -545,16 +539,9 @@ raw EEG
 → condition comparison
 ```
 
-This bridge is necessary before OpenBCI data collection and robot control.
+This workflow is necessary before OpenBCI data collection and robot control.
 
-The project should continue with the same principle:
-
-```text
-Do not claim to detect mental states directly.
-First test whether measurable EEG features change reliably across defined conditions.
-```
-
-This principle will guide the next phase of OpenBCI setup and data acquisition.
+The next phase should continue to avoid direct mental-state claims unless they are tied to defined conditions and measurable EEG feature changes.
 
 ## 12. Related Links
 

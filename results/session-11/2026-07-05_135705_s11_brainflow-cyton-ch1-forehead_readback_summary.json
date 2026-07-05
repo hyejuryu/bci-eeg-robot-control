@@ -1,0 +1,69 @@
+{
+  "session_id": "session-11",
+  "test_label": "brainflow-cyton-ch1-forehead",
+  "purpose": "OpenBCI Cyton acquisition pipeline verification",
+  "hardware_used": "OpenBCI Cyton",
+  "board": {
+    "board_id": 0,
+    "board_id_name": "CYTON_BOARD",
+    "device_name": "Cyton",
+    "brainflow_version": "5.22.2",
+    "sampling_rate_hz": 250,
+    "num_rows": 24,
+    "eeg_channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "timestamp_channel": 22
+  },
+  "recording": {
+    "requested_duration_sec": 5.0,
+    "expected_sample_count": 1250.0,
+    "actual_sample_count": 1202,
+    "estimated_duration_sec": 4.808
+  },
+  "files": {
+    "raw_file": "data\\raw\\session-11\\2026-07-05_135705_s11_brainflow-cyton-ch1-forehead_raw.csv",
+    "metadata_file": "data\\raw\\session-11\\2026-07-05_135705_s11_brainflow-cyton-ch1-forehead_metadata.json",
+    "summary_file": "results\\session-11\\2026-07-05_135705_s11_brainflow-cyton-ch1-forehead_readback_summary.json",
+    "raw_file_exists": true,
+    "metadata_file_exists": true,
+    "raw_signal_values_included_in_summary": false
+  },
+  "readback": {
+    "readback_succeeded": true,
+    "original_shape": [
+      24,
+      1202
+    ],
+    "restored_shape": [
+      24,
+      1202
+    ],
+    "shape_match": true,
+    "sample_count_plausible": true
+  },
+  "scope_boundary": {
+    "supports": [
+      "BrainFlow Cyton acquisition pipeline verification",
+      "raw file saving and local metadata logging",
+      "readback, shape, and sample-count plausibility checks"
+    ],
+    "does_not_support": [
+      "EEG feature interpretation",
+      "posterior alpha validation",
+      "focus or attention estimation",
+      "robot control readiness"
+    ]
+  },
+  "notes": [
+    "Readback summary does not include raw signal values.",
+    "Actual raw CSV and metadata JSON are local-only under data/raw/session-11/."
+  ]
+}

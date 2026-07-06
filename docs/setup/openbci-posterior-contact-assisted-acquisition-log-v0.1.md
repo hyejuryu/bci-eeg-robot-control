@@ -1,26 +1,21 @@
-\# OpenBCI Posterior Contact-Assisted Acquisition Log v0.1
+# OpenBCI Posterior Contact-Assisted Acquisition Log v0.1
 
 
 
-\## 1. Document metadata
+## 1. Document metadata
 
 
 
-\* Created in: Session 12
-
-\* Related sessions: Session 10–12
-
-\* Version: v0.1
-
-\* Status: prepared before Session 12 test
-
-\* Scope: posterior contact-assisted acquisition testing using Ten20 conductive paste / gel and OpenBCI gold cup electrodes
-
-\* Update rule: add entries for documented posterior contact-assisted setup attempts only
+* Created in: Session 12
+* Related sessions: Session 10–12
+* Version: v0.1
+* Status: prepared before Session 12 test
+* Scope: posterior contact-assisted acquisition testing using Ten20 conductive paste / gel and OpenBCI gold cup electrodes
+* Update rule: add entries for documented posterior contact-assisted setup attempts only
 
 
 
-\## 2. Purpose and scope
+## 2. Purpose and scope
 
 
 
@@ -44,7 +39,7 @@ Feature-level EEG interpretation, alpha reactivity analysis, focus estimation, a
 
 
 
-\## 3. Starting point
+## 3. Starting point
 
 
 
@@ -80,11 +75,11 @@ test contact-assisted posterior setup before feature-level interpretation
 
 
 
-\## 4. Planned setup
+## 4. Planned setup
 
 
 
-\### 4.1 Equipment
+### 4.1 Equipment
 
 
 
@@ -128,7 +123,7 @@ No Arduino / robot hardware connected during EEG recording
 
 
 
-\### 4.2 Reference and BIAS condition
+### 4.2 Reference and BIAS condition
 
 
 
@@ -150,7 +145,7 @@ If SRB / BIAS placement is changed, record the change in the attempt table.
 
 
 
-\### 4.3 Channel strategy
+### 4.3 Channel strategy
 
 
 
@@ -178,7 +173,7 @@ Electrode positions should be recorded as approximate posterior positions unless
 
 
 
-\### 4.4 Pre-run conditions
+### 4.4 Pre-run conditions
 
 
 
@@ -186,23 +181,17 @@ Before contact-assisted posterior testing:
 
 
 
-\* Cyton is battery powered.
-
-\* Arduino / robot hardware is disconnected.
-
-\* OpenBCI GUI is used first for contact sanity check.
-
-\* BrainFlow is used only after the GUI is closed and the COM port is free.
-
-\* Ten20 conductive paste / gel and gold cup electrodes are available.
-
-\* SRB / BIAS placement is recorded.
-
-\* Approximate posterior electrode position is recorded.
+* Cyton is battery powered.
+* Arduino / robot hardware is disconnected.
+* OpenBCI GUI is used first for contact sanity check.
+* BrainFlow is used only after the GUI is closed and the COM port is free.
+* Ten20 conductive paste / gel and gold cup electrodes are available.
+* SRB / BIAS placement is recorded.
+* Approximate posterior electrode position is recorded.
 
 
 
-\## 5. Decision criteria
+## 5. Decision criteria
 
 
 
@@ -210,13 +199,13 @@ Proceed to short BrainFlow recording only if:
 
 
 
-\- at least one intended posterior channel is not persistently Railed or Near Railed
+- at least one intended posterior channel is not persistently Railed or Near Railed
 
-\- the waveform is not flat
+- the waveform is not flat
 
-\- contact appears stable enough for a short recording
+- contact appears stable enough for a short recording
 
-\- SRB / BIAS placement and electrode contact method are documented
+- SRB / BIAS placement and electrode contact method are documented
 
 
 
@@ -224,121 +213,60 @@ Do not proceed if posterior contact remains unstable or the setup cannot be docu
 
 
 
-\## 6. Attempt log
-
-
+## 6. Attempt log
 
 | Attempt | Date/time | Action / setup | Observation | Interpretation | Status | Next decision |
+|---|---|---|---|---|---|---|
+| S12-A01 | 2026-07-06 | Ch1 / N1P, black gold cup electrode, Ten20 conductive paste / gel, approximate posterior candidate, SRB left earclip, BIAS right earclip. | Ch1 showed a visible non-flat waveform but remained Near Railed. The displayed state was Near Railed 83.08% with approximately 7.79 uVrms. Ch2–Ch8 were off or ignored. | The first posterior contact-assisted attempt did not establish usable contact. This does not rule out gold cup + Ten20, but the initial placement/contact condition was not sufficient for recording. | Not resolved. | Reapply Ten20, improve hair separation, reduce cable strain, and repeat Ch1 posterior contact-assisted attempt. |
+| S12-A02 | 2026-07-06 | Ch1 / N1P, black gold cup electrode, Ten20 reapplied after wiping excess paste, approximate posterior candidate, improved hair separation, SRB left earclip, BIAS right earclip. | Ch1 changed to Not Railed during the GUI check. The displayed state was Not Railed 66.88% with approximately 56.6 uVrms. A visible non-flat waveform was present. The electrode was not manually held during the screenshot. Ch2–Ch8 were off or ignored. | Improved hair separation and Ten20 reapplication supported better posterior contact than S12-A01. This supports continuing posterior contact-assisted testing. This does not establish EEG feature quality or alpha-readiness. | Improved contact condition; not final recording evidence. | Check whether Ch1 remains Not Railed without manual support. If stable, proceed toward additional contact checks. |
+| S12-A03 | 2026-07-06 | Ch1 / N1P, black gold cup electrode, Ten20 conductive paste / gel, approximate posterior candidate, hair separated, tape-assisted stabilization if used, SRB left earclip, BIAS right earclip. | Ch1 returned to Near Railed during the GUI check. The displayed state was Near Railed 78.64% with approximately 31.5 uVrms. A visible non-flat waveform was present. No BrainFlow recording was performed. | Compared with S12-A02, the contact-assisted posterior setup was not repeatably stable under the current posterior placement and fixation condition. This does not rule out gold cup + Ten20, but it does not support proceeding to BrainFlow recording from this attempt. | Not resolved; repeatability issue remains. | Run a controlled forehead gold cup + Ten20 check to separate posterior hair/contact issues from gold cup/Ten20 handling issues. |
+| S12-A04 | 2026-07-06 | Ch1 / N1P, black gold cup electrode, Ten20 conductive paste / gel, forehead control position, tape-assisted stabilization if used, SRB left earclip, BIAS right earclip. | Ch1 remained Near Railed during the GUI forehead control check. The displayed state was Near Railed 86.19% with approximately 29.8 uVrms. A visible non-flat waveform was present. No BrainFlow recording was performed. | The Near Railed result under forehead control suggests that the current issue is not limited to posterior hair contact. Gold cup + Ten20 handling, active electrode contact, fixation, cable/lead condition, or SRB/BIAS contact remains unresolved. | Not resolved. | Run a known-good Ch1 forehead flat electrode A control if continuing; otherwise stop hardware testing and clean up. |
+| S12-A05 | 2026-07-06 | Ch1 / N1P, black snap cable, flat electrode A, forehead contact, SRB left earclip, BIAS right earclip. | The known-good Ch1 forehead flat electrode A baseline was attempted, but Ch1 displayed Railed 100% with 0.00 uVrms. Ch2–Ch8 were off or ignored. COM3 was visible, Cyton blue LED was on, and accelerometer values were visible. No BrainFlow recording was performed. | This did not reproduce the Session 10 known-good forehead baseline. Because this occurred after multiple paste/contact attempts, the result should be interpreted as a current-session control failure rather than evidence that the Session 10 baseline was invalid. Possible remaining issues include SRB/BIAS contact, GUI/channel state, cable/contact condition, or board/session state. | Control not reproduced; session state needs reset. | Stop hardware testing, clean up, and restart board/dongle/GUI in a later session before further electrode troubleshooting. |
 
-| ------- | --------- | -------------- | ----------- | -------------- | ------ | ------------- |
+### Evidence files
 
-| S12-A01 | TBD       | TBD            | TBD         | TBD            | TBD    | TBD           |
+- [`2026-07-06_s12_attempt-01_ch1-n1p_black-goldcup-ten20_posterior_near-railed.png`](../../figures/session-12/contact-assisted/2026-07-06_s12_attempt-01_ch1-n1p_black-goldcup-ten20_posterior_near-railed.png)
+- [`2026-07-06_s12_attempt-02_ch1-n1p_black-goldcup-ten20_posterior-hair-parted_not-railed.png`](../../figures/session-12/contact-assisted/2026-07-06_s12_attempt-02_ch1-n1p_black-goldcup-ten20_posterior-hair-parted_not-railed.png)
+- [`2026-07-06_s12_attempt-03_ch1-n1p_black-goldcup-ten20_posterior-hair-parted_near-railed.png`](../../figures/session-12/contact-assisted/2026-07-06_s12_attempt-03_ch1-n1p_black-goldcup-ten20_posterior-hair-parted_near-railed.png)
+- [`2026-07-06_s12_attempt-04_ch1-n1p_black-goldcup-ten20_forehead-control_near-railed.png`](../../figures/session-12/contact-assisted/2026-07-06_s12_attempt-04_ch1-n1p_black-goldcup-ten20_forehead-control_near-railed.png)
+- [`2026-07-06_s12_attempt-05_ch1-n1p_black-flatA_forehead-baseline_railed.png`](../../figures/session-12/contact-assisted/2026-07-06_s12_attempt-05_ch1-n1p_black-flatA_forehead-baseline_railed.png)
 
-| S12-A02 | TBD       | TBD            | TBD         | TBD            | TBD    | TBD           |
-
-| S12-A03 | TBD       | TBD            | TBD         | TBD            | TBD    | TBD           |
-
-
-
-\## 7. BrainFlow recording decision
-
-
+## 7. BrainFlow recording decision
 
 BrainFlow recording performed:
 
-
-
 ```text
-
-TBD
-
-```
-
-
+No
+````
 
 Reason:
 
-
-
 ```text
-
-TBD
-
+No Session 12 GUI attempt established a stable and repeatable posterior contact-assisted condition. S12-A02 showed temporary improvement to Not Railed, but S12-A03 returned to Near Railed. The forehead gold cup control in S12-A04 also remained Near Railed, and the known-good flat electrode A forehead control in S12-A05 was not reproduced. The current session state therefore did not meet the decision criteria for short BrainFlow recording.
 ```
 
-
-
-If BrainFlow recording is performed, record:
-
-
-
-\* script name
-
-\* serial port
-
-\* recording duration
-
-\* raw file path
-
-\* metadata file path
-
-\* readback summary path
-
-\* original shape
-
-\* restored shape
-
-\* sample-count plausibility result
-
-
-
-If BrainFlow recording is not performed, record the reason.
-
-
-
-\## 8. Final decision and boundary
-
-
+## 8. Final decision and boundary
 
 Session 12 final decision:
 
-
-
 ```text
-
-TBD
-
-```
-
-
-
-Use one of the following decision categories:
-
-
-
-```text
-
-stable enough for short posterior BrainFlow acquisition
-
-not stable enough for posterior BrainFlow acquisition
-
-needs further contact adjustment before acquisition
-
 test interrupted or incomplete
-
 ```
 
+Session 12 interim conclusion:
 
+```text
+Posterior contact-assisted acquisition was tested using Ten20 conductive paste / gel and a gold cup electrode. The setup showed possible improvement in S12-A02 after better hair separation and Ten20 reapplication, but stable and repeatable posterior contact was not established. The forehead gold cup control also remained Near Railed, and the known-good flat electrode A forehead baseline was not reproduced at the end of the session. The session should be treated as incomplete hardware troubleshooting rather than acquisition-ready validation.
+```
+
+Next decision:
+
+```text
+Stop hardware testing for the current session. In the next session, restart the board/dongle/GUI state and first attempt to reproduce the known-good Ch1 forehead flat electrode A baseline before continuing gold cup + Ten20 posterior testing.
+```
 
 Interpretation boundary:
 
-
-
 This log supports decisions about posterior contact-assisted acquisition readiness only.
 
-
-
 It does not validate alpha reactivity, EEG feature interpretation, focus estimation, or robot-control readiness.
-
-
-

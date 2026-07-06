@@ -4,8 +4,8 @@
 
 - Created in: Session 09
 - Used from: Session 10 onward
-- Version: v0.1
-- Status: active inventory
+- Version: v0.2
+- Status: active inventory; updated for Session 12 contact-assisted acquisition equipment
 - Scope: OpenBCI Cyton, EEG headband, electrodes, cables, power, and computer equipment used for the initial acquisition setup
 - Update rule: update only when equipment is added, removed, replaced, or reclassified
 
@@ -29,6 +29,8 @@
 - Flat snap Ag/AgCl electrodes
 - Earclip cable pair
 - Replacement electrodes for earclip cable
+- Ten20 conductive paste / gel
+- OpenBCI gold cup electrodes
 
 ## 5. Computer
 - Windows 11 laptop
@@ -42,5 +44,4 @@
 * Initial target: eyes-open / eyes-closed alpha reactivity sanity check.
 * Session 10 confirmed the Cyton-to-GUI acquisition path, but the initial posterior dry-comb contact method was not validated under the current hair/contact conditions.
 * One flat snap electrode was treated as working during Session 10 troubleshooting, while another flat snap electrode was treated as suspect / unreliable. These labels were temporary troubleshooting labels and should be re-checked before long-term equipment classification.
-* Ten20 conductive paste and OpenBCI gold cup electrodes should be added to this inventory only after they physically arrive.
-
+* Ten20 conductive paste / gel and OpenBCI gold cup electrodes are available from Session 12 onward for contact-assisted posterior acquisition testing.

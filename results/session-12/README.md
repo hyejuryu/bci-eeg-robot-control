@@ -1,4 +1,4 @@
-\# Session 12 Results
+# Session 12 Results
 
 
 

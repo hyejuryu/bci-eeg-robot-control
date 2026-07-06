@@ -1,9 +1,12 @@
-# EEG Recording Safety and Environment Checklist v0.1
+# EEG Recording Safety and Environment Checklist
 
 ## Document metadata
 
 - Created in: Session 09
 - Used from: Session 10 onward
+- Version: v0.2
+- Updated in: Session 12
+- Update reason: added contact-assisted electrode setup checks for Ten20 conductive paste / gel and gold cup electrodes
 
 ## 1. Purpose
 
@@ -20,11 +23,13 @@ This checklist applies to early OpenBCI EEG setup and recording sessions using:
 - USB dongle
 - OpenBCI GUI
 - short self-recorded EEG data collection
+- contact-assisted posterior acquisition testing using Ten20 conductive paste / gel and gold cup electrodes
 
 This includes:
 
 - OpenBCI GUI connection test
 - real-time waveform check
+- posterior contact-assisted acquisition test
 - eyes-open / eyes-closed alpha reactivity recording
 - basic recording metadata collection
 
@@ -55,10 +60,15 @@ Those systems require a separate safety and setup checklist later and should rem
 ## 5. Electrode and headband setup
 
 - Check that the headband is stable before recording.
-- Check that posterior electrodes are placed consistently with the montage document.
-- Use comb electrodes for hair-covered posterior positions.
+- Check that posterior electrodes are placed consistently with the montage document or acquisition log.
+- Use the electrode type specified in the current montage or acquisition log.
+- For dry headband testing, use comb electrodes for hair-covered posterior positions.
+- For contact-assisted posterior testing, use gold cup electrodes with Ten20 conductive paste / gel as the documented test condition.
+- Check that paste-assisted electrodes are placed on intact skin.
+- Check that paste amount and electrode position are documented before recording.
 - Use earclip electrodes for the initial SRB2 reference and BIAS candidates.
 - Check that earclips are attached firmly but comfortably.
+- Route cables so they do not pull the headband, earclips, or gold cup electrodes.
 - Stop and readjust if the headband moves, electrodes feel unstable, or cables pull on the setup.
 
 ## 6. Recording quality checks before data collection
@@ -71,11 +81,12 @@ Before saving any experimental data, check:
 - Whether the waveform is not saturated.
 - Whether large movement artifacts are visible.
 - Whether electrode contact appears stable enough for a short test.
+- For contact-assisted posterior testing, whether the intended posterior channel is not persistently Railed or Near Railed before BrainFlow recording.
 - Whether the recording file location is known.
 
 ## 7. Session metadata to record
 
-Before or immediately after each recording session, record:
+Before or immediately after each recording session, record the applicable items:
 
 - Date
 - Session number
@@ -87,9 +98,13 @@ Before or immediately after each recording session, record:
 - SRB2 reference position
 - BIAS position
 - Electrode types used
+- Contact method, if relevant
+- Paste use, if relevant
+- Approximate electrode position
 - Recording duration
 - Condition labels
 - Any visible noise, movement, discomfort, or setup issue
+- Cable pull, electrode movement, or cleanup issue, if any
 
 ## 8. Stop criteria
 
@@ -100,6 +115,7 @@ Stop the recording if:
 - The battery, board, or cables behave unexpectedly.
 - The signal is clearly unusable due to movement or contact failure.
 - The setup requires connecting external powered hardware to the EEG system.
+- Paste-assisted electrodes lose stable contact or are pulled by cable movement.
 
 ## 9. Current decision
 

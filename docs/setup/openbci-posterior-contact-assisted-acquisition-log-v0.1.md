@@ -270,3 +270,14 @@ Interpretation boundary:
 This log supports decisions about posterior contact-assisted acquisition readiness only.
 
 It does not validate alpha reactivity, EEG feature interpretation, focus estimation, or robot-control readiness.
+
+
+## 9. Related continuation log
+
+Further Session 12 continuation troubleshooting after S12-A05 is documented separately in:
+
+- [`openbci-cyton-acquisition-baseline-troubleshooting-log-v0.1.md`](openbci-cyton-acquisition-baseline-troubleshooting-log-v0.1.md)
+
+Reason:
+
+After the posterior contact-assisted attempts, the known-good forehead baseline was not reproduced. The continuation therefore shifted from posterior contact-assisted acquisition testing to acquisition baseline / reference troubleshooting.

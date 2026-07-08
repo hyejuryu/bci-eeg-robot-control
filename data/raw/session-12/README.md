@@ -1,1 +1,18 @@
-\# Session 12 Raw DataThis folder is reserved for local BrainFlow Cyton raw recordings from Session 12.Actual raw EEG files and local metadata files are not committed to GitHub.Session 12 focuses on posterior contact-assisted acquisition testing using Ten20 conductive paste / gel and OpenBCI gold cup electrodes.Repository-visible verification outputs, if generated, are stored under `results/session-12/`.
+# Session 12 Raw Data
+
+
+
+This folder is reserved for local BrainFlow Cyton raw recordings from Session 12.
+
+
+
+Actual raw EEG files and local metadata files are not committed to GitHub.
+
+
+
+Session 12 focuses on posterior contact-assisted acquisition testing using Ten20 conductive paste / gel and OpenBCI gold cup electrodes.
+
+
+
+Repository-visible verification outputs, if generated, are stored under `results/session-12/`.
+

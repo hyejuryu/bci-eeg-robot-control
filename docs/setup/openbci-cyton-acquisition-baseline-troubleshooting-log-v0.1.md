@@ -2,9 +2,9 @@
 
 ## 1. Document metadata
 
-- Session: 12 continuation
-- Date: 2026-07-07
-- Related sessions: Session 10??2
+- Date: 2026-07-07 to 2026-07-08
+- Status: closed after Session 12-C controlled acquisition-stability check
+- Related sessions: Session 10-12
 - Version: v0.1
 - Scope: forehead baseline recovery, channel/path checks, SRB/BIAS assembly checks, and GUI-level acquisition stability
 - Out of scope: posterior acquisition validation, BrainFlow recording, EEG feature interpretation, alpha reactivity, focus estimation, robot control

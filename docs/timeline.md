@@ -1,6 +1,5 @@
 # Project Timeline
 
-```text
 This document records the initial project timeline.
 
 The project sequence was revised after Session 12 because stable
@@ -8,7 +7,6 @@ self-recorded OpenBCI acquisition had not been established.
 
 See:
 [`timeline-revision-2026-07-12.md`](timeline-revision-2026-07-12.md)
-```
 
 ## Phase 1. Conceptual Foundations (March–May 2026)
 Goal: build theoretical understanding of brain structure, cognition, EEG, and BCI basics.

@@ -1,0 +1,80 @@
+{
+  "session": 13,
+  "subject": 1,
+  "runs": [
+    1,
+    2
+  ],
+  "run_conditions": {
+    "1": "baseline_eyes_open",
+    "2": "baseline_eyes_closed"
+  },
+  "feature_name": "posterior_alpha_mean_psd",
+  "feature_unit": "V^2/Hz",
+  "feature_definition": {
+    "channel_operation": "Mean PSD across the six posterior channels at each frequency.",
+    "frequency_operation": "Mean of the posterior mean PSD over 8 <= f < 13 Hz."
+  },
+  "preprocessing": {
+    "filter_low_hz": 1.0,
+    "filter_high_hz": 40.0,
+    "filter_scope": "Filtering was applied to the full run before sliding-window extraction."
+  },
+  "annotation": {
+    "target_description": "T0",
+    "window_inclusion_rule": "Only windows fully contained within the target annotation interval were used."
+  },
+  "posterior_channels": [
+    "Po3.",
+    "Poz.",
+    "Po4.",
+    "O1..",
+    "Oz..",
+    "O2.."
+  ],
+  "outer_window": {
+    "window_length_sec": 2.0,
+    "step_size_sec": 1.0,
+    "expected_windows_per_run": 59
+  },
+  "welch": {
+    "n_per_seg_samples": 160,
+    "n_overlap_samples": 80,
+    "n_fft_samples": 160,
+    "scaling": "density",
+    "average": "mean"
+  },
+  "psd_frequency_range_hz": {
+    "minimum": 1.0,
+    "maximum": 40.0
+  },
+  "alpha_band_hz": {
+    "lower_inclusive": 8.0,
+    "upper_exclusive": 13.0
+  },
+  "total_feature_rows": 118,
+  "by_run": {
+    "1": {
+      "condition": "baseline_eyes_open",
+      "n_windows": 59,
+      "first_window_start_sec": 0.0,
+      "last_window_end_sec": 60.0,
+      "mean": 4.4891803705479726e-11,
+      "median": 3.996241005951425e-11,
+      "standard_deviation_population": 2.887801883532025e-11,
+      "minimum": 1.590229267465739e-11,
+      "maximum": 2.2324590666677288e-10
+    },
+    "2": {
+      "condition": "baseline_eyes_closed",
+      "n_windows": 59,
+      "first_window_start_sec": 0.0,
+      "last_window_end_sec": 60.0,
+      "mean": 5.49751296229116e-10,
+      "median": 5.038257003548005e-10,
+      "standard_deviation_population": 2.52335549093748e-10,
+      "minimum": 1.604935123900181e-10,
+      "maximum": 1.266098892772713e-09
+    }
+  }
+}

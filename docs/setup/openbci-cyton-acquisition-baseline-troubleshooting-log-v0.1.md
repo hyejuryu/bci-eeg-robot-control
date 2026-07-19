@@ -176,7 +176,7 @@ robot control
 
 | Attempt | Setup / action | Observation | Interpretation | Next decision |
 |---|---|---|---|---|
-| C01     | Ch2 / N2P, white snap cable, flat D, left forehead contact position, SRB assembly B, BIAS assembly B. | Ch2 started in a Near Railed state. During the fixed observation window, the condition did not stabilize. The Railed percentage increased over time, and Ch2 eventually drifted to Railed 100% / 0.00 uVrms. | The controlled C01 condition did not recover a stable forehead acquisition baseline. The result is consistent with the time-dependent drift observed in the previous Session 12 continuation attempts. | Stop hardware testing. Do not proceed to posterior acquisition, BrainFlow recording, alpha interpretation, or robot-control testing. Prepare OpenBCI inquiry using Session 10??2 evidence. |
+| C01     | Ch2 / N2P, white snap cable, flat D, left forehead contact position, SRB assembly B, BIAS assembly B. | Ch2 started in a Near Railed state. During the fixed observation window, the condition did not stabilize. The Railed percentage increased over time, and Ch2 eventually drifted to Railed 100% / 0.00 uVrms. | The controlled C01 condition did not recover a stable forehead acquisition baseline. The result is consistent with the time-dependent drift observed in the previous Session 12 continuation attempts. | Stop hardware testing. Do not proceed to posterior acquisition, BrainFlow recording, alpha interpretation, or robot-control testing. Prepare OpenBCI inquiry using Session 10-12 evidence. |
 
 
 ### 8.4 Evidence files

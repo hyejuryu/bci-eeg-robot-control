@@ -12,7 +12,7 @@ dependencies:
   - mne
   - jupyterlab
   - ipykernel
-  - setuptools<81
+  - setuptools<81 # Session 11 compatibility constraint; original error not recorded
   - pip
   - pip:
       - brainflow==5.22.2

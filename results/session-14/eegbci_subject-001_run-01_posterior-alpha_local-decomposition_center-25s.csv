@@ -1,0 +1,8 @@
+run,condition,analysis_center_sec,segment_start_sec,segment_end_sec,segment_center_sec,segment_feature,is_1s_output,included_in_2s_window,included_in_4s_window,stored_1s_feature
+1,baseline_eyes_open,25.0,23.0,24.0,23.5,6.318362963307337e-11,True,False,True,6.318362963307337e-11
+1,baseline_eyes_open,25.0,23.5,24.5,24.0,2.967660015771909e-11,False,False,True,
+1,baseline_eyes_open,25.0,24.0,25.0,24.5,2.5904061399764442e-11,True,True,True,2.5904061399764442e-11
+1,baseline_eyes_open,25.0,24.5,25.5,25.0,6.32686834889847e-10,False,True,True,
+1,baseline_eyes_open,25.0,25.0,26.0,25.5,1.11468237107072e-11,True,True,True,1.11468237107072e-11
+1,baseline_eyes_open,25.0,25.5,26.5,26.0,1.464440638846485e-11,False,False,True,
+1,baseline_eyes_open,25.0,26.0,27.0,26.5,4.670938143240178e-11,True,False,True,4.670938143240178e-11

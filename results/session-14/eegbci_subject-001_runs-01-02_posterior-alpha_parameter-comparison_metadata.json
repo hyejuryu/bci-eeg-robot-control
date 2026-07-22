@@ -1,0 +1,362 @@
+{
+  "session": 14,
+  "analysis_name": "EEGBCI posterior-alpha window-parameter comparison",
+  "dataset": {
+    "name": "PhysioNet EEG Motor Movement/Imagery Dataset",
+    "mne_dataset_name": "EEGBCI",
+    "subject": 1,
+    "runs": [
+      1,
+      2
+    ],
+    "run_conditions": {
+      "1": "baseline_eyes_open",
+      "2": "baseline_eyes_closed"
+    },
+    "sampling_frequency_hz": 160.0,
+    "target_annotation": "T0"
+  },
+  "analysis_scope": {
+    "window_length_comparison": [
+      "win-1s_step-1s",
+      "win-2s_step-1s",
+      "win-4s_step-1s"
+    ],
+    "step_size_comparison": [
+      "win-2s_step-0p5s",
+      "win-2s_step-1s",
+      "win-2s_step-2s"
+    ],
+    "window_inclusion_rule": "Only windows fully contained within the target annotation interval were included."
+  },
+  "preprocessing": {
+    "filter_low_hz": 1.0,
+    "filter_high_hz": 40.0,
+    "filter_scope": "The continuous run was filtered before outer-window extraction.",
+    "posterior_channels": [
+      "Po3.",
+      "Poz.",
+      "Po4.",
+      "O1..",
+      "Oz..",
+      "O2.."
+    ]
+  },
+  "welch": {
+    "window": "hann",
+    "n_per_seg_samples": 160,
+    "n_overlap_samples": 80,
+    "n_fft_samples": 160,
+    "detrend": "constant",
+    "return_onesided": true,
+    "scaling": "density",
+    "average": "mean",
+    "psd_frequency_min_hz": 1.0,
+    "psd_frequency_max_hz": 40.0
+  },
+  "feature": {
+    "name": "posterior_alpha_mean_psd",
+    "unit": "V^2/Hz",
+    "alpha_band_hz": {
+      "lower_inclusive": 8.0,
+      "upper_exclusive": 13.0
+    },
+    "channel_operation": "Mean PSD across the six posterior channels at each frequency.",
+    "frequency_operation": "Mean of the posterior-channel mean PSD across 8 <= f < 13 Hz.",
+    "calculation_scale": "Raw PSD values were used for all summary and comparison metrics."
+  },
+  "configurations": [
+    {
+      "configuration_id": "win-2s_step-1s",
+      "window_length_sec": 2.0,
+      "step_size_sec": 1.0,
+      "first_available_time_sec": 2.0,
+      "outer_window_overlap_fraction": 0.5,
+      "welch_segment_count": 3,
+      "window_counts_by_run": {
+        "1": 59,
+        "2": 59
+      }
+    },
+    {
+      "configuration_id": "win-1s_step-1s",
+      "window_length_sec": 1.0,
+      "step_size_sec": 1.0,
+      "first_available_time_sec": 1.0,
+      "outer_window_overlap_fraction": 0.0,
+      "welch_segment_count": 1,
+      "window_counts_by_run": {
+        "1": 60,
+        "2": 60
+      }
+    },
+    {
+      "configuration_id": "win-4s_step-1s",
+      "window_length_sec": 4.0,
+      "step_size_sec": 1.0,
+      "first_available_time_sec": 4.0,
+      "outer_window_overlap_fraction": 0.75,
+      "welch_segment_count": 7,
+      "window_counts_by_run": {
+        "1": 57,
+        "2": 57
+      }
+    },
+    {
+      "configuration_id": "win-2s_step-0p5s",
+      "window_length_sec": 2.0,
+      "step_size_sec": 0.5,
+      "first_available_time_sec": 2.0,
+      "outer_window_overlap_fraction": 0.75,
+      "welch_segment_count": 3,
+      "window_counts_by_run": {
+        "1": 117,
+        "2": 117
+      }
+    },
+    {
+      "configuration_id": "win-2s_step-2s",
+      "window_length_sec": 2.0,
+      "step_size_sec": 2.0,
+      "first_available_time_sec": 2.0,
+      "outer_window_overlap_fraction": 0.0,
+      "welch_segment_count": 3,
+      "window_counts_by_run": {
+        "1": 30,
+        "2": 30
+      }
+    }
+  ],
+  "selected_baseline_configuration": {
+    "version": "v0.1",
+    "configuration_id": "win-2s_step-1s",
+    "window_length_sec": 2.0,
+    "step_size_sec": 1.0,
+    "first_available_time_sec": 2.0,
+    "outer_window_overlap_fraction": 0.5,
+    "welch_segment_count": 3,
+    "intended_use": "Baseline feature-update configuration for the Session 15 offline decision-rule analysis.",
+    "selection_basis": [
+      "The 2 s window provided lower relative within-run variability than the 1 s window while retaining shorter temporal integration than the 4 s window.",
+      "The 1 s step provided an intermediate update cadence with 50% outer-window overlap, between the denser 0.5 s step and the sparser non-overlapping 2 s step.",
+      "The configuration retained positive central-range separation between the two analyzed recordings."
+    ]
+  },
+  "condition_summary_metrics": {
+    "median": "Middle window-feature value.",
+    "q25": "25th percentile.",
+    "q75": "75th percentile.",
+    "iqr": "Q75 minus Q25.",
+    "iqr_over_median": "IQR divided by the median; relative within-recording variability.",
+    "mean": "Arithmetic mean.",
+    "standard_deviation_population": "Population standard deviation with ddof=0.",
+    "minimum": "Minimum window value.",
+    "q05": "5th percentile.",
+    "q95": "95th percentile.",
+    "maximum": "Maximum window value."
+  },
+  "configuration_comparison_metrics": {
+    "median_ratio_ec_over_eo": "Eyes-closed median divided by eyes-open median.",
+    "g90_ec_q05_minus_eo_q95": "EC Q05 minus EO Q95. Positive values indicate separation of the central 90% ranges.",
+    "grange_ec_min_minus_eo_max": "EC minimum minus EO maximum. Positive values indicate complete min-max separation.",
+    "pairwise_ordering_fraction": "P(EC > EO) + 0.5 * P(EC = EO) across all cross-condition window pairs."
+  },
+  "validation": {
+    "total_feature_row_count": 646,
+    "condition_summary_row_count": 10,
+    "configuration_comparison_row_count": 5,
+    "configuration_run_structure": [
+      {
+        "configuration_id": "win-2s_step-1s",
+        "run": 1,
+        "condition": "baseline_eyes_open",
+        "n_windows": 59,
+        "window_length_sec": 2.0,
+        "step_size_sec": 1.0,
+        "outer_window_overlap_fraction": 0.5,
+        "welch_segment_count": 3,
+        "first_window_start_sec": 0.0,
+        "first_window_center_sec": 1.0,
+        "last_window_center_sec": 59.0,
+        "last_window_end_sec": 60.0
+      },
+      {
+        "configuration_id": "win-2s_step-1s",
+        "run": 2,
+        "condition": "baseline_eyes_closed",
+        "n_windows": 59,
+        "window_length_sec": 2.0,
+        "step_size_sec": 1.0,
+        "outer_window_overlap_fraction": 0.5,
+        "welch_segment_count": 3,
+        "first_window_start_sec": 0.0,
+        "first_window_center_sec": 1.0,
+        "last_window_center_sec": 59.0,
+        "last_window_end_sec": 60.0
+      },
+      {
+        "configuration_id": "win-1s_step-1s",
+        "run": 1,
+        "condition": "baseline_eyes_open",
+        "n_windows": 60,
+        "window_length_sec": 1.0,
+        "step_size_sec": 1.0,
+        "outer_window_overlap_fraction": 0.0,
+        "welch_segment_count": 1,
+        "first_window_start_sec": 0.0,
+        "first_window_center_sec": 0.5,
+        "last_window_center_sec": 59.5,
+        "last_window_end_sec": 60.0
+      },
+      {
+        "configuration_id": "win-1s_step-1s",
+        "run": 2,
+        "condition": "baseline_eyes_closed",
+        "n_windows": 60,
+        "window_length_sec": 1.0,
+        "step_size_sec": 1.0,
+        "outer_window_overlap_fraction": 0.0,
+        "welch_segment_count": 1,
+        "first_window_start_sec": 0.0,
+        "first_window_center_sec": 0.5,
+        "last_window_center_sec": 59.5,
+        "last_window_end_sec": 60.0
+      },
+      {
+        "configuration_id": "win-4s_step-1s",
+        "run": 1,
+        "condition": "baseline_eyes_open",
+        "n_windows": 57,
+        "window_length_sec": 4.0,
+        "step_size_sec": 1.0,
+        "outer_window_overlap_fraction": 0.75,
+        "welch_segment_count": 7,
+        "first_window_start_sec": 0.0,
+        "first_window_center_sec": 2.0,
+        "last_window_center_sec": 58.0,
+        "last_window_end_sec": 60.0
+      },
+      {
+        "configuration_id": "win-4s_step-1s",
+        "run": 2,
+        "condition": "baseline_eyes_closed",
+        "n_windows": 57,
+        "window_length_sec": 4.0,
+        "step_size_sec": 1.0,
+        "outer_window_overlap_fraction": 0.75,
+        "welch_segment_count": 7,
+        "first_window_start_sec": 0.0,
+        "first_window_center_sec": 2.0,
+        "last_window_center_sec": 58.0,
+        "last_window_end_sec": 60.0
+      },
+      {
+        "configuration_id": "win-2s_step-0p5s",
+        "run": 1,
+        "condition": "baseline_eyes_open",
+        "n_windows": 117,
+        "window_length_sec": 2.0,
+        "step_size_sec": 0.5,
+        "outer_window_overlap_fraction": 0.75,
+        "welch_segment_count": 3,
+        "first_window_start_sec": 0.0,
+        "first_window_center_sec": 1.0,
+        "last_window_center_sec": 59.0,
+        "last_window_end_sec": 60.0
+      },
+      {
+        "configuration_id": "win-2s_step-0p5s",
+        "run": 2,
+        "condition": "baseline_eyes_closed",
+        "n_windows": 117,
+        "window_length_sec": 2.0,
+        "step_size_sec": 0.5,
+        "outer_window_overlap_fraction": 0.75,
+        "welch_segment_count": 3,
+        "first_window_start_sec": 0.0,
+        "first_window_center_sec": 1.0,
+        "last_window_center_sec": 59.0,
+        "last_window_end_sec": 60.0
+      },
+      {
+        "configuration_id": "win-2s_step-2s",
+        "run": 1,
+        "condition": "baseline_eyes_open",
+        "n_windows": 30,
+        "window_length_sec": 2.0,
+        "step_size_sec": 2.0,
+        "outer_window_overlap_fraction": 0.0,
+        "welch_segment_count": 3,
+        "first_window_start_sec": 0.0,
+        "first_window_center_sec": 1.0,
+        "last_window_center_sec": 59.0,
+        "last_window_end_sec": 60.0
+      },
+      {
+        "configuration_id": "win-2s_step-2s",
+        "run": 2,
+        "condition": "baseline_eyes_closed",
+        "n_windows": 30,
+        "window_length_sec": 2.0,
+        "step_size_sec": 2.0,
+        "outer_window_overlap_fraction": 0.0,
+        "welch_segment_count": 3,
+        "first_window_start_sec": 0.0,
+        "first_window_center_sec": 1.0,
+        "last_window_center_sec": 59.0,
+        "last_window_end_sec": 60.0
+      }
+    ],
+    "shared_window_feature_consistency": [
+      {
+        "left_configuration_id": "win-2s_step-1s",
+        "right_configuration_id": "win-2s_step-0p5s",
+        "shared_window_count": 118,
+        "mismatch_count": 0,
+        "max_absolute_difference": 0.0
+      },
+      {
+        "left_configuration_id": "win-2s_step-2s",
+        "right_configuration_id": "win-2s_step-1s",
+        "shared_window_count": 60,
+        "mismatch_count": 0,
+        "max_absolute_difference": 0.0
+      },
+      {
+        "left_configuration_id": "win-2s_step-2s",
+        "right_configuration_id": "win-2s_step-0p5s",
+        "shared_window_count": 60,
+        "mismatch_count": 0,
+        "max_absolute_difference": 0.0
+      }
+    ],
+    "shared_window_relative_tolerance": 1e-12,
+    "shared_window_absolute_tolerance": 0.0
+  },
+  "interpretation_boundaries": {
+    "recording_scope": "The results describe one eyes-open baseline run and one eyes-closed baseline run from one subject.",
+    "condition_effect": "The analysis does not establish a repeated-trial or cross-subject condition effect.",
+    "window_dependence": "Overlapping outer windows are not independent observations.",
+    "step_size": "A smaller step size increases update density and data reuse, not the amount of independent information.",
+    "window_length": "The window-length comparison also changes first availability, outer overlap, and Welch segment count.",
+    "visualization_scale": "A logarithmic axis may be used for figures, but metrics are calculated from raw PSD values."
+  },
+  "output_files": {
+    "window_feature_csv": "eegbci_subject-001_runs-01-02_posterior-alpha_window-features.csv",
+    "condition_summary_csv": "eegbci_subject-001_runs-01-02_posterior-alpha_condition-summary.csv",
+    "configuration_comparison_csv": "eegbci_subject-001_runs-01-02_posterior-alpha_configuration-comparison.csv",
+    "local_decomposition_csv": "eegbci_subject-001_run-01_posterior-alpha_local-decomposition_center-25s.csv",
+    "metadata_json": "eegbci_subject-001_runs-01-02_posterior-alpha_parameter-comparison_metadata.json",
+    "window_length_figure": "eegbci_subject-001_runs-01-02_posterior-alpha_window-length-comparison.png",
+    "step_size_figure": "eegbci_subject-001_runs-01-02_posterior-alpha_step-size-comparison.png"
+  },
+  "output_provenance": {
+    "window_feature_csv": "09_eegbci_window_parameter_comparison.py",
+    "condition_summary_csv": "09_eegbci_window_parameter_comparison.py",
+    "configuration_comparison_csv": "09_eegbci_window_parameter_comparison.py",
+    "local_decomposition_csv": "09b_eegbci_local_window_decomposition.py",
+    "metadata_json": "09_eegbci_window_parameter_comparison.py",
+    "window_length_figure": "09_eegbci_window_parameter_comparison.py",
+    "step_size_figure": "09c_eegbci_step_size_comparison_figure.py"
+  }
+}

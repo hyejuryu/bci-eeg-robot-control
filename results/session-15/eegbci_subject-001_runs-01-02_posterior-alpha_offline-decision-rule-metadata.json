@@ -1,0 +1,283 @@
+{
+  "metadata_schema_version": "1.0",
+  "session": {
+    "session_id": 15,
+    "analysis_name": "offline_posterior_alpha_decision_rule_comparison",
+    "analysis_stage": "core rule generation and offline command-state analysis"
+  },
+  "provenance": {
+    "script_path": "scripts/10_eegbci_offline_decision_rule.py",
+    "source_feature_csv": "results/session-14/eegbci_subject-001_runs-01-02_posterior-alpha_window-features.csv",
+    "source_row_count": 646,
+    "selected_row_count": 118
+  },
+  "recording_scope": {
+    "selected_configuration_id": "win-2s_step-1s",
+    "recording_count": 2,
+    "recordings": [
+      {
+        "subject": 1,
+        "run": 1,
+        "condition": "baseline_eyes_open",
+        "window_count": 59,
+        "first_window_start_sec": 0.0,
+        "first_decision_time_sec": 2.0,
+        "last_decision_time_sec": 60.0,
+        "run_end_time_sec": 60.0
+      },
+      {
+        "subject": 1,
+        "run": 2,
+        "condition": "baseline_eyes_closed",
+        "window_count": 59,
+        "first_window_start_sec": 0.0,
+        "first_decision_time_sec": 2.0,
+        "last_decision_time_sec": 60.0,
+        "run_end_time_sec": 60.0
+      }
+    ]
+  },
+  "feature_specification": {
+    "feature_name": "posterior_alpha_mean_psd",
+    "feature_unit": "V^2/Hz",
+    "feature_column": "posterior_alpha_mean_psd",
+    "decision_time_column": "window_end_sec",
+    "window_length_sec": 2.0,
+    "step_size_sec": 1.0,
+    "outer_window_overlap_fraction": 0.5,
+    "welch_segment_count": 3
+  },
+  "threshold_specification": {
+    "source_stream": "unsmoothed selected baseline features",
+    "quantile_method": "linear",
+    "threshold_definitions": {
+      "threshold_eo_q95": "95th percentile of eyes-open feature values",
+      "threshold_gap_midpoint": "geometric mean of EO Q95 and EC Q05",
+      "threshold_ec_q05": "5th percentile of eyes-closed feature values"
+    },
+    "comparison_rule": {
+      "high_evidence": "processed_feature_value >= threshold_value",
+      "low_evidence": "processed_feature_value < threshold_value"
+    },
+    "thresholds_by_subject": [
+      {
+        "subject": 1,
+        "threshold_eo_q95": 8.270509057516904e-11,
+        "threshold_gap_midpoint": 1.3987182661955795e-10,
+        "threshold_ec_q05": 2.365528862351009e-10
+      }
+    ]
+  },
+  "smoothing_specification": {
+    "smooth-none": {
+      "method": "none",
+      "processed_feature": "raw feature value",
+      "warmup_update_count": 0
+    },
+    "smooth-median3": {
+      "method": "causal median over the current and previous two feature updates",
+      "window_updates": 3,
+      "warmup_update_count": 2,
+      "warmup_evidence_state": "UNAVAILABLE",
+      "warmup_command_state": "CMD_STOP"
+    }
+  },
+  "dwell_specification": {
+    "definition": "required number of consecutive available updates with the same evidence state",
+    "applied_to": [
+      "initial command confirmation",
+      "active command switching"
+    ],
+    "candidate_reset": "candidate state and count reset when evidence returns to the active state or reverses",
+    "nominal_confirmation_span_formula": "(dwell_updates - 1) * step_size_sec",
+    "unavailable_updates": "produce CMD_STOP and remain outside dwell processing"
+  },
+  "state_mapping": {
+    "UNAVAILABLE": "CMD_STOP",
+    "LOW_ALPHA": "CMD_OPEN",
+    "HIGH_ALPHA": "CMD_CLOSE"
+  },
+  "episode_specification": {
+    "initial_stop_episode": "recording start to first active-command confirmation",
+    "active_episode": "active-command confirmation to the next confirmed switch or recording end",
+    "duration_definition": "episode_end_time_sec - episode_start_time_sec",
+    "short_active_episode_cutoff_sec": 2.0
+  },
+  "rule_set": {
+    "rule_count": 8,
+    "configurations": [
+      {
+        "rule_id": "thr-eo-q95__smooth-none__dwell-1",
+        "threshold_id": "threshold_eo_q95",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 1,
+        "nominal_confirmation_span_sec": 0.0
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-none__dwell-1",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 1,
+        "nominal_confirmation_span_sec": 0.0
+      },
+      {
+        "rule_id": "thr-ec-q05__smooth-none__dwell-1",
+        "threshold_id": "threshold_ec_q05",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 1,
+        "nominal_confirmation_span_sec": 0.0
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-none__dwell-2",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 2,
+        "nominal_confirmation_span_sec": 1.0
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-none__dwell-3",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 3,
+        "nominal_confirmation_span_sec": 2.0
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-median3__dwell-1",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 1,
+        "nominal_confirmation_span_sec": 0.0
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-median3__dwell-2",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 2,
+        "nominal_confirmation_span_sec": 1.0
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-median3__dwell-3",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 3,
+        "nominal_confirmation_span_sec": 2.0
+      }
+    ]
+  },
+  "outputs": {
+    "decision_stream_csv": {
+      "path": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-decision-stream.csv",
+      "row_count": 944,
+      "column_count": 25,
+      "columns": [
+        "rule_id",
+        "subject",
+        "run",
+        "condition",
+        "configuration_id",
+        "window_index",
+        "window_start_sec",
+        "window_end_sec",
+        "decision_time_sec",
+        "feature_name",
+        "feature_unit",
+        "raw_feature_value",
+        "smoothing_id",
+        "smoothed_available",
+        "smoothed_feature_value",
+        "threshold_id",
+        "threshold_value",
+        "evidence_state",
+        "dwell_updates",
+        "candidate_evidence_state",
+        "candidate_count",
+        "active_evidence_state",
+        "initial_command_confirmed",
+        "active_switch_confirmed",
+        "command_state"
+      ]
+    },
+    "command_episode_csv": {
+      "path": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-command-episodes.csv",
+      "row_count": 42,
+      "column_count": 25,
+      "columns": [
+        "rule_id",
+        "subject",
+        "run",
+        "condition",
+        "configuration_id",
+        "feature_name",
+        "feature_unit",
+        "smoothing_id",
+        "threshold_id",
+        "threshold_value",
+        "dwell_updates",
+        "episode_index",
+        "command_state",
+        "episode_start_time_sec",
+        "episode_end_time_sec",
+        "episode_duration_sec",
+        "decision_update_count",
+        "first_window_index",
+        "last_window_index",
+        "first_decision_time_sec",
+        "last_decision_time_sec",
+        "start_event",
+        "end_event",
+        "is_initial_stop_episode",
+        "ended_at_run_boundary"
+      ]
+    },
+    "rule_run_summary_csv": {
+      "path": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-rule-run-summary.csv",
+      "row_count": 16,
+      "column_count": 39,
+      "columns": [
+        "rule_id",
+        "subject",
+        "run",
+        "condition",
+        "configuration_id",
+        "feature_name",
+        "feature_unit",
+        "smoothing_id",
+        "threshold_id",
+        "threshold_value",
+        "dwell_updates",
+        "nominal_confirmation_span_sec",
+        "run_start_time_sec",
+        "run_end_time_sec",
+        "decision_update_count",
+        "first_decision_time_sec",
+        "last_decision_time_sec",
+        "unavailable_evidence_count",
+        "first_processed_feature_time_sec",
+        "initial_stop_update_count",
+        "initial_stop_duration_sec",
+        "first_active_command_time_sec",
+        "first_active_command",
+        "final_command_state",
+        "low_evidence_count",
+        "high_evidence_count",
+        "cmd_stop_count",
+        "cmd_open_count",
+        "cmd_close_count",
+        "active_switch_count",
+        "active_switch_times_sec",
+        "unconfirmed_candidate_update_count",
+        "unconfirmed_candidate_times_sec",
+        "command_episode_count",
+        "active_command_episode_count",
+        "short_active_episode_max_duration_sec",
+        "short_active_command_episode_count",
+        "shortest_active_episode_duration_sec",
+        "longest_active_episode_duration_sec"
+      ]
+    }
+  },
+  "software": {
+    "python_version": "3.11.15",
+    "numpy_version": "2.4.3"
+  }
+}

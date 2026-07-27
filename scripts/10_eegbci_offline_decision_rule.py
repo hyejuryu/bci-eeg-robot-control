@@ -3,6 +3,8 @@
 # baseline feature stream.
 
 import csv
+import json
+import platform
 from collections import defaultdict
 from pathlib import Path
 
@@ -51,6 +53,15 @@ RULE_RUN_SUMMARY_CSV_PATH = (
         "eegbci_subject-001_runs-01-02_"
         "posterior-alpha_offline-"
         "rule-run-summary.csv"
+    )
+)
+
+METADATA_JSON_PATH = (
+    SESSION15_RESULTS_DIR
+    / (
+        "eegbci_subject-001_runs-01-02_"
+        "posterior-alpha_offline-"
+        "decision-rule-metadata.json"
     )
 )
 
@@ -3402,6 +3413,537 @@ def save_rule_run_summary_csv(
     )
 
 
+def build_session15_metadata(
+    source_rows,
+    selected_rows,
+    grouped_rows,
+    thresholds_by_subject,
+    core_rule_rows_by_rule,
+    decision_stream_rows,
+    command_episode_rows,
+    rule_run_summary_rows,
+):
+    """
+    Build Session 15 analysis metadata from
+    the validated inputs, rule definitions,
+    and generated outputs.
+    """
+
+    recording_records = []
+
+    for (
+        subject,
+        run,
+    ), rows in sorted(
+        grouped_rows.items()
+    ):
+        rows = sorted(
+            rows,
+            key=lambda row: (
+                row["window_index"]
+            ),
+        )
+
+        recording_records.append({
+            "subject": subject,
+            "run": run,
+            "condition": rows[0][
+                "condition"
+            ],
+            "window_count": len(rows),
+            "first_window_start_sec": rows[
+                0
+            ]["window_start_sec"],
+            "first_decision_time_sec": rows[
+                0
+            ][DECISION_TIME_COLUMN],
+            "last_decision_time_sec": rows[
+                -1
+            ][DECISION_TIME_COLUMN],
+            "run_end_time_sec": rows[-1][
+                "window_end_sec"
+            ],
+        })
+
+    threshold_records = []
+
+    for subject, thresholds in sorted(
+        thresholds_by_subject.items()
+    ):
+        threshold_records.append({
+            "subject": subject,
+            "threshold_eo_q95": float(
+                thresholds[
+                    "threshold_eo_q95"
+                ]
+            ),
+            "threshold_gap_midpoint": float(
+                thresholds[
+                    "threshold_gap_midpoint"
+                ]
+            ),
+            "threshold_ec_q05": float(
+                thresholds[
+                    "threshold_ec_q05"
+                ]
+            ),
+        })
+
+    rule_configurations = [
+        {
+            "rule_id": config["rule_id"],
+            "threshold_id": config[
+                "threshold_id"
+            ],
+            "smoothing_id": config[
+                "smoothing_id"
+            ],
+            "dwell_updates": config[
+                "dwell_updates"
+            ],
+            "nominal_confirmation_span_sec": (
+                (
+                    config["dwell_updates"]
+                    - 1
+                )
+                * BASELINE_STEP_SIZE_SEC
+            ),
+        }
+        for config in (
+            CORE_RULE_CONFIGURATIONS
+        )
+    ]
+
+    generated_rule_ids = set(
+        core_rule_rows_by_rule
+    )
+
+    configured_rule_ids = {
+        config["rule_id"]
+        for config in (
+            CORE_RULE_CONFIGURATIONS
+        )
+    }
+
+    if (
+        generated_rule_ids
+        != configured_rule_ids
+    ):
+        raise RuntimeError(
+            "Generated and configured rule IDs "
+            "do not match while building "
+            "metadata."
+        )
+
+    expected_decision_row_count = (
+        len(CORE_RULE_CONFIGURATIONS)
+        * len(selected_rows)
+    )
+
+    if len(decision_stream_rows) != (
+        expected_decision_row_count
+    ):
+        raise RuntimeError(
+            "Decision-stream row count is "
+            "inconsistent while building "
+            "metadata."
+        )
+
+    expected_rule_recording_count = (
+        len(CORE_RULE_CONFIGURATIONS)
+        * len(grouped_rows)
+    )
+
+    if len(rule_run_summary_rows) != (
+        expected_rule_recording_count
+    ):
+        raise RuntimeError(
+            "Rule-run summary count is "
+            "inconsistent while building "
+            "metadata."
+        )
+
+    metadata = {
+        "metadata_schema_version": "1.0",
+        "session": {
+            "session_id": 15,
+            "analysis_name": (
+                "offline_posterior_alpha_"
+                "decision_rule_comparison"
+            ),
+            "analysis_stage": (
+                "core rule generation and "
+                "offline command-state analysis"
+            ),
+        },
+        "provenance": {
+            "script_path": (
+                Path(__file__)
+                .resolve()
+                .relative_to(PROJECT_ROOT)
+                .as_posix()
+            ),
+            "source_feature_csv": (
+                SOURCE_FEATURE_CSV_PATH
+                .relative_to(PROJECT_ROOT)
+                .as_posix()
+            ),
+            "source_row_count": len(
+                source_rows
+            ),
+            "selected_row_count": len(
+                selected_rows
+            ),
+        },
+        "recording_scope": {
+            "selected_configuration_id": (
+                BASELINE_CONFIGURATION_ID
+            ),
+            "recording_count": len(
+                grouped_rows
+            ),
+            "recordings": (
+                recording_records
+            ),
+        },
+        "feature_specification": {
+            "feature_name": FEATURE_NAME,
+            "feature_unit": FEATURE_UNIT,
+            "feature_column": (
+                FEATURE_COLUMN
+            ),
+            "decision_time_column": (
+                DECISION_TIME_COLUMN
+            ),
+            "window_length_sec": (
+                BASELINE_WINDOW_LENGTH_SEC
+            ),
+            "step_size_sec": (
+                BASELINE_STEP_SIZE_SEC
+            ),
+            "outer_window_overlap_fraction": (
+                BASELINE_OVERLAP_FRACTION
+            ),
+            "welch_segment_count": (
+                BASELINE_WELCH_SEGMENT_COUNT
+            ),
+        },
+        "threshold_specification": {
+            "source_stream": (
+                "unsmoothed selected "
+                "baseline features"
+            ),
+            "quantile_method": (
+                QUANTILE_METHOD
+            ),
+            "threshold_definitions": {
+                "threshold_eo_q95": (
+                    "95th percentile of "
+                    "eyes-open feature values"
+                ),
+                "threshold_gap_midpoint": (
+                    "geometric mean of "
+                    "EO Q95 and EC Q05"
+                ),
+                "threshold_ec_q05": (
+                    "5th percentile of "
+                    "eyes-closed feature values"
+                ),
+            },
+            "comparison_rule": {
+                "high_evidence": (
+                    "processed_feature_value "
+                    ">= threshold_value"
+                ),
+                "low_evidence": (
+                    "processed_feature_value "
+                    "< threshold_value"
+                ),
+            },
+            "thresholds_by_subject": (
+                threshold_records
+            ),
+        },
+        "smoothing_specification": {
+            SMOOTHING_ID_NONE: {
+                "method": "none",
+                "processed_feature": (
+                    "raw feature value"
+                ),
+                "warmup_update_count": 0,
+            },
+            SMOOTHING_ID_MEDIAN3: {
+                "method": (
+                    "causal median over the "
+                    "current and previous "
+                    "two feature updates"
+                ),
+                "window_updates": (
+                    MEDIAN3_WINDOW_UPDATES
+                ),
+                "warmup_update_count": (
+                    MEDIAN3_WINDOW_UPDATES
+                    - 1
+                ),
+                "warmup_evidence_state": (
+                    UNAVAILABLE_EVIDENCE_STATE
+                ),
+                "warmup_command_state": (
+                    STOP_COMMAND_STATE
+                ),
+            },
+        },
+        "dwell_specification": {
+            "definition": (
+                "required number of consecutive "
+                "available updates with the "
+                "same evidence state"
+            ),
+            "applied_to": [
+                "initial command confirmation",
+                "active command switching",
+            ],
+            "candidate_reset": (
+                "candidate state and count reset "
+                "when evidence returns to the "
+                "active state or reverses"
+            ),
+            "nominal_confirmation_span_formula": (
+                "(dwell_updates - 1) * "
+                "step_size_sec"
+            ),
+            "unavailable_updates": (
+                "produce CMD_STOP and remain "
+                "outside dwell processing"
+            ),
+        },
+        "state_mapping": {
+            UNAVAILABLE_EVIDENCE_STATE: (
+                STOP_COMMAND_STATE
+            ),
+            LOW_EVIDENCE_STATE: (
+                OPEN_COMMAND_STATE
+            ),
+            HIGH_EVIDENCE_STATE: (
+                CLOSE_COMMAND_STATE
+            ),
+        },
+        "episode_specification": {
+            "initial_stop_episode": (
+                "recording start to first "
+                "active-command confirmation"
+            ),
+            "active_episode": (
+                "active-command confirmation "
+                "to the next confirmed switch "
+                "or recording end"
+            ),
+            "duration_definition": (
+                "episode_end_time_sec - "
+                "episode_start_time_sec"
+            ),
+            "short_active_episode_cutoff_sec": (
+                SHORT_ACTIVE_EPISODE_MAX_DURATION_SEC
+            ),
+        },
+        "rule_set": {
+            "rule_count": len(
+                CORE_RULE_CONFIGURATIONS
+            ),
+            "configurations": (
+                rule_configurations
+            ),
+        },
+        "outputs": {
+            "decision_stream_csv": {
+                "path": (
+                    DECISION_STREAM_CSV_PATH
+                    .relative_to(PROJECT_ROOT)
+                    .as_posix()
+                ),
+                "row_count": len(
+                    decision_stream_rows
+                ),
+                "column_count": len(
+                    DECISION_STREAM_COLUMNS
+                ),
+                "columns": (
+                    DECISION_STREAM_COLUMNS
+                ),
+            },
+            "command_episode_csv": {
+                "path": (
+                    COMMAND_EPISODE_CSV_PATH
+                    .relative_to(PROJECT_ROOT)
+                    .as_posix()
+                ),
+                "row_count": len(
+                    command_episode_rows
+                ),
+                "column_count": len(
+                    COMMAND_EPISODE_COLUMNS
+                ),
+                "columns": (
+                    COMMAND_EPISODE_COLUMNS
+                ),
+            },
+            "rule_run_summary_csv": {
+                "path": (
+                    RULE_RUN_SUMMARY_CSV_PATH
+                    .relative_to(PROJECT_ROOT)
+                    .as_posix()
+                ),
+                "row_count": len(
+                    rule_run_summary_rows
+                ),
+                "column_count": len(
+                    RULE_RUN_SUMMARY_COLUMNS
+                ),
+                "columns": (
+                    RULE_RUN_SUMMARY_COLUMNS
+                ),
+            },
+        },
+        "software": {
+            "python_version": (
+                platform.python_version()
+            ),
+            "numpy_version": (
+                np.__version__
+            ),
+        },
+    }
+
+    return metadata
+
+
+def save_metadata_json(
+    metadata,
+    output_path,
+):
+    """
+    Save and validate the Session 15
+    metadata JSON.
+    """
+
+    if not metadata:
+        raise RuntimeError(
+            "No metadata were provided "
+            "for saving."
+        )
+
+    required_top_level_keys = {
+        "metadata_schema_version",
+        "session",
+        "provenance",
+        "recording_scope",
+        "feature_specification",
+        "threshold_specification",
+        "smoothing_specification",
+        "dwell_specification",
+        "state_mapping",
+        "episode_specification",
+        "rule_set",
+        "outputs",
+        "software",
+    }
+
+    missing_keys = (
+        required_top_level_keys
+        - set(metadata)
+    )
+
+    if missing_keys:
+        raise RuntimeError(
+            "Metadata are missing required "
+            "top-level keys: "
+            f"{sorted(missing_keys)}"
+        )
+
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    with open(
+        output_path,
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(
+            metadata,
+            file,
+            indent=2,
+            ensure_ascii=False,
+            allow_nan=False,
+        )
+
+        file.write("\n")
+
+    if (
+        not output_path.exists()
+        or output_path.stat().st_size == 0
+    ):
+        raise RuntimeError(
+            "The metadata JSON was not "
+            "saved correctly."
+        )
+
+    with open(
+        output_path,
+        "r",
+        encoding="utf-8",
+    ) as file:
+        reloaded_metadata = (
+            json.load(file)
+        )
+
+    if reloaded_metadata != metadata:
+        raise RuntimeError(
+            "Reloaded metadata do not match "
+            "the saved metadata object."
+        )
+
+    print("\n========================================")
+    print(
+        "Session 15 Output 4: "
+        "Metadata JSON"
+    )
+
+    print(
+        "Output JSON:",
+        output_path,
+    )
+
+    print(
+        "Metadata schema version:",
+        metadata[
+            "metadata_schema_version"
+        ],
+    )
+
+    print(
+        "Recording count:",
+        metadata[
+            "recording_scope"
+        ]["recording_count"],
+    )
+
+    print(
+        "Rule count:",
+        metadata[
+            "rule_set"
+        ]["rule_count"],
+    )
+
+    print(
+        "Recorded output count:",
+        len(
+            metadata["outputs"]
+        ),
+    )
+
+
 def print_core_rule_summary(
     decision_rows,
 ):
@@ -4015,6 +4557,36 @@ def main():
         ),
         output_path=(
             RULE_RUN_SUMMARY_CSV_PATH
+        ),
+    )
+
+    session15_metadata = (
+        build_session15_metadata(
+            source_rows=source_rows,
+            selected_rows=selected_rows,
+            grouped_rows=grouped_rows,
+            thresholds_by_subject=(
+                thresholds_by_subject
+            ),
+            core_rule_rows_by_rule=(
+                core_rule_rows_by_rule
+            ),
+            decision_stream_rows=(
+                decision_stream_rows
+            ),
+            command_episode_rows=(
+                command_episode_rows
+            ),
+            rule_run_summary_rows=(
+                rule_run_summary_rows
+            ),
+        )
+    )
+
+    save_metadata_json(
+        metadata=session15_metadata,
+        output_path=(
+            METADATA_JSON_PATH
         ),
     )
 

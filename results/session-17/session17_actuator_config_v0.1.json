@@ -1,0 +1,110 @@
+{
+  "session": 17,
+  "configuration_id": "actuator-v0.1",
+  "configuration_status": "selected",
+  "test_context": {
+    "control_source": "Arduino internal test sequence",
+    "serial_control_used": false,
+    "eeg_command_replay_used": false
+  },
+  "hardware": {
+    "board": {
+      "model": "Arduino Uno R3-compatible board",
+      "usb_connection": "USB Type-B",
+      "port_during_session": "COM4",
+      "power_source": "USB"
+    },
+    "servo": {
+      "model_marking": "Tower Pro SG90",
+      "unit_id": "S17-SERVO-A",
+      "signal_pin": 9,
+      "power_source": "external 5 V adapter rail"
+    },
+    "gripper": {
+      "type": "1-DOF acrylic micro-servo gripper kit",
+      "object_retention_test_performed": false
+    },
+    "external_power": {
+      "adapter_nominal_voltage_v": 5.0,
+      "adapter_nominal_current_a": 2.0,
+      "measured_no_load_voltage_v": null,
+      "polarity_checked": true,
+      "breadboard_rail_checked": true,
+      "common_ground_used": true,
+      "arduino_5v_connected_to_servo_rail": false
+    },
+    "capacitor": {
+      "capacitance_uF": 1000,
+      "rated_voltage_v": 16,
+      "connection": "parallel across external servo +5 V and GND rails"
+    }
+  },
+  "commanded_angle_configuration": {
+    "close_angle_deg": 60,
+    "startup_angle_deg": 90,
+    "open_angle_deg": 120,
+    "angle_increase_direction": "OPEN",
+    "angle_decrease_direction": "CLOSE",
+    "physical_shaft_angle_independently_measured": false
+  },
+  "motion_policy": {
+    "angle_update_step_deg": 2,
+    "motion_update_interval_ms": 50,
+    "open_behavior": "increment commanded angle toward the open endpoint",
+    "close_behavior": "decrement commanded angle toward the close endpoint",
+    "stop_behavior": "stop further commanded-angle updates and retain the last commanded target",
+    "endpoint_behavior": "clamp commanded angle to the calibrated 60-120 degree range",
+    "duplicate_command_behavior": "retain the current state without restarting motion",
+    "direction_reversal_behavior": "change direction at the next motion update"
+  },
+  "validation_summary": {
+    "board_blink_test": "PASS",
+    "board_reset_test": "PASS",
+    "external_power_path_test": "PASS",
+    "unloaded_servo_smoke_test": "PASS",
+    "gripper_manual_motion_test": "PASS",
+    "endpoint_calibration": "PASS",
+    "open_close_stop_functional_test": "PASS",
+    "startup_reset_test": "PASS",
+    "separately_counted_10_cycle_test_performed": false,
+    "repeated_operation_observed": true,
+    "board_reset_during_actuator_operation_observed": false,
+    "continuous_stall_or_buzz_observed": false,
+    "gear_skip_observed": false,
+    "out_of_range_motion_observed": false
+  },
+  "known_behavior": {
+    "brief_startup_transient_observed": true,
+    "startup_transient_repeatable": true,
+    "startup_transient_description": "A brief initial displacement was observed during startup/reset without sustained oscillation, endpoint excursion, or continuous stall.",
+    "startup_transient_cause": "not isolated; mechanical play in the acrylic gear/linkage and servo initialization are possible contributors"
+  },
+  "firmware": {
+    "servo_smoke_test": "firmware/session-17/session17_servo_smoke_test/session17_servo_smoke_test.ino",
+    "endpoint_calibration": "firmware/session-17/session17_endpoint_calibration/session17_endpoint_calibration.ino",
+    "actuator_control": "firmware/session-17/session17_actuator_control/session17_actuator_control.ino"
+  },
+  "evidence": {
+    "wiring_photo": "media/session-17/photos/validation/s17_servo_smoke_test_wiring.jpg",
+    "board_blink_video": "media/session-17/videos/s17_board_blink_test.mp4",
+    "servo_smoke_test_video": "media/session-17/videos/s17_servo_smoke_test.mp4",
+    "actuator_function_video": "media/session-17/videos/s17_actuator_open_stop_close_v0.1.mp4",
+    "startup_reset_video": "media/session-17/videos/s17_actuator_startup_reset_v0.1.mp4"
+  },
+  "session_18_handoff": {
+    "reuse_actuator_configuration": true,
+    "next_control_source": "Python serial commands",
+    "command_vocabulary": [
+      "OPEN",
+      "CLOSE",
+      "STOP"
+    ],
+    "items_to_validate_next": [
+      "serial command parsing",
+      "ACK response",
+      "invalid-command handling",
+      "serial-open reset behavior",
+      "basic send-receive log"
+    ]
+  }
+}

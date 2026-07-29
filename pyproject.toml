@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools<81"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bci-eeg-robot-control"
+version = "0.1.0"
+description = "Reusable research code for EEG-derived robot control."
+requires-python = ">=3.11,<3.12"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

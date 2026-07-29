@@ -22,7 +22,7 @@ DECISION_STREAM_CSV_PATH = (
     SESSION15_RESULTS_DIR
     / (
         "eegbci_subject-001_runs-01-02_"
-        "posterior-alpha-offline-"
+        "posterior-alpha_offline-"
         "decision-stream.csv"
     )
 )
@@ -31,7 +31,7 @@ METADATA_JSON_PATH = (
     SESSION15_RESULTS_DIR
     / (
         "eegbci_subject-001_runs-01-02_"
-        "posterior-alpha-offline-"
+        "posterior-alpha_offline-"
         "decision-rule-metadata.json"
     )
 )
@@ -55,7 +55,7 @@ COMMAND_EPISODE_CSV_PATH = (
     SESSION15_RESULTS_DIR
     / (
         "eegbci_subject-001_runs-01-02_"
-        "posterior-alpha-offline-"
+        "posterior-alpha_offline-"
         "command-episodes.csv"
     )
 )

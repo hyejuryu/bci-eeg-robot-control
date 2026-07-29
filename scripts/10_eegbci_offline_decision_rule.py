@@ -10,6 +10,18 @@ from pathlib import Path
 
 import numpy as np
 
+from bci_robot.decision_rule import (
+    CLOSE_COMMAND_STATE,
+    DwellDecisionState,
+    HIGH_EVIDENCE_STATE,
+    LOW_EVIDENCE_STATE,
+    OPEN_COMMAND_STATE,
+    STOP_COMMAND_STATE,
+    UNAVAILABLE_EVIDENCE_STATE,
+    classify_threshold_state,
+    update_dwell_decision,
+)
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -94,15 +106,6 @@ SMOOTHING_ID_NONE = "smooth-none"
 
 SMOOTHING_ID_MEDIAN3 = "smooth-median3"
 MEDIAN3_WINDOW_UPDATES = 3
-
-LOW_EVIDENCE_STATE = "LOW_ALPHA"
-HIGH_EVIDENCE_STATE = "HIGH_ALPHA"
-
-OPEN_COMMAND_STATE = "CMD_OPEN"
-CLOSE_COMMAND_STATE = "CMD_CLOSE"
-STOP_COMMAND_STATE = "CMD_STOP"
-
-UNAVAILABLE_EVIDENCE_STATE = "UNAVAILABLE"
 
 CORE_RULE_CONFIGURATIONS = [
     {
@@ -1295,26 +1298,6 @@ def print_causal_median3_validation(
     )
 
 
-def command_from_evidence_state(
-    evidence_state,
-):
-    """
-    Map an active evidence state to its
-    corresponding virtual command.
-    """
-
-    if evidence_state == LOW_EVIDENCE_STATE:
-        return OPEN_COMMAND_STATE
-
-    if evidence_state == HIGH_EVIDENCE_STATE:
-        return CLOSE_COMMAND_STATE
-
-    raise RuntimeError(
-        "Cannot map an unexpected evidence "
-        f"state to a command: {evidence_state}"
-    )
-
-
 def build_dwell_decision_rows(
     processed_rows,
     thresholds_by_subject,
@@ -1400,14 +1383,7 @@ def build_dwell_decision_rows(
             ]
         )
 
-        # The active evidence state has already
-        # satisfied the dwell requirement.
-        active_evidence_state = None
-
-        # The pending state has not yet satisfied
-        # the dwell requirement.
-        pending_evidence_state = None
-        pending_count = 0
+        decision_state = DwellDecisionState()
 
         for row in rows:
             raw_feature_value = row[
@@ -1422,14 +1398,6 @@ def build_dwell_decision_rows(
                 "smoothed_feature_value"
             ]
 
-            initial_command_confirmed = False
-            active_switch_confirmed = False
-
-            pending_state_for_row = None
-            pending_count_for_row = 0
-
-            # An unavailable feature produces STOP
-            # and does not enter the dwell machine.
             if not smoothed_available:
                 if smoothed_feature_value is not None:
                     raise RuntimeError(
@@ -1438,23 +1406,8 @@ def build_dwell_decision_rows(
                         "feature value."
                     )
 
-                if (
-                    active_evidence_state is not None
-                    or pending_evidence_state is not None
-                    or pending_count != 0
-                ):
-                    raise RuntimeError(
-                        "An unavailable processed "
-                        "row occurred after dwell "
-                        "processing had started."
-                    )
-
                 evidence_state = (
                     UNAVAILABLE_EVIDENCE_STATE
-                )
-
-                command_state = (
-                    STOP_COMMAND_STATE
                 )
 
             else:
@@ -1465,122 +1418,52 @@ def build_dwell_decision_rows(
                         "feature value."
                     )
 
-                if (
-                    not np.isfinite(
-                        smoothed_feature_value
+                evidence_state = (
+                    classify_threshold_state(
+                        processed_feature_value=(
+                            smoothed_feature_value
+                        ),
+                        threshold_value=(
+                            threshold_value
+                        ),
                     )
-                    or smoothed_feature_value <= 0.0
-                ):
-                    raise RuntimeError(
-                        "The processed feature "
-                        "must be finite and positive."
-                    )
+                )
 
-                if (
-                    smoothed_feature_value
-                    >= threshold_value
-                ):
-                    evidence_state = (
-                        HIGH_EVIDENCE_STATE
-                    )
-                else:
-                    evidence_state = (
-                        LOW_EVIDENCE_STATE
-                    )
+            dwell_result = (
+                update_dwell_decision(
+                    state=decision_state,
+                    evidence_state=evidence_state,
+                    dwell_updates=dwell_updates,
+                )
+            )
 
-                # No command has yet been
-                # initialized.
-                if active_evidence_state is None:
-                    if (
-                        pending_evidence_state
-                        == evidence_state
-                    ):
-                        pending_count += 1
-                    else:
-                        pending_evidence_state = (
-                            evidence_state
-                        )
-                        pending_count = 1
+            pending_state_for_row = (
+                dwell_result
+                .candidate_evidence_state
+            )
 
-                    pending_state_for_row = (
-                        pending_evidence_state
-                    )
+            pending_count_for_row = (
+                dwell_result.candidate_count
+            )
 
-                    pending_count_for_row = (
-                        pending_count
-                    )
+            active_evidence_state = (
+                dwell_result
+                .active_evidence_state
+            )
 
-                    if (
-                        pending_count
-                        >= dwell_updates
-                    ):
-                        active_evidence_state = (
-                            evidence_state
-                        )
+            initial_command_confirmed = (
+                dwell_result
+                .initial_command_confirmed
+            )
 
-                        initial_command_confirmed = (
-                            True
-                        )
+            active_switch_confirmed = (
+                dwell_result
+                .active_switch_confirmed
+            )
 
-                        pending_evidence_state = None
-                        pending_count = 0
-
-                # Current evidence agrees with
-                # the active command state.
-                elif (
-                    evidence_state
-                    == active_evidence_state
-                ):
-                    pending_evidence_state = None
-                    pending_count = 0
-
-                # Current evidence opposes the
-                # active command state.
-                else:
-                    if (
-                        pending_evidence_state
-                        == evidence_state
-                    ):
-                        pending_count += 1
-                    else:
-                        pending_evidence_state = (
-                            evidence_state
-                        )
-                        pending_count = 1
-
-                    pending_state_for_row = (
-                        pending_evidence_state
-                    )
-
-                    pending_count_for_row = (
-                        pending_count
-                    )
-
-                    if (
-                        pending_count
-                        >= dwell_updates
-                    ):
-                        active_evidence_state = (
-                            evidence_state
-                        )
-
-                        active_switch_confirmed = (
-                            True
-                        )
-
-                        pending_evidence_state = None
-                        pending_count = 0
-
-                if active_evidence_state is None:
-                    command_state = (
-                        STOP_COMMAND_STATE
-                    )
-                else:
-                    command_state = (
-                        command_from_evidence_state(
-                            active_evidence_state
-                        )
-                    )
+            command_state = (
+                dwell_result.command_state
+            )
 
             decision_rows.append({
                 "rule_id": rule_id,

@@ -10,7 +10,11 @@ from pathlib import Path
 import mne
 import numpy as np
 from mne.datasets import eegbci
-from scipy.signal import welch
+
+from bci_robot.eeg_features import (
+    compute_welch_psd,
+    extract_mean_band_psd,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -191,122 +195,6 @@ def prepare_posterior_data(raw):
         posterior_data,
         posterior_channel_names,
     )
-
-
-def compute_welch_psd(
-    window_data,
-    sfreq,
-):
-    if window_data.ndim != 2:
-        raise ValueError(
-            "Welch input must be a "
-            "two-dimensional array."
-        )
-
-    if (
-        window_data.shape[1]
-        < WELCH_N_PER_SEG
-    ):
-        raise ValueError(
-            "Welch input is shorter than "
-            "one configured segment."
-        )
-
-    freqs, psd_data = welch(
-        window_data,
-        fs=sfreq,
-        window="hann",
-        nperseg=WELCH_N_PER_SEG,
-        noverlap=WELCH_N_OVERLAP,
-        nfft=WELCH_N_FFT,
-        detrend="constant",
-        return_onesided=True,
-        scaling="density",
-        axis=-1,
-        average="mean",
-    )
-
-    frequency_mask = (
-        (freqs >= PSD_MIN_HZ)
-        & (freqs <= PSD_MAX_HZ)
-    )
-
-    freqs = freqs[
-        frequency_mask
-    ]
-
-    psd_data = psd_data[
-        :,
-        frequency_mask,
-    ]
-
-    if not np.isfinite(
-        psd_data
-    ).all():
-        raise ValueError(
-            "Welch PSD contains "
-            "non-finite values."
-        )
-
-    return psd_data, freqs
-
-
-def extract_posterior_alpha_mean_psd(
-    psd_data,
-    freqs,
-):
-    if psd_data.ndim != 2:
-        raise ValueError(
-            "PSD data must be a "
-            "two-dimensional array."
-        )
-
-    if freqs.ndim != 1:
-        raise ValueError(
-            "Frequency data must be a "
-            "one-dimensional array."
-        )
-
-    posterior_mean_psd = (
-        psd_data.mean(axis=0)
-    )
-
-    alpha_mask = (
-        (freqs >= ALPHA_BAND[0])
-        & (freqs < ALPHA_BAND[1])
-    )
-
-    if not np.any(alpha_mask):
-        raise RuntimeError(
-            "No PSD frequency bins were "
-            "found in the alpha band."
-        )
-
-    alpha_psd_values = (
-        posterior_mean_psd[
-            alpha_mask
-        ]
-    )
-
-    feature_value = float(
-        alpha_psd_values.mean()
-    )
-
-    if not np.isfinite(
-        feature_value
-    ):
-        raise ValueError(
-            "Posterior-alpha feature is "
-            "non-finite."
-        )
-
-    if feature_value < 0:
-        raise ValueError(
-            "Posterior-alpha PSD feature "
-            "is negative."
-        )
-
-    return feature_value
 
 
 def load_reference_feature_rows():
@@ -557,14 +445,21 @@ def build_local_decomposition(
         psd_data, freqs = compute_welch_psd(
             window_data=segment_data,
             sfreq=sfreq,
+            n_per_seg=WELCH_N_PER_SEG,
+            n_overlap=WELCH_N_OVERLAP,
+            n_fft=WELCH_N_FFT,
+            psd_min_hz=PSD_MIN_HZ,
+            psd_max_hz=PSD_MAX_HZ,
         )
 
         segment_feature = (
-            extract_posterior_alpha_mean_psd(
+            extract_mean_band_psd(
                 psd_data=psd_data,
                 freqs=freqs,
-            )
-        )
+                band_low_hz=ALPHA_BAND[0],
+                band_high_hz=ALPHA_BAND[1],
+    )
+)
 
         start_sec = (
             start_sample / sfreq

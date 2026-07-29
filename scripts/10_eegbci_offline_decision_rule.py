@@ -4463,17 +4463,6 @@ def main():
             "core-rule count."
         )
 
-    decision_stream_rows = (
-        save_decision_stream_csv(
-            core_rule_rows_by_rule=(
-                core_rule_rows_by_rule
-            ),
-            output_path=(
-                DECISION_STREAM_CSV_PATH
-            ),
-        )
-    )
-
     print("\n========================================")
     print(
         "Session 15 Step 4: "

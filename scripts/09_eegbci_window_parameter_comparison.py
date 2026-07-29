@@ -10,7 +10,12 @@ import matplotlib.pyplot as plt
 import mne
 import numpy as np
 from mne.datasets import eegbci
-from scipy.signal import welch
+
+from bci_robot.eeg_features import (
+    compute_welch_psd,
+    extract_mean_band_psd,
+    generate_window_bounds,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -339,110 +344,6 @@ def prepare_posterior_data(raw):
     return posterior_data, posterior_channel_names
 
 
-def generate_window_bounds(
-    t0_onset,
-    t0_end,
-    sfreq,
-    n_samples,
-    window_length_sec,
-    step_size_sec,
-):
-    window_length_samples = int(
-        round(window_length_sec * sfreq)
-    )
-
-    step_size_samples = int(
-        round(step_size_sec * sfreq)
-    )
-
-    t0_start_sample = int(
-        round(t0_onset * sfreq)
-    )
-
-    t0_end_sample = int(
-        np.floor(t0_end * sfreq)
-    )
-
-    if window_length_samples <= 0:
-        raise ValueError(
-            "Window length must be at least one sample."
-        )
-
-    if step_size_samples <= 0:
-        raise ValueError(
-            "Step size must be at least one sample."
-        )
-
-    if t0_start_sample < 0:
-        raise ValueError(
-            f"T0 start sample is negative: "
-            f"{t0_start_sample}"
-        )
-
-    if t0_end_sample > n_samples:
-        raise ValueError(
-            f"T0 end sample ({t0_end_sample}) exceeds "
-            f"the available sample count ({n_samples})."
-        )
-
-    available_samples = (
-        t0_end_sample - t0_start_sample
-    )
-
-    if available_samples < window_length_samples:
-        raise ValueError(
-            "The target interval is shorter than "
-            "the configured window length."
-        )
-
-    expected_window_count = (
-        1
-        + (
-            available_samples
-            - window_length_samples
-        )
-        // step_size_samples
-    )
-
-    window_bounds = []
-
-    start_sample_values = range(
-        t0_start_sample,
-        t0_end_sample - window_length_samples + 1,
-        step_size_samples,
-    )
-
-    for window_index, start_sample in enumerate(
-        start_sample_values
-    ):
-        stop_sample = (
-            start_sample + window_length_samples
-        )
-
-        start_sec = start_sample / sfreq
-        end_sec = stop_sample / sfreq
-
-        window_bounds.append({
-            "window_index": window_index,
-            "start_sample": start_sample,
-            "stop_sample": stop_sample,
-            "start_sec": start_sec,
-            "end_sec": end_sec,
-        })
-
-    if len(window_bounds) != expected_window_count:
-        raise RuntimeError(
-            f"Expected {expected_window_count} windows, "
-            f"but generated {len(window_bounds)}."
-        )
-
-    return (
-        window_bounds,
-        window_length_samples,
-        step_size_samples,
-    )
-
-
 def validate_window_slices(
     posterior_data,
     window_bounds,
@@ -491,133 +392,6 @@ def validate_window_slices(
         "second_window_shape": second_window_shape,
         "last_window_shape": last_window_shape,
     }
-
-
-def compute_welch_psd(
-    window_data,
-    sfreq,
-):
-    if window_data.ndim != 2:
-        raise ValueError(
-            f"Expected 2D window data, "
-            f"but received shape {window_data.shape}."
-        )
-
-    if window_data.shape[1] < WELCH_N_PER_SEG:
-        raise ValueError(
-            f"Window contains {window_data.shape[1]} samples, "
-            f"but Welch requires at least "
-            f"{WELCH_N_PER_SEG} samples per segment."
-        )
-
-    if WELCH_N_OVERLAP >= WELCH_N_PER_SEG:
-        raise ValueError(
-            "Welch overlap must be smaller than "
-            "the segment length."
-        )
-
-    freqs, psd_data = welch(
-        window_data,
-        fs=sfreq,
-        window="hann",
-        nperseg=WELCH_N_PER_SEG,
-        noverlap=WELCH_N_OVERLAP,
-        nfft=WELCH_N_FFT,
-        detrend="constant",
-        return_onesided=True,
-        scaling="density",
-        axis=-1,
-        average="mean",
-    )
-
-    frequency_mask = (
-        (freqs >= PSD_MIN_HZ)
-        & (freqs <= PSD_MAX_HZ)
-    )
-
-    freqs = freqs[frequency_mask]
-    psd_data = psd_data[:, frequency_mask]
-
-    if psd_data.shape[0] != window_data.shape[0]:
-        raise RuntimeError(
-            "PSD channel count does not match "
-            "the input window channel count."
-        )
-
-    if psd_data.shape[1] != len(freqs):
-        raise RuntimeError(
-            "PSD frequency dimension does not match "
-            "the frequency array length."
-        )
-
-    if not np.isfinite(psd_data).all():
-        raise ValueError(
-            "Welch PSD contains non-finite values."
-        )
-
-    if not np.isfinite(freqs).all():
-        raise ValueError(
-            "Welch frequency array contains "
-            "non-finite values."
-        )
-
-    return psd_data, freqs
-
-
-def extract_posterior_alpha_mean_psd(
-    psd_data,
-    freqs,
-):
-    if psd_data.ndim != 2:
-        raise ValueError(
-            f"Expected 2D PSD data, "
-            f"but received shape {psd_data.shape}."
-        )
-
-    if freqs.ndim != 1:
-        raise ValueError(
-            f"Expected a 1D frequency array, "
-            f"but received shape {freqs.shape}."
-        )
-
-    if psd_data.shape[1] != len(freqs):
-        raise ValueError(
-            "PSD frequency dimension does not match "
-            "the frequency array length."
-        )
-
-    posterior_mean_psd = psd_data.mean(axis=0)
-
-    alpha_mask = (
-        (freqs >= ALPHA_BAND[0])
-        & (freqs < ALPHA_BAND[1])
-    )
-
-    if not np.any(alpha_mask):
-        raise RuntimeError(
-            "No frequency bins were found inside "
-            "the configured alpha band."
-        )
-
-    alpha_psd_values = posterior_mean_psd[
-        alpha_mask
-    ]
-
-    posterior_alpha_mean_psd = float(
-        alpha_psd_values.mean()
-    )
-
-    if not np.isfinite(posterior_alpha_mean_psd):
-        raise ValueError(
-            "Posterior alpha mean PSD is non-finite."
-        )
-
-    if posterior_alpha_mean_psd < 0:
-        raise ValueError(
-            "Posterior alpha mean PSD is negative."
-        )
-
-    return posterior_alpha_mean_psd
 
 
 def extract_run_features(
@@ -675,14 +449,21 @@ def extract_run_features(
         psd_data, freqs = compute_welch_psd(
             window_data=window_data,
             sfreq=sfreq,
+            n_per_seg=WELCH_N_PER_SEG,
+            n_overlap=WELCH_N_OVERLAP,
+            n_fft=WELCH_N_FFT,
+            psd_min_hz=PSD_MIN_HZ,
+            psd_max_hz=PSD_MAX_HZ,
         )
 
         posterior_alpha_mean_psd = (
-            extract_posterior_alpha_mean_psd(
-                psd_data=psd_data,
-                freqs=freqs,
-            )
+        extract_mean_band_psd(
+            psd_data=psd_data,
+            freqs=freqs,
+            band_low_hz=ALPHA_BAND[0],
+            band_high_hz=ALPHA_BAND[1],
         )
+    )
 
         window_start_sec = float(
             window_bound["start_sec"]
@@ -1962,6 +1743,11 @@ def validate_first_window_welch_psd(
     psd_data, freqs = compute_welch_psd(
         window_data=first_window_data,
         sfreq=sfreq,
+        n_per_seg=WELCH_N_PER_SEG,
+        n_overlap=WELCH_N_OVERLAP,
+        n_fft=WELCH_N_FFT,
+        psd_min_hz=PSD_MIN_HZ,
+        psd_max_hz=PSD_MAX_HZ,
     )
 
     if len(freqs) < 2:
@@ -2037,12 +1823,19 @@ def validate_first_window_alpha_feature(
     psd_data, freqs = compute_welch_psd(
         window_data=first_window_data,
         sfreq=sfreq,
+        n_per_seg=WELCH_N_PER_SEG,
+        n_overlap=WELCH_N_OVERLAP,
+        n_fft=WELCH_N_FFT,
+        psd_min_hz=PSD_MIN_HZ,
+        psd_max_hz=PSD_MAX_HZ,
     )
 
     posterior_alpha_mean_psd = (
-        extract_posterior_alpha_mean_psd(
+        extract_mean_band_psd(
             psd_data=psd_data,
             freqs=freqs,
+            band_low_hz=ALPHA_BAND[0],
+            band_high_hz=ALPHA_BAND[1],
         )
     )
 
@@ -2837,8 +2630,8 @@ def run_configuration(configuration):
             window_length_samples,
             step_size_samples,
         ) = generate_window_bounds(
-            t0_onset=t0_onset,
-            t0_end=t0_end,
+            interval_start_sec=t0_onset,
+            interval_end_sec=t0_end,
             sfreq=float(raw.info["sfreq"]),
             n_samples=int(raw.n_times),
             window_length_sec=window_length_sec,

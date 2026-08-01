@@ -1,0 +1,140 @@
+{
+  "artifact_type": "decision_rule_freeze",
+  "decision_rule_version": "v0.1",
+  "freeze_date": "2026-07-30",
+  "freeze_status": "frozen",
+  "source_session": 15,
+  "freeze_session": 16,
+  "source_artifacts": {
+    "decision_stream_csv": {
+      "path": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-decision-stream.csv",
+      "row_count": 944
+    },
+    "command_episode_csv": {
+      "path": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-command-episodes.csv",
+      "row_count": 42
+    },
+    "rule_run_summary_csv": {
+      "path": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-rule-run-summary.csv",
+      "row_count": 16
+    },
+    "metadata_json": {
+      "path": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-decision-rule-metadata.json"
+    }
+  },
+  "selected_rule": {
+    "rule_id": "thr-gap-mid__smooth-none__dwell-2",
+    "threshold": {
+      "threshold_id": "threshold_gap_midpoint",
+      "values_by_subject": [
+        {
+          "subject": 1,
+          "threshold_value_v2_per_hz": 1.3987182661955795e-10
+        }
+      ]
+    },
+    "smoothing": {
+      "smoothing_id": "smooth-none"
+    },
+    "dwell": {
+      "dwell_updates": 2,
+      "applies_to": [
+        "initial_command_confirmation",
+        "active_command_switch"
+      ]
+    },
+    "state_mapping": {
+      "LOW_ALPHA": "CMD_OPEN",
+      "HIGH_ALPHA": "CMD_CLOSE",
+      "UNAVAILABLE": "CMD_STOP"
+    }
+  },
+  "selection_record": {
+    "candidate_set_rule_count": 8,
+    "basis": [
+      "No active command switches occurred in either recording.",
+      "Run 1 contained one unconfirmed opposing candidate at 26.0 s.",
+      "The initial active command was confirmed at 3.0 s in both recordings."
+    ],
+    "scope": "Selected from the eight predefined Session 15 core configurations; this is not a global parameter optimum."
+  },
+  "validated_behavior_by_recording": [
+    {
+      "subject": 1,
+      "run": 1,
+      "condition": "baseline_eyes_open",
+      "decision_row_count": 59,
+      "first_active_command_time_sec": 3.0,
+      "first_active_command": "CMD_OPEN",
+      "final_command_state": "CMD_OPEN",
+      "active_switch_count": 0,
+      "unconfirmed_candidate_update_count": 1,
+      "unconfirmed_candidate_times_sec": [
+        26.0
+      ],
+      "evidence_counts": {
+        "LOW_ALPHA": 58,
+        "HIGH_ALPHA": 1
+      },
+      "command_episode_count": 2,
+      "command_episode_states": [
+        "CMD_STOP",
+        "CMD_OPEN"
+      ]
+    },
+    {
+      "subject": 1,
+      "run": 2,
+      "condition": "baseline_eyes_closed",
+      "decision_row_count": 59,
+      "first_active_command_time_sec": 3.0,
+      "first_active_command": "CMD_CLOSE",
+      "final_command_state": "CMD_CLOSE",
+      "active_switch_count": 0,
+      "unconfirmed_candidate_update_count": 0,
+      "unconfirmed_candidate_times_sec": [],
+      "evidence_counts": {
+        "LOW_ALPHA": 0,
+        "HIGH_ALPHA": 59
+      },
+      "command_episode_count": 2,
+      "command_episode_states": [
+        "CMD_STOP",
+        "CMD_CLOSE"
+      ]
+    }
+  ],
+  "regression_validation": {
+    "source_artifacts_exist_and_nonempty": true,
+    "source_row_counts_match_metadata": true,
+    "selected_configuration_matches": true,
+    "selected_behavior_matches": true,
+    "selected_decision_row_count": 118,
+    "selected_episode_row_count": 4,
+    "selected_summary_row_count": 2,
+    "frozen_stream_reload_exact_match": true,
+    "recalculated_during_freeze": {
+      "eeg_features": false,
+      "thresholds": false,
+      "smoothing": false,
+      "evidence_states": false,
+      "command_states": false
+    }
+  },
+  "frozen_output": {
+    "decision_stream_csv": {
+      "path": "results/session-16/eegbci_subject-001_runs-01-02_posterior-alpha_decision-rule-v0.1-stream.csv",
+      "row_count": 118,
+      "column_count": 25,
+      "row_order": [
+        "subject",
+        "run",
+        "window_index"
+      ],
+      "source_rows_copied_without_recalculation": true
+    },
+    "freeze_record_json": {
+      "path": "results/session-16/eegbci_subject-001_runs-01-02_posterior-alpha_decision-rule-v0.1.json"
+    }
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "session": 18,
+  "configuration_id": "serial-protocol-v0.1",
+  "configuration_status": "selected",
+  "test_context": {
+    "control_source": "Python serial validation sequence",
+    "eeg_command_replay_used": false,
+    "actuator_configuration_reused_from_session": 17,
+    "actuator_configuration_id": "actuator-v0.1"
+  },
+  "transport": {
+    "port_during_validation": "COM4",
+    "baud_rate": 9600,
+    "encoding": "ASCII",
+    "python_line_ending": "\\n",
+    "read_timeout_s": 0.1,
+    "startup_ready_timeout_s": 3.0,
+    "command_response_timeout_s": 1.0,
+    "maximum_unresolved_commands": 1,
+    "next_command_after_terminal_response_only": true
+  },
+  "protocol": {
+    "protocol_version": "S18_V0.1",
+    "accepted_commands": [
+      "OPEN",
+      "CLOSE",
+      "STOP"
+    ],
+    "accepted_command_case": "uppercase only",
+    "ready_format": "READY,<PROTOCOL_VERSION>,<MODE>,<COMMANDED_ANGLE_DEG>",
+    "ack_format": "ACK,<COMMAND>,<RESULT>,<MODE>,<COMMANDED_ANGLE_DEG>",
+    "error_format": "ERR,INVALID_COMMAND,<MODE>,<COMMANDED_ANGLE_DEG>",
+    "ready_example": "READY,S18_V0.1,STOP,90",
+    "mode_vocabulary": {
+      "STOP": "retain the last software-commanded angle without further angle updates",
+      "OPEN": "increment the software-commanded angle toward the open endpoint",
+      "CLOSE": "decrement the software-commanded angle toward the close endpoint"
+    },
+    "result_vocabulary": {
+      "APPLIED": "the requested command changed the current software motion mode without a direct OPEN-CLOSE reversal",
+      "DUPLICATE": "the requested command matched the current software motion mode",
+      "REVERSED": "the requested OPEN or CLOSE command directly reversed the current OPEN or CLOSE motion mode"
+    },
+    "endpoint_event_included": false,
+    "raw_invalid_input_echoed": false,
+    "arduino_trims_leading_trailing_whitespace": true
+  },
+  "startup_expectation": {
+    "protocol_version": "S18_V0.1",
+    "software_mode": "STOP",
+    "software_commanded_angle_deg": 90
+  },
+  "reused_actuator_configuration": {
+    "close_angle_deg": 60,
+    "startup_angle_deg": 90,
+    "open_angle_deg": 120,
+    "angle_update_step_deg": 2,
+    "motion_update_interval_ms": 50
+  },
+  "host_behavior": {
+    "command_sequence_location": "Python host event log only",
+    "command_sequence_start": 1,
+    "ready_sequence": 0,
+    "terminal_responses": [
+      "ACK",
+      "ERR"
+    ],
+    "unexpected_ready_while_waiting_for_response": "record the READY event and terminate the pending command with an error",
+    "response_timeout_behavior": "terminate the current run with a timeout error"
+  },
+  "validation_execution": {
+    "case_order": [
+      "V02",
+      "V09",
+      "V06",
+      "V08",
+      "V10-OPEN",
+      "V10-CLOSE"
+    ],
+    "case_order_basis": "state dependency rather than numerical order",
+    "v06_open_run_s": 0.8,
+    "v06_freeze_confirm_wait_s": 0.5,
+    "v08_direction_run_s": 0.9,
+    "endpoint_wait_margin_s": 0.2,
+    "independent_port_open_runs": 2
+  },
+  "validation_result_summary": {
+    "run_1": {
+      "validation_row_count": 6,
+      "pass_count": 6,
+      "event_row_count": 39,
+      "tx_count": 19,
+      "rx_count": 20,
+      "first_event": "READY sequence 0",
+      "last_event": "ACK sequence 19"
+    },
+    "run_2": {
+      "validation_row_count": 6,
+      "pass_count": 6,
+      "event_row_count": 39,
+      "tx_count": 19,
+      "rx_count": 20,
+      "first_event": "READY sequence 0",
+      "last_event": "ACK sequence 19"
+    },
+    "timeout_count": 0,
+    "malformed_response_count": 0
+  },
+  "implementation": {
+    "firmware": "firmware/session-18/session18_serial_actuator_control/session18_serial_actuator_control.ino",
+    "protocol_parser": "src/bci_robot/serial_protocol.py",
+    "serial_client": "src/bci_robot/serial_client.py",
+    "validation_controller": "scripts/12_s18_serial_controller.py"
+  },
+  "evidence": {
+    "canonical_validation_summary": "results/session-18/session18_serial_validation_summary.csv",
+    "canonical_event_log": "results/session-18/session18_serial_event_log.csv",
+    "run_1_validation_summary": "results/session-18/session18_serial_validation_summary_run1.csv",
+    "run_1_event_log": "results/session-18/session18_serial_event_log_run1.csv",
+    "run_2_validation_summary": "results/session-18/session18_serial_validation_summary_run2.csv",
+    "run_2_event_log": "results/session-18/session18_serial_event_log_run2.csv"
+  },
+  "session_19_handoff": {
+    "reuse_serial_client": true,
+    "next_command_source": "stored EEG-derived command stream",
+    "client_interface": [
+      "open",
+      "wait_ready",
+      "send_command",
+      "close"
+    ],
+    "unchanged_contract": [
+      "protocol version S18_V0.1",
+      "9600 baud",
+      "newline-terminated uppercase commands",
+      "READY before command transmission",
+      "one unresolved command at a time",
+      "ACK or ERR required before the next command",
+      "host-side TX-RX event logging"
+    ]
+  }
+}

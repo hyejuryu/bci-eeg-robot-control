@@ -13,6 +13,7 @@ dependencies:
   - jupyterlab
   - ipykernel
   - setuptools<81 # Session 11 compatibility constraint; original error not recorded
+  - pyserial=3.5
   - pip
   - pip:
       - brainflow==5.22.2

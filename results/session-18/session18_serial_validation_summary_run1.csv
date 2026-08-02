@@ -1,0 +1,7 @@
+case_id,case_name,status,observed
+V02,Startup READY handshake,PASS,protocol_version=S18_V0.1; startup_mode=STOP; startup_angle=90
+V09,Invalid command handling,PASS,error=INVALID_COMMAND; error_mode=STOP; error_angle=90; recovery_result=DUPLICATE; recovery_mode=STOP; recovery_angle=90
+V06,STOP commanded-angle freeze,PASS,setup_angle=60; open_run_s=0.80; first_stop_angle=94; second_stop_angle=94; freeze_wait_s=0.50
+V08,Direction reversal,PASS,close_start_angle=120; close_run_s=0.90; reversal_angle=82; post_reversal_angle=120; final_mode=STOP
+V10-OPEN,OPEN software endpoint snapshot,PASS,setup_angle=60; open_start_angle=60; open_wait_s=1.70; endpoint_result=DUPLICATE; endpoint_angle=120
+V10-CLOSE,CLOSE software endpoint snapshot,PASS,setup_angle=120; close_start_angle=120; close_wait_s=1.70; endpoint_result=DUPLICATE; endpoint_angle=60

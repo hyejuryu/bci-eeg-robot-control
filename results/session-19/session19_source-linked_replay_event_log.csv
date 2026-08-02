@@ -1,0 +1,5 @@
+replay_run_id,subject,run,condition,source_event_id,window_index,command_state,selection_reason,command_seq,source_decision_time_sec,scheduled_replay_elapsed_sec,actual_tx_elapsed_sec,schedule_offset_ms,ack_received_elapsed_sec,ack_round_trip_ms,serial_command,expected_ack_result,observed_ack_result,expected_actuator_mode,observed_actuator_mode,observed_commanded_angle_deg,status
+S19-S001-R01,1,1,baseline_eyes_open,S001-R01-W000,0,CMD_STOP,recording_first_row,1,2.0,0.0,0.016,16.0,0.047,31.0,STOP,DUPLICATE,DUPLICATE,STOP,STOP,90,PASS
+S19-S001-R01,1,1,baseline_eyes_open,S001-R01-W001,1,CMD_OPEN,command_state_change,2,3.0,1.0,1.0,0.0,1.031,31.0,OPEN,APPLIED,APPLIED,OPEN,OPEN,90,PASS
+S19-S001-R02,1,2,baseline_eyes_closed,S001-R02-W000,0,CMD_STOP,recording_first_row,1,2.0,0.0,0.0,0.0,0.047,47.0,STOP,DUPLICATE,DUPLICATE,STOP,STOP,90,PASS
+S19-S001-R02,1,2,baseline_eyes_closed,S001-R02-W001,1,CMD_CLOSE,command_state_change,2,3.0,1.0,1.0,0.0,1.031,31.0,CLOSE,APPLIED,APPLIED,CLOSE,CLOSE,90,PASS

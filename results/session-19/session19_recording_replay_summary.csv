@@ -1,0 +1,3 @@
+replay_run_id,subject,run,condition,ready_protocol_version,ready_actuator_mode,ready_commanded_angle_deg,planned_event_count,completed_event_count,pass_count,fail_count,max_abs_schedule_offset_ms,final_observed_actuator_mode,final_observed_commanded_angle_deg,startup_settle_wait_s,post_replay_observation_wait_s,status
+S19-S001-R01,1,1,baseline_eyes_open,S18_V0.1,STOP,90,2,2,2,0,16.0,OPEN,90,1.0,1.0,PASS
+S19-S001-R02,1,2,baseline_eyes_closed,S18_V0.1,STOP,90,2,2,2,0,0.0,CLOSE,90,1.0,1.0,PASS

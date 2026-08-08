@@ -277,6 +277,35 @@ Some requirements concern execution safety or reproducibility and should be stru
 
 Other decisions require contextual judgment and are better exposed to human review through compact decision metadata.
 
+### O08 — Repository-wide context access suggested a separate planning responsibility
+
+After Runtime v0.0.1 was frozen, the planned repository-wide read access was reconsidered.
+
+The need for broad Git-tracked repository access arose primarily from tasks such as:
+
+- inspecting prior implementations;
+- reconciling completed and deferred work;
+- identifying reusable code and existing outputs;
+- preparing an implementation proposal before execution.
+
+These responsibilities are distinct from deterministic execution of an already approved specification.
+
+#### Design implication
+
+Evaluate a separate read-only **Implementation Planner** responsible for:
+
+```text
+Git-tracked repository inspection
+→ prior-work reconciliation
+→ reuse / new-implementation assessment
+→ implementation proposal
+→ human review
+````
+
+The execution runtime remains responsible for controlled execution, validation, state persistence, pause, and resume.
+
+Runtime v0.0.1 remains unchanged as the frozen Pilot 001 baseline. Any later change to its read authority should be made through an explicit version revision rather than retrospective modification.
+
 #### Design implication
 
 Use:

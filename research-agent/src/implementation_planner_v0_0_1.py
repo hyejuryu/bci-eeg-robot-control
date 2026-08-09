@@ -161,6 +161,66 @@ def get_repo_commit() -> str:
     return result.stdout.strip()
 
 
+def get_working_tree_changes() -> list[str]:
+    """Return uncommitted Git working-tree changes."""
+    repo_root = get_repo_root()
+
+    result = subprocess.run(
+        [
+            "git",
+            "-c",
+            "core.quotePath=false",
+            "status",
+            "--porcelain=v1",
+            "--untracked-files=all",
+        ],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+
+    if result.returncode != 0:
+        raise RuntimeError(
+            "Unable to inspect Git working-tree status."
+        )
+
+    return [
+        line
+        for line in result.stdout.splitlines()
+        if line.strip()
+    ]
+
+
+def require_clean_working_tree() -> None:
+    """Block a planner run when the Git working tree is dirty."""
+    changes = get_working_tree_changes()
+
+    if not changes:
+        return
+
+    displayed_changes = changes[:20]
+
+    detail = "\n".join(
+        f"- {change}"
+        for change in displayed_changes
+    )
+
+    if len(changes) > 20:
+        detail += (
+            f"\n- ... and {len(changes) - 20} more change(s)"
+        )
+
+    raise RuntimeError(
+        "Planner run requires a clean Git working tree.\n"
+        "Commit, stash, or discard the changes before running "
+        "the planner.\n\n"
+        f"Detected changes:\n{detail}"
+    )
+
+
 # ---------------------------------------------------------------------
 # Governing-document loader
 # ---------------------------------------------------------------------
@@ -471,11 +531,14 @@ def validate_planner_output(
             "NEW_IMPLEMENTATION",
             "VALIDATION",
             "EXECUTION_PLAN",
-            "OPEN_DECISIONS",
         ]
 
         for section in required_sections:
-            if section not in stripped:
+            if not re.search(
+                rf"^{re.escape(section)}(?:\s*:)?\s*$",
+                stripped,
+                flags=re.MULTILINE,
+            ):
                 errors.append(
                     f"Missing required section: "
                     f"{section}"
@@ -643,11 +706,13 @@ GIT_HEAD:
 {research_spec}
 </FROZEN_RESEARCH_SPEC>
 
-Inspect the repository as needed.
+The planner MUST inspect repository records as required to prepare the
+implementation proposal.
 
-Do not implement or execute the proposed work.
+The planner MUST NOT implement or execute the proposed work.
 
-Stop after producing the Implementation Proposal or a BLOCKED report.
+The planner MUST stop after producing the Implementation Proposal or a
+BLOCKED report.
 """.strip()
 
 
@@ -938,6 +1003,8 @@ required READ succeeds.
 def run_full_planner(
     client: OpenAI,
 ) -> None:
+    require_clean_working_tree()
+
     trace = PlannerTrace()
 
     planner_scope = (
@@ -997,6 +1064,7 @@ def run_full_planner(
                     REASONING_EFFORT
                 ),
                 "git_head": repo_commit,
+                "working_tree_status": "CLEAN",
                 "model_turns": (
                     trace.model_turns
                 ),

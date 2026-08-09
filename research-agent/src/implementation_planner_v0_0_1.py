@@ -4,11 +4,18 @@ import argparse
 import json
 import re
 import subprocess
+import time
 from dataclasses import dataclass, field
 from typing import Any
 
-import openai
-from openai import OpenAI
+from llm_backend import (
+    BackendError,
+    BackendToolOutput,
+    BackendTurn,
+    LLMBackend,
+    OllamaChatBackend,
+    OpenAIResponsesBackend,
+)
 
 from repo_read_tools import (
     RepoReadError,
@@ -21,9 +28,6 @@ from repo_read_tools import (
 # ---------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------
-
-MODEL = "gpt-5.6-sol"
-REASONING_EFFORT = "medium"
 
 MAX_MODEL_TURNS = 12
 MAX_TOOL_CALLS = 30
@@ -63,69 +67,95 @@ class PlannerTrace:
 
     input_tokens: int = 0
     cached_input_tokens: int = 0
+    cache_write_tokens: int = 0
     output_tokens: int = 0
+
+    token_usage_by_turn: list[
+        dict[str, int]
+    ] = field(
+        default_factory=list
+    )
+
+    total_backend_call_wall_seconds: float = 0.0
+
+    timing_by_turn: list[
+        dict[str, Any]
+    ] = field(
+        default_factory=list
+    )
 
     request_ids: list[str] = field(
         default_factory=list
     )
 
-
     def record_usage(
         self,
-        response: Any,
+        turn: BackendTurn,
+        backend_call_wall_seconds: float,
     ) -> None:
-        usage = getattr(
-            response,
-            "usage",
-            None,
-        )
-
-        if usage is None:
-            return
 
         self.input_tokens += (
-            getattr(
-                usage,
-                "input_tokens",
-                0,
-            )
-            or 0
+            turn.input_tokens
+        )
+
+        self.cached_input_tokens += (
+            turn.cached_input_tokens
+        )
+
+        self.cache_write_tokens += (
+            turn.cache_write_tokens
         )
 
         self.output_tokens += (
-            getattr(
-                usage,
-                "output_tokens",
-                0,
-            )
-            or 0
+            turn.output_tokens
         )
 
-        details = getattr(
-            usage,
-            "input_tokens_details",
-            None,
+        self.token_usage_by_turn.append(
+            {
+                "turn": self.model_turns,
+                "input_tokens": (
+                    turn.input_tokens
+                ),
+                "cached_input_tokens": (
+                    turn.cached_input_tokens
+                ),
+                "cache_write_tokens": (
+                    turn.cache_write_tokens
+                ),
+                "output_tokens": (
+                    turn.output_tokens
+                ),
+            }
         )
 
-        if details is not None:
-            self.cached_input_tokens += (
-                getattr(
-                    details,
-                    "cached_tokens",
-                    0,
-                )
-                or 0
-            )
-
-        request_id = getattr(
-            response,
-            "_request_id",
-            None,
+        self.total_backend_call_wall_seconds += (
+            backend_call_wall_seconds
         )
 
-        if request_id:
+        self.timing_by_turn.append(
+            {
+                "turn": self.model_turns,
+                "backend_call_wall_seconds": (
+                    backend_call_wall_seconds
+                ),
+                "provider_total_duration_ns": (
+                    turn.provider_total_duration_ns
+                ),
+                "provider_load_duration_ns": (
+                    turn.provider_load_duration_ns
+                ),
+                "provider_prompt_eval_duration_ns": (
+                    turn.provider_prompt_eval_duration_ns
+                ),
+                "provider_eval_duration_ns": (
+                    turn.provider_eval_duration_ns
+                ),
+            }
+        )
+
+        if turn.request_id:
             self.request_ids.append(
-                request_id
+                turn.request_id
             )
 
 
@@ -569,6 +599,18 @@ def validate_planner_output(
                     f"{field_name}"
                 )
 
+        if not re.search(
+            (
+                r"^BLOCK_REASON:\s*"
+                r"(MISSING_CONTEXT|ACCESS_ERROR|SPEC_CONFLICT|OTHER)\s*$"
+            ),
+            stripped,
+            flags=re.MULTILINE,
+        ):
+            errors.append(
+                "BLOCK_REASON must use an allowed label."
+            )
+
     basis_paths = extract_basis_paths(
         stripped
     )
@@ -722,7 +764,7 @@ BLOCKED report.
 
 
 def run_agent_loop(
-    client: OpenAI,
+    backend: LLMBackend,
     instructions: str,
     task: str,
     trace: PlannerTrace,
@@ -731,52 +773,50 @@ def run_agent_loop(
     """
     Run the model/tool loop until the model returns final text.
     """
-    input_items: list[Any] = [
-        {
-            "role": "user",
-            "content": task,
-        }
-    ]
+    backend.start_run(
+        instructions=instructions,
+        task=task,
+        tools=TOOLS,
+    )
+
+    pending_tool_outputs: list[
+        BackendToolOutput
+    ] = []
 
     for _ in range(
         MAX_MODEL_TURNS
     ):
         trace.model_turns += 1
 
-        response = client.responses.create(
-            model=MODEL,
-            reasoning={
-                "effort": (
-                    REASONING_EFFORT
-                ),
-            },
-            instructions=instructions,
-            tools=TOOLS,
-            input=input_items,
-            store=False,
+        backend_call_started = (
+            time.perf_counter()
         )
+
+        turn = backend.run_turn(
+            tool_outputs=(
+                pending_tool_outputs
+            )
+        )
+
+        backend_call_wall_seconds = (
+            time.perf_counter()
+            - backend_call_started
+        )
+
+        pending_tool_outputs = []
 
         trace.record_usage(
-            response
+            turn,
+            backend_call_wall_seconds,
         )
 
-        # Preserve all model output items,
-        # including reasoning and function calls.
-        input_items += response.output
-
-        function_calls = [
-            item
-            for item in response.output
-            if item.type
-            == "function_call"
-        ]
-
-        if function_calls:
-            for call in function_calls:
+        if turn.tool_calls:
+            for call in turn.tool_calls:
                 try:
                     arguments = json.loads(
-                        call.arguments
+                        call.arguments_json
                     )
+
                 except json.JSONDecodeError:
                     tool_output = json.dumps(
                         {
@@ -798,33 +838,26 @@ def run_agent_loop(
                         )
                     )
 
-                input_items.append(
-                    {
-                        "type": (
-                            "function_call_output"
+                pending_tool_outputs.append(
+                    BackendToolOutput(
+                        call_id=(
+                            call.call_id
                         ),
-                        "call_id": call.call_id,
-                        "output": tool_output,
-                    }
+                        output=tool_output,
+                    )
                 )
 
             continue
 
         final_text = (
-            response.output_text
+            turn.output_text
             or ""
         ).strip()
 
         if not final_text:
-            input_items.append(
-                {
-                    "role": "user",
-                    "content": (
-                        "No final text was "
-                        "returned. Continue the "
-                        "task."
-                    ),
-                }
+            backend.add_user_message(
+                "No final text was returned. "
+                "Continue the task."
             )
 
             continue
@@ -854,11 +887,8 @@ def run_agent_loop(
             "path has not yet been inspected."
         )
 
-        input_items.append(
-            {
-                "role": "user",
-                "content": correction,
-            }
+        backend.add_user_message(
+            correction
         )
 
     raise RuntimeError(
@@ -873,12 +903,16 @@ def run_agent_loop(
 
 
 def run_tool_smoke_test(
-    client: OpenAI,
+    backend: LLMBackend,
 ) -> None:
     trace = PlannerTrace()
 
     repo_commit = (
         get_repo_commit()
+    )
+
+    backend_metadata = (
+        backend.metadata()
     )
 
     instructions = """
@@ -925,19 +959,31 @@ required READ succeeds.
     )
 
     final_text = run_agent_loop(
-        client=client,
+        backend=backend,
         instructions=instructions,
         task=task,
         trace=trace,
         validate_final=False,
     )
 
+    result_path = (
+        final_text.removeprefix(
+            "TOOL_LOOP_OK:"
+        ).strip()
+    )
+
     smoke_pass = (
-        trace.search_calls >= 1
-        and trace.read_calls >= 1
+        trace.search_calls == 1
+        and trace.model_turns == 3
+        and trace.read_calls == 1
+        and trace.tool_calls == 2
+        and len(trace.read_history) == 1
+        and len(final_text.splitlines()) == 1
         and final_text.startswith(
             "TOOL_LOOP_OK:"
         )
+        and result_path
+        == trace.read_history[0]["path"]
     )
 
     print(
@@ -956,10 +1002,26 @@ required READ succeeds.
                     if smoke_pass
                     else "FAIL"
                 ),
-                "model": MODEL,
-                "reasoning_effort": (
-                    REASONING_EFFORT
+                "backend": (
+                    backend_metadata[
+                        "backend"
+                    ]
                 ),
+                "model": (
+                    backend_metadata[
+                        "model"
+                    ]
+                ),
+                "backend_settings": {
+                    key: value
+                    for key, value
+                    in backend_metadata.items()
+                    if key
+                    not in {
+                        "backend",
+                        "model",
+                    }
+                },
                 "git_head": repo_commit,
                 "model_turns": (
                     trace.model_turns
@@ -985,8 +1047,20 @@ required READ succeeds.
                 "cached_input_tokens": (
                     trace.cached_input_tokens
                 ),
+                "cache_write_tokens": (
+                    trace.cache_write_tokens
+                ),
                 "output_tokens": (
                     trace.output_tokens
+                ),
+                "token_usage_by_turn": (
+                    trace.token_usage_by_turn
+                ),
+                "total_backend_call_wall_seconds": (
+                    trace.total_backend_call_wall_seconds
+                ),
+                "timing_by_turn": (
+                    trace.timing_by_turn
                 ),
             },
             ensure_ascii=False,
@@ -1001,7 +1075,7 @@ required READ succeeds.
 
 
 def run_full_planner(
-    client: OpenAI,
+    backend: LLMBackend,
 ) -> None:
     require_clean_working_tree()
 
@@ -1032,6 +1106,10 @@ def run_full_planner(
         get_repo_commit()
     )
 
+    backend_metadata = (
+        backend.metadata()
+    )
+
     instructions = (
         build_planner_instructions(
             planner_scope=planner_scope,
@@ -1045,7 +1123,7 @@ def run_full_planner(
     )
 
     final_text = run_agent_loop(
-        client=client,
+        backend=backend,
         instructions=instructions,
         task=task,
         trace=trace,
@@ -1059,11 +1137,28 @@ def run_full_planner(
     print(
         json.dumps(
             {
-                "model": MODEL,
-                "reasoning_effort": (
-                    REASONING_EFFORT
+                "backend": (
+                    backend_metadata[
+                        "backend"
+                    ]
                 ),
+                "model": (
+                    backend_metadata[
+                        "model"
+                    ]
+                ),
+                "backend_settings": {
+                    key: value
+                    for key, value
+                    in backend_metadata.items()
+                    if key
+                    not in {
+                        "backend",
+                        "model",
+                    }
+                },
                 "git_head": repo_commit,
+
                 "working_tree_status": "CLEAN",
                 "model_turns": (
                     trace.model_turns
@@ -1089,8 +1184,20 @@ def run_full_planner(
                 "cached_input_tokens": (
                     trace.cached_input_tokens
                 ),
+                "cache_write_tokens": (
+                    trace.cache_write_tokens
+                ),
                 "output_tokens": (
                     trace.output_tokens
+                ),
+                "token_usage_by_turn": (
+                    trace.token_usage_by_turn
+                ),
+                "total_backend_call_wall_seconds": (
+                    trace.total_backend_call_wall_seconds
+                ),
+                "timing_by_turn": (
+                    trace.timing_by_turn
                 ),
             },
             ensure_ascii=False,
@@ -1127,31 +1234,71 @@ def main() -> None:
         default="smoke",
     )
 
+    parser.add_argument(
+        "--backend",
+        choices=[
+            "openai",
+            "ollama",
+        ],
+        default="openai",
+    )
+
+    parser.add_argument(
+        "--ollama-model",
+        default="gpt-oss:20b",
+    )
+
+    parser.add_argument(
+        "--ollama-thinking",
+        choices=[
+            "low",
+            "medium",
+            "high",
+        ],
+        default="high",
+    )
+
+    parser.add_argument(
+        "--ollama-context",
+        type=int,
+        default=32768,
+    )
+
     args = parser.parse_args()
 
-    client = OpenAI()
-
     try:
+        if args.backend == "openai":
+            backend: LLMBackend = (
+                OpenAIResponsesBackend()
+            )
+
+        else:
+            backend = (
+                OllamaChatBackend(
+                    model=(
+                        args.ollama_model
+                    ),
+                    thinking=(
+                        args.ollama_thinking
+                    ),
+                    context_length=(
+                        args.ollama_context
+                    ),
+                )
+            )
+
         if args.mode == "smoke":
             run_tool_smoke_test(
-                client
+                backend
             )
 
         elif args.mode == "planner":
             run_full_planner(
-                client
+                backend
             )
 
-    except openai.APIError as exc:
-        print(
-            "\n=== OPENAI API ERROR ==="
-        )
-        print(
-            type(exc).__name__
-        )
-        print(str(exc))
-
     except (
+        BackendError,
         RepoReadError,
         RuntimeError,
     ) as exc:

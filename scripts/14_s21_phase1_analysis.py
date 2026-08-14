@@ -1213,7 +1213,10 @@ def get_execution_git_provenance():
     }
 
 
-def rule_display_label(configuration):
+def rule_display_label(
+    configuration,
+    historical_rule_ids,
+):
     threshold_labels = {
         "threshold_eo_q95": "EO-Q95",
         "threshold_gap_midpoint": "MID",
@@ -1228,21 +1231,30 @@ def rule_display_label(configuration):
         f"{smoothing_labels[configuration['smoothing_id']]}-"
         f"D{configuration['dwell_updates']}"
     )
+
+    if configuration["rule_id"] in historical_rule_ids:
+        label += " †"
+
     if configuration["rule_id"] == REFERENCE_RULE_ID:
-        label += " [REF]"
+        label += "★"
+
     return label
 
 
 def save_rule_grid_figure(
     reloaded_summary_rows,
     rule_configurations,
+    historical_rule_ids,
 ):
     summary_map = {
         (row["rule_id"], int(row["run"])): row
         for row in reloaded_summary_rows
     }
     labels = [
-        rule_display_label(configuration)
+        rule_display_label(
+            configuration,
+            historical_rule_ids,
+        )
         for configuration in rule_configurations
     ]
     x = np.arange(len(rule_configurations))
@@ -1303,6 +1315,17 @@ def save_rule_grid_figure(
         )
         switch_axis.grid(axis="y", alpha=0.25)
 
+    threshold_family_separators = (5.5, 11.5)
+    for axis in axes.flat:
+        for separator_x in threshold_family_separators:
+            axis.axvline(
+                separator_x,
+                linestyle=":",
+                linewidth=0.9,
+                alpha=0.45,
+                zorder=0,
+            )
+
     for axis in axes[-1, :]:
         axis.set_xticks(x)
         axis.set_xticklabels(
@@ -1316,7 +1339,14 @@ def save_rule_grid_figure(
         "Session 21 Phase 1A: 18-Rule Command Behavior",
         fontsize=15,
     )
-    figure.tight_layout(rect=(0.0, 0.0, 1.0, 0.96))
+    figure.text(
+        0.5,
+        0.012,
+        "† Reproduced Session 15 rule    ★ Frozen reference rule",
+        ha="center",
+        fontsize=9,
+    )
+    figure.tight_layout(rect=(0.0, 0.035, 1.0, 0.96))
 
     RULE_GRID_FIGURE_PATH.parent.mkdir(
         parents=True,
@@ -1793,6 +1823,7 @@ def main():
     save_rule_grid_figure(
         reloaded_summary_rows,
         rule_configurations,
+        historical_rule_ids,
     )
     save_temporal_variability_figure(
         reloaded_temporal_rows

@@ -1,0 +1,237 @@
+{
+  "metadata_schema_version": "1.0",
+  "session": {
+    "session_id": 21,
+    "analysis_name": "phase1_rule_grid_and_temporal_variability",
+    "scope": [
+      "Phase 1A",
+      "Phase 1B"
+    ]
+  },
+  "governing_artifact": "research-agent/results/pilot-001/session21_implementation_plan_v0.1.md",
+  "source_artifacts": {
+    "session14_window_features": "results/session-14/eegbci_subject-001_runs-01-02_posterior-alpha_window-features.csv",
+    "session14_condition_summary": "results/session-14/eegbci_subject-001_runs-01-02_posterior-alpha_condition-summary.csv",
+    "session15_decision_stream": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-decision-stream.csv",
+    "session15_command_episodes": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-command-episodes.csv",
+    "session15_rule_run_summary": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-rule-run-summary.csv",
+    "session15_metadata": "results/session-15/eegbci_subject-001_runs-01-02_posterior-alpha_offline-decision-rule-metadata.json"
+  },
+  "recording_scope": {
+    "subject": 1,
+    "runs": [
+      1,
+      2
+    ],
+    "conditions": {
+      "1": "baseline_eyes_open",
+      "2": "baseline_eyes_closed"
+    },
+    "run_pooling": "not_authorized"
+  },
+  "phase1a": {
+    "feature_name": "posterior_alpha_mean_psd",
+    "feature_unit": "V^2/Hz",
+    "configuration_id": "win-2s_step-1s",
+    "updates_per_run": 59,
+    "selected_feature_row_count": 118,
+    "fixed_thresholds_by_subject": {
+      "1": {
+        "threshold_eo_q95": 8.270509057516904e-11,
+        "threshold_gap_midpoint": 1.3987182661955795e-10,
+        "threshold_ec_q05": 2.365528862351009e-10
+      }
+    },
+    "rule_count": 18,
+    "rule_configurations": [
+      {
+        "rule_id": "thr-eo-q95__smooth-none__dwell-1",
+        "threshold_id": "threshold_eo_q95",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 1
+      },
+      {
+        "rule_id": "thr-eo-q95__smooth-none__dwell-2",
+        "threshold_id": "threshold_eo_q95",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 2
+      },
+      {
+        "rule_id": "thr-eo-q95__smooth-none__dwell-3",
+        "threshold_id": "threshold_eo_q95",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 3
+      },
+      {
+        "rule_id": "thr-eo-q95__smooth-median3__dwell-1",
+        "threshold_id": "threshold_eo_q95",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 1
+      },
+      {
+        "rule_id": "thr-eo-q95__smooth-median3__dwell-2",
+        "threshold_id": "threshold_eo_q95",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 2
+      },
+      {
+        "rule_id": "thr-eo-q95__smooth-median3__dwell-3",
+        "threshold_id": "threshold_eo_q95",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 3
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-none__dwell-1",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 1
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-none__dwell-2",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 2
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-none__dwell-3",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 3
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-median3__dwell-1",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 1
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-median3__dwell-2",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 2
+      },
+      {
+        "rule_id": "thr-gap-mid__smooth-median3__dwell-3",
+        "threshold_id": "threshold_gap_midpoint",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 3
+      },
+      {
+        "rule_id": "thr-ec-q05__smooth-none__dwell-1",
+        "threshold_id": "threshold_ec_q05",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 1
+      },
+      {
+        "rule_id": "thr-ec-q05__smooth-none__dwell-2",
+        "threshold_id": "threshold_ec_q05",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 2
+      },
+      {
+        "rule_id": "thr-ec-q05__smooth-none__dwell-3",
+        "threshold_id": "threshold_ec_q05",
+        "smoothing_id": "smooth-none",
+        "dwell_updates": 3
+      },
+      {
+        "rule_id": "thr-ec-q05__smooth-median3__dwell-1",
+        "threshold_id": "threshold_ec_q05",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 1
+      },
+      {
+        "rule_id": "thr-ec-q05__smooth-median3__dwell-2",
+        "threshold_id": "threshold_ec_q05",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 2
+      },
+      {
+        "rule_id": "thr-ec-q05__smooth-median3__dwell-3",
+        "threshold_id": "threshold_ec_q05",
+        "smoothing_id": "smooth-median3",
+        "dwell_updates": 3
+      }
+    ],
+    "reference_rule_id": "thr-gap-mid__smooth-none__dwell-2",
+    "evidence_fraction_definition": "LOW or HIGH count divided by LOW+HIGH available evidence count; UNAVAILABLE excluded from denominator",
+    "evidence_transition_definition": "Adjacent LOW_ALPHA<->HIGH_ALPHA transitions only; transitions involving UNAVAILABLE excluded",
+    "occupancy_definition": "elapsed command-state duration divided by complete recording duration",
+    "short_active_episode_max_duration_sec": 2.0
+  },
+  "phase1b": {
+    "configuration_ids": [
+      "win-1s_step-1s",
+      "win-2s_step-0p5s",
+      "win-2s_step-1s",
+      "win-2s_step-2s",
+      "win-4s_step-1s"
+    ],
+    "relative_iqr_definition": "(Q75-Q25)/median(x)",
+    "successive_difference_definition": "x_t - x_(t-1)",
+    "volatility_definition": "SD(successive differences), ddof=0",
+    "median_absolute_successive_change_definition": "median(abs(successive differences))",
+    "primary_comparison_configuration_ids": [
+      "win-1s_step-1s",
+      "win-2s_step-1s",
+      "win-4s_step-1s"
+    ],
+    "cross_step_restriction": "Raw successive-change metrics are not directly ranked across different step sizes because temporal increments and outer-window overlap differ."
+  },
+  "validation": {
+    "source": {
+      "source_feature_row_count": 646,
+      "configuration_run_group_count": 10
+    },
+    "session15_reproduction": {
+      "historical_rule_count": 8,
+      "decision_stream_rows_reproduced": 944,
+      "command_episode_rows_reproduced": 42,
+      "rule_run_summary_rows_reproduced": 16,
+      "status": "PASS"
+    },
+    "complete_grid": {
+      "rule_count": 18,
+      "summary_row_count": 36,
+      "decision_stream_row_count": 2124,
+      "new_rule_count": 10,
+      "status": "PASS"
+    },
+    "temporal_variability": {
+      "temporal_summary_row_count": 10,
+      "relative_iqr_reproduction_count": 10,
+      "status": "PASS"
+    },
+    "save_reload": {
+      "reloaded_decision_stream_row_count": 2124,
+      "reloaded_command_episode_row_count": 94,
+      "reloaded_rule_grid_summary_row_count": 36,
+      "reloaded_temporal_summary_row_count": 10,
+      "status": "PASS"
+    },
+    "figure_files_nonempty": true
+  },
+  "git_provenance": {
+    "implementation_git_revision": "c6b07c6ea91d2c64c14d2dd8a1c1ecb67b4e13c3",
+    "execution_git_revision": "c6b07c6ea91d2c64c14d2dd8a1c1ecb67b4e13c3",
+    "working_tree_status_before_outputs": "CLEAN",
+    "implementation_source_paths": [
+      "src/bci_robot/session21_phase1.py",
+      "scripts/14_s21_phase1_analysis.py"
+    ]
+  },
+  "software": {
+    "python_version": "3.11.15",
+    "numpy_version": "2.4.3",
+    "matplotlib_version": "3.10.9"
+  },
+  "outputs": {
+    "decision_stream_csv": "results/session-21/session21_rule-grid_decision-stream.csv",
+    "command_episode_csv": "results/session-21/session21_rule-grid_command-episodes.csv",
+    "rule_grid_summary_csv": "results/session-21/session21_rule-grid_summary.csv",
+    "temporal_variability_summary_csv": "results/session-21/session21_feature-temporal-variability-summary.csv",
+    "metadata_json": "results/session-21/session21_analysis_metadata.json",
+    "rule_grid_figure": "figures/session-21/session21_rule-grid-command-behavior.png",
+    "temporal_variability_figure": "figures/session-21/session21_feature-temporal-variability.png"
+  }
+}

@@ -1,0 +1,11 @@
+subject,run,condition,configuration_id,window_length_sec,step_size_sec,outer_window_overlap_fraction,welch_segment_count,feature_name,feature_unit,n_features,n_differences,relative_iqr,successive_difference_sd_population,median_absolute_successive_change,comparison_role
+1,1,baseline_eyes_open,win-1s_step-1s,1.0,1.0,0.0,1,posterior_alpha_mean_psd,V^2/Hz,60,59,0.7895998971403371,3.0273483515445214e-11,1.475723768905724e-11,primary_common_step_1s
+1,2,baseline_eyes_closed,win-1s_step-1s,1.0,1.0,0.0,1,posterior_alpha_mean_psd,V^2/Hz,60,59,0.8437169478500799,3.9433830421877113e-10,2.0645751583822805e-10,primary_common_step_1s
+1,1,baseline_eyes_open,win-2s_step-0p5s,2.0,0.5,0.75,3,posterior_alpha_mean_psd,V^2/Hz,117,116,0.5485258075113617,2.8261105398620243e-11,6.728008988587218e-12,descriptive_cross_step
+1,2,baseline_eyes_closed,win-2s_step-0p5s,2.0,0.5,0.75,3,posterior_alpha_mean_psd,V^2/Hz,117,116,0.6902444556809582,1.7847373569297828e-10,9.471207795135051e-11,descriptive_cross_step
+1,1,baseline_eyes_open,win-2s_step-1s,2.0,1.0,0.5,3,posterior_alpha_mean_psd,V^2/Hz,59,58,0.4979478651272117,3.9310824025138286e-11,8.66366461510618e-12,primary_common_step_1s
+1,2,baseline_eyes_closed,win-2s_step-1s,2.0,1.0,0.5,3,posterior_alpha_mean_psd,V^2/Hz,59,58,0.691357877231906,2.6291279778362387e-10,1.8688128356571562e-10,primary_common_step_1s
+1,1,baseline_eyes_open,win-2s_step-2s,2.0,2.0,0.0,3,posterior_alpha_mean_psd,V^2/Hz,30,29,0.6694122454238941,5.0656923325260823e-11,1.2197141324978445e-11,descriptive_cross_step
+1,2,baseline_eyes_closed,win-2s_step-2s,2.0,2.0,0.0,3,posterior_alpha_mean_psd,V^2/Hz,30,29,0.6116237972959859,2.4285393945602676e-10,1.4449752076136297e-10,descriptive_cross_step
+1,1,baseline_eyes_open,win-4s_step-1s,4.0,1.0,0.75,7,posterior_alpha_mean_psd,V^2/Hz,57,56,0.5146116309560819,1.710556534961309e-11,4.0346469455348114e-12,primary_common_step_1s
+1,2,baseline_eyes_closed,win-4s_step-1s,4.0,1.0,0.75,7,posterior_alpha_mean_psd,V^2/Hz,57,56,0.5950370523359043,1.064878594260501e-10,6.157509213479502e-11,primary_common_step_1s
